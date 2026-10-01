@@ -7,6 +7,11 @@ from zoneinfo import ZoneInfo
 from .forms import CustomUserCreationForm, ProfileUpdateForm
 from .models import Profile
 
+def landing_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return render(request, 'landing.html')
+
 
 def _get_user_today(user):
     try:

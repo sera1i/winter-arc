@@ -55,7 +55,7 @@ class GoalTests(TestCase):
         
         response = self.client.get(reverse('goals:detail', args=[self.goal.pk]))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '50<span class="text-xl text-slate-400">%</span>', html=True)
+        self.assertContains(response, '50<span class="text-lg text-bone-muted font-normal">%</span>', html=True)
 
     def test_milestone_create_and_delete(self):
         response = self.client.post(reverse('goals:milestone_create', args=[self.goal.pk]), {
