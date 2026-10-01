@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Winter Arc
 
 A full-stack personal transformation, productivity, habit, goal, study, fitness, journaling, analytics, and gamification platform.
@@ -44,3 +45,7 @@ A full-stack personal transformation, productivity, habit, goal, study, fitness,
 8. Start celery worker: celery -A winter_arc worker -l info
 9. Start celery beat: celery -A winter_arc beat -l info
 
+=======
+# winter-arc
+Winter Arc — Personal Transformation &amp; Productivity Platform
+>>>>>>> f392dd796e1b47f167a98f5cc93c479bf19f2929
