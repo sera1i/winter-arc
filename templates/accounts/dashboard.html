@@ -1,0 +1,168 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Command Center | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-8">
+
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/5 pb-6">
+        <div>
+            <div class="flex items-center gap-2 mb-2">
+                <span class="w-2 h-2 rounded-full bg-vermilion shadow-glow-vermilion"></span>
+                <span class="text-xs uppercase tracking-widest text-vermilion font-bold">Operational Status: Active</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-bone tracking-tight">Command Center</h1>
+            <p class="text-bone-muted mt-1 text-sm">{{ today|date:"l, F j, Y" }} &bull; Discipline in stillness.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'tasks:create' %}" class="btn-secondary text-xs !py-2 !px-4">
+                + Task
+            </a>
+            <a href="{% url 'habits:create' %}" class="btn-secondary text-xs !py-2 !px-4">
+                + Habit
+            </a>
+            <a href="{% url 'arcs:create' %}" class="btn-primary text-xs !py-2 !px-4">
+                + New Arc
+            </a>
+        </div>
+    </div>
+
+    <!-- Top Stats Grid -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="arc-card flex flex-col justify-between">
+            <div class="text-xs uppercase tracking-wider text-bone-muted font-semibold">Active Arcs</div>
+            <div class="text-3xl font-extrabold text-bone mt-2">{{ active_arcs }}</div>
+            <div class="text-xs text-slate-500 mt-1">Current transformations</div>
+        </div>
+        <div class="arc-card flex flex-col justify-between">
+            <div class="text-xs uppercase tracking-wider text-bone-muted font-semibold">Action Queue</div>
+            <div class="text-3xl font-extrabold text-ember mt-2">{{ total_pending_count }}</div>
+            <div class="text-xs text-slate-500 mt-1">Pending tasks</div>
+        </div>
+        <div class="arc-card flex flex-col justify-between">
+            <div class="text-xs uppercase tracking-wider text-bone-muted font-semibold">Tasks Completed</div>
+            <div class="text-3xl font-extrabold text-green-400 mt-2">{{ today_completed_tasks }}</div>
+            <div class="text-xs text-slate-500 mt-1">Today's execution</div>
+        </div>
+        <div class="arc-card flex flex-col justify-between">
+            <div class="text-xs uppercase tracking-wider text-bone-muted font-semibold">Daily Habits</div>
+            <div class="text-3xl font-extrabold text-gold mt-2">{{ habits_done_today }}<span class="text-bone-muted text-lg font-normal">/{{ total_habits }}</span></div>
+            <div class="text-xs text-slate-500 mt-1">Rituals fulfilled today</div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Tasks Column (2 cols wide) -->
+        <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Primary Arc Spotlight -->
+            {% if primary_arc %}
+            <div class="arc-card relative overflow-hidden bg-gradient-to-br from-ink-card via-ink-card to-blue-950/20 border-white/10">
+                <div class="absolute top-0 right-0 px-4 py-1.5 bg-vermilion/20 border-b border-l border-vermilion/30 text-[10px] font-bold text-vermilion tracking-widest uppercase rounded-bl-xl">
+                    Primary Arc
+                </div>
+                <div class="pr-24">
+                    <p class="text-xs text-vermilion font-bold uppercase tracking-wider mb-1">Focus Vector</p>
+                    <h2 class="text-2xl font-bold text-bone mb-2">{{ primary_arc.name }}</h2>
+                    <p class="text-bone-muted text-sm line-clamp-2 leading-relaxed">{{ primary_arc.objective }}</p>
+                    
+                    <div class="flex items-center gap-4 mt-4 pt-4 border-t border-white/5 text-xs text-bone-muted">
+                        <span>{{ primary_arc.start_date|date:"M j, Y" }} &rarr; {{ primary_arc.end_date|date:"M j, Y" }}</span>
+                        <span>&bull;</span>
+                        <a href="{% url 'arcs:detail' primary_arc.pk %}" class="text-ice hover:underline font-semibold">Manage Arc &rarr;</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="arc-card border-dashed text-center py-8">
+                <p class="text-bone-muted text-sm mb-3">No active primary Arc designated.</p>
+                <a href="{% url 'arcs:list' %}" class="text-xs text-ice hover:underline font-semibold">Explore Arcs &rarr;</a>
+            </div>
+            {% endif %}
+
+            <!-- Tasks Queue -->
+            <div class="arc-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-bone tracking-tight">Active Task Queue</h2>
+                    <a href="{% url 'tasks:list' %}" class="text-xs text-ice hover:underline font-semibold">View All ({{ total_pending_count }}) &rarr;</a>
+                </div>
+
+                {% if pending_tasks %}
+                <div class="space-y-2.5">
+                    {% for task in pending_tasks %}
+                    <a href="{% url 'tasks:detail' task.pk %}" class="flex items-center gap-3.5 p-3.5 rounded-xl bg-ink-surface border border-white/5 hover:border-white/15 hover:bg-ink-hover transition-all group">
+                        <div class="w-1.5 h-7 rounded-full flex-shrink-0
+                            {% if task.priority == 1 %}bg-vermilion
+                            {% elif task.priority == 2 %}bg-ember
+                            {% else %}bg-slate-600{% endif %}"></div>
+                        <div class="flex-grow min-w-0">
+                            <p class="text-sm font-semibold text-bone group-hover:text-white truncate">{{ task.title }}</p>
+                            {% if task.due_at %}
+                            <p class="text-xs text-bone-muted mt-0.5">Due {{ task.due_at|date:"M j, g:i A" }}</p>
+                            {% endif %}
+                        </div>
+                        <span class="text-[11px] font-medium px-2.5 py-1 rounded-full bg-ink-card text-bone-muted border border-white/5">
+                            {{ task.priority_label }}
+                        </span>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <p class="text-bone-muted text-sm mb-2">No pending tasks in queue.</p>
+                    <a href="{% url 'tasks:create' %}" class="text-xs text-ice hover:underline font-semibold">+ Create a Task</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Habits Column (1 col wide) -->
+        <div class="space-y-6">
+            <div class="arc-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-bone tracking-tight">Daily Rituals</h2>
+                    <a href="{% url 'habits:list' %}" class="text-xs text-ice hover:underline font-semibold">All Habits &rarr;</a>
+                </div>
+
+                {% if habit_data %}
+                <div class="space-y-2.5">
+                    {% for item in habit_data %}
+                    <div class="flex items-center justify-between p-3.5 rounded-xl border transition-all
+                        {% if item.completed_today %}
+                            bg-green-950/20 border-green-800/40 text-green-300
+                        {% else %}
+                            bg-ink-surface border-white/5 text-bone
+                        {% endif %}">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 text-xs
+                                {% if item.completed_today %}bg-green-500/20 border border-green-500 text-green-400{% else %}bg-ink-card border border-white/10 text-transparent{% endif %}">
+                                {% if item.completed_today %}✓{% endif %}
+                            </div>
+                            <a href="{% url 'habits:detail' item.habit.pk %}" class="text-sm font-semibold truncate hover:underline">
+                                {{ item.habit.name }}
+                            </a>
+                        </div>
+                        {% if item.streak > 0 %}
+                        <div class="badge-streak flex-shrink-0">
+                            <span>🔥</span>
+                            <span>{{ item.streak }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-8">
+                    <p class="text-bone-muted text-sm mb-2">No active habits tracked.</p>
+                    <a href="{% url 'habits:create' %}" class="text-xs text-ice hover:underline font-semibold">+ Build a Habit</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

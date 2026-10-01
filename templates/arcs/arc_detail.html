@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ arc.name }} | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto space-y-8">
+    
+    <div class="flex items-center justify-between">
+        <a href="{% url 'arcs:list' %}" class="btn-ghost text-xs flex items-center gap-1.5">
+            &larr; Back to Arcs
+        </a>
+        <div class="flex gap-2">
+            {% if not arc.is_primary and arc.status == 'ACTIVE' %}
+            <form method="post" action="{% url 'arcs:make_primary' arc.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-secondary text-xs !py-1.5 !px-3 !border-vermilion/40 !text-vermilion hover:!bg-vermilion/10">
+                    Make Primary
+                </button>
+            </form>
+            {% endif %}
+            <a href="{% url 'arcs:update' arc.pk %}" class="btn-secondary text-xs !py-1.5 !px-3">Edit</a>
+            <a href="{% url 'arcs:delete' arc.pk %}" class="btn-danger text-xs !py-1.5 !px-3">Archive</a>
+        </div>
+    </div>
+
+    <!-- Arc Overview Container -->
+    <div class="arc-card relative overflow-hidden space-y-6">
+        {% if arc.is_primary %}
+            <div class="absolute top-0 right-0 bg-vermilion text-[10px] font-extrabold px-3.5 py-1.5 text-white rounded-bl-xl uppercase tracking-wider shadow-glow-vermilion">
+                PRIMARY ARC
+            </div>
+        {% endif %}
+
+        <div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-bone tracking-tight mb-2 pr-28">{{ arc.name }}</h1>
+            <div class="flex flex-wrap gap-3 items-center text-xs text-bone-muted">
+                <span class="px-2.5 py-0.5 rounded-full font-semibold bg-ink-surface text-bone-dim border border-white/5">
+                    {{ arc.get_status_display }}
+                </span>
+                <span>{{ arc.start_date|date:"M j, Y" }} &rarr; {{ arc.end_date|date:"M j, Y" }}</span>
+                <span>&bull;</span>
+                <span class="text-slate-500">{{ arc.timezone }}</span>
+            </div>
+        </div>
+
+        <div class="p-5 rounded-xl bg-ink-surface border border-white/5">
+            <h3 class="text-[10px] font-bold text-bone-muted uppercase tracking-wider mb-2">Core Transformation Objective</h3>
+            <p class="text-bone-dim text-sm leading-relaxed whitespace-pre-line">{{ arc.objective }}</p>
+        </div>
+
+        <!-- Goals Section -->
+        <div class="pt-4 border-t border-white/5 space-y-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold text-bone tracking-tight">Arc Goals</h2>
+                <a id="add-goal-btn" href="{% url 'goals:create' arc.pk %}" class="btn-secondary text-xs !py-1.5 !px-3">
+                    + Add Goal
+                </a>
+            </div>
+            
+            {% if arc.goals.all %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for goal in arc.goals.all %}
+                        <a href="{% url 'goals:detail' goal.pk %}" class="arc-card-interactive block space-y-3">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-bold text-bone text-base truncate">{{ goal.title }}</h3>
+                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-ink-surface text-bone-muted border border-white/5">
+                                    {{ goal.get_category_display }}
+                                </span>
+                            </div>
+                            
+                            <!-- Progress Track -->
+                            <div>
+                                <div class="flex justify-between text-xs text-bone-muted mb-1.5 font-medium">
+                                    <span>Progress</span>
+                                    <span class="text-ice font-bold">{{ goal.progress_percentage }}%</span>
+                                </div>
+                                <div class="w-full bg-ink-surface rounded-full h-1.5 overflow-hidden border border-white/5">
+                                    <div class="bg-gradient-to-r from-blue-500 to-ice h-1.5 rounded-full transition-all duration-300" style="width: {{ goal.progress_percentage }}%"></div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="p-8 rounded-xl bg-ink-surface/50 border border-white/5 border-dashed text-center">
+                    <p class="text-bone-muted text-xs mb-3">No specific goals set for this Arc yet.</p>
+                    <a href="{% url 'goals:create' arc.pk %}" class="text-xs text-ice hover:underline font-semibold">+ Add your first goal</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

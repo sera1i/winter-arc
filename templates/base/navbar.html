@@ -1,0 +1,42 @@
+<nav class="bg-ink/90 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-18 py-3">
+            <div class="flex items-center gap-8">
+                <a href="/" class="flex items-center gap-2 group">
+                    <div class="w-2.5 h-2.5 rounded-full bg-vermilion shadow-glow-vermilion group-hover:scale-125 transition-transform"></div>
+                    <span class="text-xl font-extrabold tracking-widest text-bone group-hover:text-white transition-colors">
+                        WINTER<span class="text-vermilion">ARC</span>
+                    </span>
+                </a>
+                
+                {% if user.is_authenticated %}
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="{% url 'dashboard' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Dashboard</a>
+                    <a href="{% url 'tasks:list' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Tasks</a>
+                    <a href="{% url 'habits:list' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Habits</a>
+                    <a href="{% url 'arcs:list' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Arcs</a>
+                    <a href="{% url 'profile' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Profile</a>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}" class="hidden sm:flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-ink-surface border border-white/10 text-bone-muted hover:text-bone transition-all">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        <span>{{ user.username }}</span>
+                    </a>
+                    <form method="post" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-bone-muted hover:text-vermilion text-xs font-medium px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition-colors">
+                            Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-bone-muted hover:text-bone px-4 py-2 rounded-xl text-sm font-medium transition-colors">Login</a>
+                    <a href="{% url 'register' %}" class="btn-primary text-sm !py-2 !px-5">Initiate Arc</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

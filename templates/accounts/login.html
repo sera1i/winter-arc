@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Login | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-12 arc-card p-8 space-y-6">
+    <div class="text-center space-y-2">
+        <div class="w-2.5 h-2.5 rounded-full bg-vermilion shadow-glow-vermilion mx-auto"></div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-bone tracking-tight">Access Sanctuary</h1>
+        <p class="text-bone-muted text-xs">Enter your credentials to continue your Winter Arc.</p>
+    </div>
+    
+    <form method="post" action="{% url 'login' %}" class="space-y-4">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="p-3.5 bg-red-950/50 border border-red-800/60 text-red-300 rounded-xl text-xs font-medium">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">{{ field.label }}</label>
+                {{ field|add_class:"input-text" }}
+                {% if field.errors %}
+                    <p class="mt-1 text-xs text-red-400 font-medium">{{ field.errors.0 }}</p>
+                {% endif %}
+                {% if field.help_text %}
+                    <p class="mt-1 text-[11px] text-bone-muted">{{ field.help_text }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <div class="flex items-center justify-between text-xs pt-1">
+            <a href="{% url 'password_reset' %}" class="text-bone-muted hover:text-ice transition-colors">Forgot password?</a>
+        </div>
+        
+        <button type="submit" class="btn-primary w-full text-xs font-bold !py-3">
+            Log In
+        </button>
+    </form>
+    
+    <p class="text-center text-xs text-bone-muted pt-2 border-t border-white/5">
+        Don't have an account? <a href="{% url 'register' %}" class="text-vermilion hover:underline font-bold ml-1">Initiate Arc &rarr;</a>
+    </p>
+</div>
+{% endblock %}

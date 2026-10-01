@@ -1,0 +1,91 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Tasks | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto space-y-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-6">
+        <div>
+            <div class="flex items-center gap-2 mb-1.5">
+                <span class="w-2 h-2 rounded-full bg-vermilion shadow-glow-vermilion"></span>
+                <span class="text-xs uppercase tracking-widest text-vermilion font-bold">Execution Engine</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-bone tracking-tight">Tasks</h1>
+            <p class="text-bone-muted text-sm mt-0.5">Direct daily actions that drive goal completion.</p>
+        </div>
+        <a href="{% url 'tasks:create' %}" class="btn-primary self-start sm:self-auto">
+            + New Task
+        </a>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="grid grid-cols-3 gap-4">
+        <div class="arc-card text-center p-4">
+            <div class="text-2xl sm:text-3xl font-extrabold text-bone">{{ pending_count }}</div>
+            <div class="text-[11px] uppercase tracking-wider text-bone-muted font-semibold mt-1">Pending</div>
+        </div>
+        <div class="arc-card text-center p-4">
+            <div class="text-2xl sm:text-3xl font-extrabold text-ice">{{ inprogress_count }}</div>
+            <div class="text-[11px] uppercase tracking-wider text-bone-muted font-semibold mt-1">In Progress</div>
+        </div>
+        <div class="arc-card text-center p-4">
+            <div class="text-2xl sm:text-3xl font-extrabold text-green-400">{{ completed_count }}</div>
+            <div class="text-[11px] uppercase tracking-wider text-bone-muted font-semibold mt-1">Completed</div>
+        </div>
+    </div>
+
+    <!-- Filter Pills -->
+    <div class="flex gap-2 flex-wrap">
+        <a href="{% url 'tasks:list' %}" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all {% if not status_filter %}bg-white/10 text-white border border-white/20{% else %}bg-ink-surface text-bone-muted hover:text-bone border border-white/5 hover:border-white/10{% endif %}">All</a>
+        <a href="?status=PENDING" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all {% if status_filter == 'PENDING' %}bg-white/10 text-white border border-white/20{% else %}bg-ink-surface text-bone-muted hover:text-bone border border-white/5 hover:border-white/10{% endif %}">Pending</a>
+        <a href="?status=IN_PROGRESS" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all {% if status_filter == 'IN_PROGRESS' %}bg-white/10 text-white border border-white/20{% else %}bg-ink-surface text-bone-muted hover:text-bone border border-white/5 hover:border-white/10{% endif %}">In Progress</a>
+        <a href="?status=COMPLETED" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all {% if status_filter == 'COMPLETED' %}bg-white/10 text-white border border-white/20{% else %}bg-ink-surface text-bone-muted hover:text-bone border border-white/5 hover:border-white/10{% endif %}">Completed</a>
+    </div>
+
+    <!-- Task List -->
+    {% if tasks %}
+        <div class="space-y-3">
+            {% for task in tasks %}
+            <a href="{% url 'tasks:detail' task.pk %}" class="flex items-center gap-4 p-4 arc-card-interactive group">
+                <!-- Priority bar -->
+                <div class="w-1.5 h-10 rounded-full flex-shrink-0
+                    {% if task.priority == 1 %}bg-vermilion
+                    {% elif task.priority == 2 %}bg-ember
+                    {% else %}bg-slate-600{% endif %}"></div>
+
+                <div class="flex-grow min-w-0">
+                    <div class="flex items-center gap-3">
+                        <p class="font-semibold text-bone group-hover:text-white truncate {% if task.is_completed %}line-through text-bone-muted{% endif %}">{{ task.title }}</p>
+                        <span class="text-[11px] font-semibold flex-shrink-0
+                            {% if task.status == 'COMPLETED' %}badge-status-completed
+                            {% elif task.status == 'IN_PROGRESS' %}badge-status-inprogress
+                            {% else %}badge-status-pending{% endif %}">
+                            {{ task.get_status_display }}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-1 text-xs text-bone-muted">
+                        {% if task.due_at %}
+                            <span>Due {{ task.due_at|date:"M j, Y g:i A" }}</span>
+                        {% endif %}
+                        {% if task.goal %}
+                            <span>&bull;</span>
+                            <span class="text-slate-400">↳ {{ task.goal.title }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="text-bone-muted group-hover:text-bone flex-shrink-0 transition-transform group-hover:translate-x-0.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="arc-card border-dashed text-center py-16">
+            <div class="w-12 h-12 rounded-2xl bg-ink-surface border border-white/5 flex items-center justify-center text-xl mx-auto mb-3">📋</div>
+            <p class="text-bone-muted text-sm mb-4">No tasks found{% if status_filter %} with status "{{ status_filter }}"{% endif %}.</p>
+            <a href="{% url 'tasks:create' %}" class="btn-secondary inline-flex text-xs">+ Create First Task</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}{{ title }} | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto space-y-6">
+    <div>
+        <a href="{% url 'tasks:list' %}" class="btn-ghost text-xs inline-flex items-center gap-1.5">
+            &larr; Back to Tasks
+        </a>
+    </div>
+
+    <div class="arc-card space-y-6">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-bone tracking-tight">{{ title }}</h1>
+            <p class="text-bone-muted text-xs mt-1">Specify task priority, deadlines, and parent goal linkage.</p>
+        </div>
+
+        <form method="post" class="space-y-5">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="p-4 bg-red-950/50 border border-red-800/60 text-red-300 rounded-xl text-sm font-medium">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <!-- Title -->
+            <div>
+                <label for="{{ form.title.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
+                    Task Title <span class="text-vermilion">*</span>
+                </label>
+                {{ form.title|add_class:"input-text" }}
+                {% if form.title.errors %}
+                    <p class="mt-1 text-xs text-red-400 font-medium">{{ form.title.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label for="{{ form.description.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
+                    Description
+                </label>
+                {{ form.description|add_class:"input-text" }}
+            </div>
+
+            <!-- Priority & Status -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="{{ form.priority.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
+                        Priority Level
+                    </label>
+                    {{ form.priority|add_class:"input-text" }}
+                </div>
+                <div>
+                    <label for="{{ form.status.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
+                        Execution Status
+                    </label>
+                    {{ form.status|add_class:"input-text" }}
+                </div>
+            </div>
+
+            <!-- Due Date -->
+            <div>
+                <label for="{{ form.due_at.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
+                    Due Date & Time
+                </label>
+                {{ form.due_at|add_class:"input-text" }}
+            </div>
+
+            <!-- Goal Linkage -->
+            <div>
+                <label for="{{ form.goal.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
+                    Parent Goal Link
+                </label>
+                {{ form.goal|add_class:"input-text" }}
+            </div>
+
+            <div class="pt-6 border-t border-white/5 flex items-center justify-end gap-3">
+                <a href="{% url 'tasks:list' %}" class="btn-ghost text-xs">Cancel</a>
+                <button type="submit" class="btn-primary text-xs">
+                    Save Task
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

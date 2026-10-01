@@ -1,0 +1,124 @@
+{% extends 'base/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}{{ goal.title }} | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    
+    <div class="flex items-center justify-between">
+        <a href="{% url 'arcs:detail' goal.arc.pk %}" class="btn-ghost text-xs flex items-center gap-1.5">
+            &larr; Back to {{ goal.arc.name }}
+        </a>
+        <div class="flex gap-2">
+            <a href="{% url 'goals:update' goal.pk %}" class="btn-secondary text-xs !py-1.5 !px-3">Edit Goal</a>
+            <a href="{% url 'goals:delete' goal.pk %}" class="btn-danger text-xs !py-1.5 !px-3">Cancel Goal</a>
+        </div>
+    </div>
+
+    <!-- Goal Header Card -->
+    <div class="arc-card space-y-6">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-bone tracking-tight mb-2">{{ goal.title }}</h1>
+                <div class="flex flex-wrap gap-2.5 items-center text-xs text-bone-muted">
+                    <span class="px-2.5 py-0.5 rounded-full font-semibold bg-ink-surface text-bone-dim border border-white/5">
+                        {{ goal.get_category_display }}
+                    </span>
+                    <span>
+                        {% if goal.deadline %}Due {{ goal.deadline|date:"M j, Y" }}{% else %}No deadline{% endif %}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="text-left md:text-right bg-ink-surface p-3.5 rounded-xl border border-white/5 md:bg-transparent md:border-0 md:p-0">
+                <div class="text-3xl font-extrabold text-ice">{{ goal.progress_percentage }}<span class="text-lg text-bone-muted font-normal">%</span></div>
+                <div class="text-[10px] text-bone-muted uppercase tracking-wider font-bold mt-0.5">Progress Ratio</div>
+            </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div class="w-full bg-ink-surface rounded-full h-2 overflow-hidden border border-white/5">
+            <div class="bg-gradient-to-r from-blue-500 to-ice h-2 rounded-full transition-all duration-500" style="width: {{ goal.progress_percentage }}%"></div>
+        </div>
+
+        {% if goal.description %}
+        <div class="p-4 rounded-xl bg-ink-surface border border-white/5">
+            <p class="text-bone-dim text-sm leading-relaxed whitespace-pre-line">{{ goal.description }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Milestones Card -->
+    <div class="arc-card space-y-6">
+        <h2 class="text-lg font-bold text-bone tracking-tight">Milestones</h2>
+        
+        {% if milestones %}
+        <div class="space-y-2.5">
+            {% for milestone in milestones %}
+                <div class="flex items-center justify-between p-3.5 rounded-xl border transition-all
+                    {% if milestone.is_completed %}
+                        bg-ink-surface/50 border-white/5 text-bone-muted
+                    {% else %}
+                        bg-ink-surface border-white/10 text-bone
+                    {% endif %}">
+                    
+                    <div class="flex items-center gap-3.5 min-w-0">
+                        <form method="post" action="{% url 'goals:milestone_toggle' milestone.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="w-5 h-5 rounded-md border flex items-center justify-center transition-all text-xs font-bold
+                                {% if milestone.is_completed %}
+                                    bg-ice border-ice text-ink
+                                {% else %}
+                                    bg-ink-card border-white/20 text-transparent hover:border-ice
+                                {% endif %}">
+                                ✓
+                            </button>
+                        </form>
+                        
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold truncate {% if milestone.is_completed %}line-through text-bone-muted{% endif %}">
+                                {{ milestone.title }}
+                            </p>
+                            {% if milestone.due_date %}
+                                <p class="text-[11px] text-bone-muted mt-0.5">Target: {{ milestone.due_date|date:"M j, Y" }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <form method="post" action="{% url 'goals:milestone_delete' milestone.pk %}" class="flex-shrink-0">
+                        {% csrf_token %}
+                        <button type="submit" class="text-bone-muted hover:text-red-400 text-xs px-2 py-1 rounded transition-colors">
+                            &times;
+                        </button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-6 text-xs text-bone-muted">
+            No milestones added yet. Add sub-objectives below to track progress.
+        </div>
+        {% endif %}
+
+        <!-- Add Milestone Form -->
+        <div class="pt-6 border-t border-white/5">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-bone-muted mb-3">+ Add New Milestone</h3>
+            <form method="post" action="{% url 'goals:milestone_create' goal.pk %}" class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                {% csrf_token %}
+                <div class="sm:col-span-2">
+                    {{ milestone_form.title|add_class:"input-text text-xs !py-2" }}
+                </div>
+                <div>
+                    {{ milestone_form.due_date|add_class:"input-text text-xs !py-2" }}
+                </div>
+                <div>
+                    <button type="submit" class="btn-primary w-full text-xs !py-2">
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

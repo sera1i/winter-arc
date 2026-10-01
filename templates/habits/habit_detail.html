@@ -1,0 +1,81 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ habit.name }} | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a href="{% url 'habits:list' %}" class="btn-ghost text-xs flex items-center gap-1.5">
+            &larr; Back to Habits
+        </a>
+        <div class="flex gap-2">
+            <a href="{% url 'habits:update' habit.pk %}" class="btn-secondary text-xs !py-1.5 !px-3">Edit</a>
+            <a href="{% url 'habits:archive' habit.pk %}" class="btn-danger text-xs !py-1.5 !px-3">Archive</a>
+        </div>
+    </div>
+
+    <!-- Header Card with Streak -->
+    <div class="arc-card relative overflow-hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-bone tracking-tight mb-1">{{ habit.name }}</h1>
+                <p class="text-bone-muted text-xs">{{ habit.get_frequency_display }} &bull; Active from {{ habit.active_from|date:"M j, Y" }}</p>
+            </div>
+
+            <!-- Streak Display -->
+            <div class="text-center bg-gradient-to-b from-orange-950/40 to-ink-surface border border-orange-700/40 rounded-2xl px-6 py-4 flex-shrink-0 shadow-lg">
+                <div class="text-4xl sm:text-5xl font-black text-orange-400">{{ streak }}</div>
+                <div class="text-[10px] text-orange-300/80 uppercase tracking-widest font-bold mt-1">Day Streak 🔥</div>
+            </div>
+        </div>
+
+        {% if habit.description %}
+        <div class="p-4 rounded-xl bg-ink-surface border border-white/5">
+            <p class="text-bone-dim text-sm leading-relaxed whitespace-pre-line">{{ habit.description }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Today Action -->
+        <div class="border-t border-white/5 pt-6">
+            <form method="post" action="{% url 'habits:complete' habit.pk %}">
+                {% csrf_token %}
+                {% if completed_today %}
+                <button id="habit-complete-btn" type="submit" class="btn-secondary !border-green-700/50 !text-green-300 hover:!border-red-700/50 hover:!text-red-300">
+                    ✓ Completed Today &bull; Click to Undo
+                </button>
+                {% else %}
+                <button id="habit-complete-btn" type="submit" class="btn-primary">
+                    Mark Complete for Today
+                </button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- 30-Day Completion History -->
+    <div class="arc-card space-y-4">
+        <h2 class="text-lg font-bold text-bone tracking-tight">
+            Completion History <span class="text-bone-muted text-xs font-normal">(Last 30 Days)</span>
+        </h2>
+
+        {% if history %}
+        <div class="space-y-2">
+            {% for record in history %}
+            <div class="flex items-center justify-between p-3 rounded-xl bg-ink-surface border border-white/5 text-xs">
+                <div class="flex items-center gap-3">
+                    <span class="w-5 h-5 rounded bg-green-500/20 border border-green-500/40 text-green-400 flex items-center justify-center font-bold">✓</span>
+                    <span class="text-bone font-medium">{{ record.local_date|date:"l, M j, Y" }}</span>
+                </div>
+                <span class="text-bone-muted">{{ record.completed_at|date:"g:i A" }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-8">
+            <p class="text-bone-muted text-sm mb-1">No completions recorded yet.</p>
+            <p class="text-slate-600 text-xs">Complete today to start building your streak.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ task.title }} | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto space-y-6">
+    <div class="flex items-center justify-between">
+        <a href="{% url 'tasks:list' %}" class="btn-ghost text-xs flex items-center gap-1.5">
+            &larr; Back to Tasks
+        </a>
+        <div class="flex gap-2">
+            <a href="{% url 'tasks:update' task.pk %}" class="btn-secondary text-xs !py-1.5 !px-3">Edit</a>
+            <a href="{% url 'tasks:delete' task.pk %}" class="btn-danger text-xs !py-1.5 !px-3">Cancel Task</a>
+        </div>
+    </div>
+
+    <div class="arc-card space-y-6">
+        <!-- Title & Status -->
+        <div class="flex items-start gap-4">
+            <div class="w-2 h-14 rounded-full flex-shrink-0 mt-1
+                {% if task.priority == 1 %}bg-vermilion
+                {% elif task.priority == 2 %}bg-ember
+                {% else %}bg-slate-600{% endif %}"></div>
+
+            <div class="flex-grow">
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-bone tracking-tight {% if task.is_completed %}line-through text-bone-muted{% endif %}">
+                    {{ task.title }}
+                </h1>
+                <div class="flex flex-wrap gap-2.5 mt-3">
+                    <span class="text-xs font-semibold
+                        {% if task.status == 'COMPLETED' %}badge-status-completed
+                        {% elif task.status == 'IN_PROGRESS' %}badge-status-inprogress
+                        {% elif task.status == 'CANCELLED' %}inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-950/50 text-red-400 border border-red-800/50
+                        {% else %}badge-status-pending{% endif %}">
+                        {{ task.get_status_display }}
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-ink-surface text-bone-muted border border-white/5">
+                        {{ task.priority_label }} Priority
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        {% if task.description %}
+        <div class="p-4 rounded-xl bg-ink-surface border border-white/5">
+            <p class="text-bone-dim text-sm leading-relaxed whitespace-pre-line">{{ task.description }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Metadata Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+            {% if task.due_at %}
+            <div class="p-3.5 rounded-xl bg-ink-surface border border-white/5">
+                <div class="text-[10px] uppercase font-bold text-bone-muted tracking-wider mb-1">Due Date & Time</div>
+                <div class="text-bone font-semibold">{{ task.due_at|date:"M j, Y" }} at {{ task.due_at|date:"g:i A" }}</div>
+            </div>
+            {% endif %}
+            {% if task.goal %}
+            <div class="p-3.5 rounded-xl bg-ink-surface border border-white/5">
+                <div class="text-[10px] uppercase font-bold text-bone-muted tracking-wider mb-1">Linked Goal</div>
+                <a href="{% url 'goals:detail' task.goal.pk %}" class="text-ice hover:underline font-semibold">{{ task.goal.title }}</a>
+            </div>
+            {% endif %}
+            {% if task.completed_at %}
+            <div class="p-3.5 rounded-xl bg-green-950/20 border border-green-800/30">
+                <div class="text-[10px] uppercase font-bold text-green-400 tracking-wider mb-1">Completed At</div>
+                <div class="text-green-300 font-semibold">{{ task.completed_at|date:"M j, Y g:i A" }}</div>
+            </div>
+            {% endif %}
+            <div class="p-3.5 rounded-xl bg-ink-surface border border-white/5">
+                <div class="text-[10px] uppercase font-bold text-bone-muted tracking-wider mb-1">Created</div>
+                <div class="text-slate-400 font-medium">{{ task.created_at|date:"M j, Y" }}</div>
+            </div>
+        </div>
+
+        <!-- Completion Toggle Actions -->
+        <div class="border-t border-white/5 pt-6 flex items-center gap-4">
+            {% if not task.is_completed %}
+            <form method="post" action="{% url 'tasks:complete' task.pk %}">
+                {% csrf_token %}
+                <button id="complete-task-btn" type="submit" class="btn-primary">
+                    ✓ Mark Complete
+                </button>
+            </form>
+            {% else %}
+            <form method="post" action="{% url 'tasks:uncomplete' task.pk %}">
+                {% csrf_token %}
+                <button id="uncomplete-task-btn" type="submit" class="btn-secondary">
+                    ↩ Mark Incomplete
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
