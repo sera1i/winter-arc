@@ -113,6 +113,9 @@
                         </div>
 
                         <div class="flex items-center gap-3 flex-shrink-0">
+                            <a href="{% url 'goals:milestone_update' m.pk %}" class="text-xs font-mono text-ice/70 hover:text-bone transition-colors" title="Edit checkpoint">
+                                Edit
+                            </a>
                             <form method="post" action="{% url 'goals:milestone_delete' m.pk %}" class="inline">
                                 {% csrf_token %}
                                 <button type="submit" class="text-xs font-mono text-crimson-light/70 hover:text-crimson transition-colors" title="Delete milestone">

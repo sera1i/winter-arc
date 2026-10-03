@@ -48,12 +48,20 @@ def goal_update(request, pk):
 @login_required
 def goal_delete(request, pk):
     goal = get_object_or_404(Goal, pk=pk, user=request.user)
-    arc_pk = goal.arc.pk
+    arc_pk = goal.arc.pk if goal.arc else None
     if request.method == 'POST':
-        goal.status = 'CANCELLED' # Archive instead of hard delete
-        goal.save()
-        messages.success(request, 'Goal cancelled/archived.')
-        return redirect('arcs:detail', pk=arc_pk)
+        action = request.POST.get('action')
+        if action == 'archive':
+            goal.status = 'CANCELLED'
+            goal.save()
+            messages.success(request, f'Goal "{goal.title}" archived.')
+        else:
+            goal_title = goal.title
+            goal.delete()
+            messages.success(request, f'Goal "{goal_title}" permanently deleted.')
+        if arc_pk:
+            return redirect('arcs:detail', pk=arc_pk)
+        return redirect('accounts:dashboard')
     return render(request, 'goals/goal_confirm_delete.html', {'goal': goal})
 
 @login_required
@@ -69,10 +77,27 @@ def milestone_create(request, goal_id):
     return redirect('goals:detail', pk=goal.pk)
 
 @login_required
-def milestone_toggle(request, pk):
+def milestone_update(request, pk):
+    milestone = get_object_or_404(Milestone, pk=pk, goal__user=request.user)
     if request.method == 'POST':
-        # Need to join Goal to check ownership securely
-        milestone = get_object_or_404(Milestone, pk=pk, goal__user=request.user)
+        form = MilestoneForm(request.POST, instance=milestone)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Milestone "{milestone.title}" updated.')
+            return redirect('goals:detail', pk=milestone.goal.pk)
+    else:
+        form = MilestoneForm(instance=milestone)
+    return render(request, 'goals/milestone_form.html', {
+        'form': form,
+        'milestone': milestone,
+        'goal': milestone.goal,
+        'title': 'Edit Milestone Checkpoint',
+    })
+
+@login_required
+def milestone_toggle(request, pk):
+    milestone = get_object_or_404(Milestone, pk=pk, goal__user=request.user)
+    if request.method == 'POST':
         if milestone.completed_at:
             milestone.completed_at = None
         else:
@@ -82,10 +107,10 @@ def milestone_toggle(request, pk):
 
 @login_required
 def milestone_delete(request, pk):
+    milestone = get_object_or_404(Milestone, pk=pk, goal__user=request.user)
+    goal_pk = milestone.goal.pk
     if request.method == 'POST':
-        milestone = get_object_or_404(Milestone, pk=pk, goal__user=request.user)
-        goal_pk = milestone.goal.pk
         milestone.delete()
         messages.success(request, 'Milestone removed.')
         return redirect('goals:detail', pk=goal_pk)
-    return redirect('goals:detail', pk=pk) # Fallback if GET
+    return redirect('goals:detail', pk=goal_pk)

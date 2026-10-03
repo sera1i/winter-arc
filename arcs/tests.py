@@ -91,3 +91,62 @@ class ArcTests(TestCase):
         
         self.assertTrue(self.arc.is_primary)
         self.assertFalse(arc2.is_primary) # Ensured unique primary arc
+
+    def test_arc_pause_resume_complete(self):
+        # Pause
+        r = self.client.post(reverse('arcs:pause', args=[self.arc.pk]))
+        self.arc.refresh_from_db()
+        self.assertEqual(self.arc.status, 'PAUSED')
+
+        # Resume
+        r = self.client.post(reverse('arcs:resume', args=[self.arc.pk]))
+        self.arc.refresh_from_db()
+        self.assertEqual(self.arc.status, 'ACTIVE')
+
+        # Complete
+        r = self.client.post(reverse('arcs:complete', args=[self.arc.pk]))
+        self.arc.refresh_from_db()
+        self.assertEqual(self.arc.status, 'COMPLETED')
+        self.assertFalse(self.arc.is_primary)
+
+    def test_arc_permanent_delete(self):
+        r = self.client.post(reverse('arcs:delete', args=[self.arc.pk]), {'action': 'delete'})
+        self.assertRedirects(r, reverse('arcs:list'))
+        self.assertFalse(Arc.objects.filter(pk=self.arc.pk).exists())
+
+
+class ArcSecurityTests(TestCase):
+    def setUp(self):
+        self.user_a = CustomUser.objects.create_user(username='usera', password='password123')
+        self.user_b = CustomUser.objects.create_user(username='userb', password='password123')
+        Profile.objects.get_or_create(user=self.user_a)
+        Profile.objects.get_or_create(user=self.user_b)
+        self.client.login(username='userb', password='password123')
+
+        self.arc_a = Arc.objects.create(
+            user=self.user_a,
+            name="User A Private Arc",
+            objective="Secret",
+            start_date=timezone.now().date(),
+            end_date=timezone.now().date() + timedelta(days=30),
+            status='ACTIVE'
+        )
+
+    def test_cannot_view_other_user_arc(self):
+        r = self.client.get(reverse('arcs:detail', args=[self.arc_a.pk]))
+        self.assertEqual(r.status_code, 404)
+
+    def test_cannot_edit_other_user_arc(self):
+        r = self.client.post(reverse('arcs:update', args=[self.arc_a.pk]), {'name': 'Tampered'})
+        self.assertEqual(r.status_code, 404)
+
+    def test_cannot_delete_other_user_arc(self):
+        r = self.client.post(reverse('arcs:delete', args=[self.arc_a.pk]), {'action': 'delete'})
+        self.assertEqual(r.status_code, 404)
+
+    def test_cannot_pause_or_resume_other_user_arc(self):
+        r = self.client.post(reverse('arcs:pause', args=[self.arc_a.pk]))
+        self.assertEqual(r.status_code, 404)
+        r = self.client.post(reverse('arcs:resume', args=[self.arc_a.pk]))
+        self.assertEqual(r.status_code, 404)
+

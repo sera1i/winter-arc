@@ -93,8 +93,8 @@ def habit_update(request, pk):
 @login_required
 def habit_complete(request, pk):
     """Toggle completion for today. Creates or deletes a HabitCompletion record."""
+    habit = get_object_or_404(Habit, pk=pk, user=request.user)
     if request.method == 'POST':
-        habit = get_object_or_404(Habit, pk=pk, user=request.user)
         today = _get_user_today(request.user)
         completion, created = HabitCompletion.objects.get_or_create(
             habit=habit, local_date=today

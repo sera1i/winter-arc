@@ -52,9 +52,13 @@
 
                         <div class="flex items-center justify-between pt-2">
                             {% if item.completed_today %}
-                                <span class="font-mono text-[10px] uppercase text-crimson-light/80 border border-crimson/30 px-3 py-1.5 bg-crimson/5">
-                                    Done Today ✓
-                                </span>
+                                <form method="post" action="{% url 'habits:complete' item.habit.pk %}" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button type="submit" class="font-mono text-[10px] uppercase text-crimson-light hover:text-bone border border-crimson/50 hover:border-crimson px-3 py-1.5 bg-crimson/10 transition-colors" title="Click to undo completion" aria-label="Undo habit completion">
+                                        Done Today ✓
+                                    </button>
+                                </form>
                             {% else %}
                                 <form method="post" action="{% url 'habits:complete' item.habit.pk %}" class="inline">
                                     {% csrf_token %}

@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Edit Milestone | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container-narrow pt-8 sm:pt-10">
+
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">Checkpoint · {{ goal.title }}</span>
+            <h1 class="page-title">
+                Edit Milestone
+            </h1>
+            <p class="page-subtitle">
+                Update the target and criteria for this checkpoint.
+            </p>
+        </div>
+    </div>
+
+    <div class="wa-form-card">
+        <form method="post" class="space-y-6" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="p-3.5 bg-crimson/10 border border-crimson/30 text-crimson-light text-sm" role="alert">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="space-y-1.5">
+                    <label for="{{ field.id_for_label }}" class="wa-label">
+                        {{ field.label }}
+                    </label>
+                    {% if field.field.widget.input_type == "date" or "date" in field.name %}
+                        {{ field|add_class:"wa-input" }}
+                    {% elif field.field.widget.input_type == "select" or "select" in field.field.widget.template_name %}
+                        {{ field|add_class:"wa-input cursor-pointer" }}
+                    {% elif field.field.widget.input_type == "textarea" %}
+                        {{ field|add_class:"wa-textarea" }}
+                    {% else %}
+                        {{ field|add_class:"wa-input" }}
+                    {% endif %}
+                    {% if field.errors %}
+                        <p class="wa-field-error" role="alert">{{ field.errors.0 }}</p>
+                    {% endif %}
+                    {% if field.help_text %}
+                        <p class="wa-help-text">{{ field.help_text }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="flex items-center justify-end gap-4 pt-6 border-t border-steel/20">
+                <a href="{% url 'goals:detail' goal.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-8 py-2.5">
+                    Save Checkpoint
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

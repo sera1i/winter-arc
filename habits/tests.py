@@ -171,6 +171,20 @@ class HabitStreakTests(TestCase):
         history = list(self.habit.get_completion_history(days=30))
         self.assertEqual(len(history), 5)
 
+    def test_best_streak_calculation(self):
+        self.assertEqual(self.habit.best_streak, 0)
+        today = self.habit.get_user_today()
+        # Create a 2-day streak in the past
+        HabitCompletion.objects.create(habit=self.habit, local_date=today - timedelta(days=10))
+        HabitCompletion.objects.create(habit=self.habit, local_date=today - timedelta(days=9))
+        self.assertEqual(self.habit.best_streak, 2)
+
+        # Create a 4-day streak later
+        for i in range(4):
+            HabitCompletion.objects.create(habit=self.habit, local_date=today - timedelta(days=i))
+        self.assertEqual(self.habit.best_streak, 4)
+
+
 
 class HabitOwnershipTests(TestCase):
     def setUp(self):

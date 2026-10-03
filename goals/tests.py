@@ -69,7 +69,28 @@ class GoalTests(TestCase):
         self.client.post(reverse('goals:milestone_delete', args=[m.pk]))
         self.assertEqual(self.goal.milestones.count(), 0)
 
+    def test_milestone_update(self):
+        m = Milestone.objects.create(goal=self.goal, title="Original Milestone")
+        response = self.client.post(reverse('goals:milestone_update', args=[m.pk]), {
+            'title': 'Renamed Milestone'
+        })
+        self.assertRedirects(response, reverse('goals:detail', args=[self.goal.pk]))
+        m.refresh_from_db()
+        self.assertEqual(m.title, 'Renamed Milestone')
+
+    def test_goal_delete_hard_delete(self):
+        goal_pk = self.goal.pk
+        response = self.client.post(reverse('goals:delete', args=[goal_pk]), {'action': 'delete'})
+        self.assertRedirects(response, reverse('arcs:detail', args=[self.arc.pk]))
+        self.assertFalse(Goal.objects.filter(pk=goal_pk).exists())
+
+    def test_goal_archive(self):
+        response = self.client.post(reverse('goals:delete', args=[self.goal.pk]), {'action': 'archive'})
+        self.goal.refresh_from_db()
+        self.assertEqual(self.goal.status, 'CANCELLED')
+
     def test_ownership_security(self):
+        m = Milestone.objects.create(goal=self.goal, title="Owner Milestone")
         self.client.login(username='other', password='password123')
         
         # Access detail
@@ -83,3 +104,16 @@ class GoalTests(TestCase):
         # Add milestone
         response = self.client.post(reverse('goals:milestone_create', args=[self.goal.pk]), {'title': 'Hack'})
         self.assertEqual(response.status_code, 404)
+
+        # Milestone edit by other
+        response = self.client.post(reverse('goals:milestone_update', args=[m.pk]), {'title': 'Hack Milestone'})
+        self.assertEqual(response.status_code, 404)
+
+        # Milestone delete by other
+        response = self.client.post(reverse('goals:milestone_delete', args=[m.pk]))
+        self.assertEqual(response.status_code, 404)
+
+        # Milestone toggle by other
+        response = self.client.post(reverse('goals:milestone_toggle', args=[m.pk]))
+        self.assertEqual(response.status_code, 404)
+

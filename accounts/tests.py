@@ -45,8 +45,65 @@ class AuthenticationTests(TestCase):
         response = self.client.post(reverse('register'), {
             'username': 'newuser',
             'email': 'new@example.com',
-            # UserCreationForm requires pass twice but we aren't using the built in one directly in tests?
-            # Wait, CustomUserCreationForm needs password. But standard UserCreationForm needs password checks.
-            # I will test the GET first.
         })
-        self.assertEqual(response.status_code, 200) # Form invalid due to missing passwords, but renders fine.
+        self.assertEqual(response.status_code, 200)
+
+
+class DashboardTests(TestCase):
+    def setUp(self):
+        self.user = CustomUser.objects.create_user(username='dashuser', password='password123')
+        Profile.objects.get_or_create(user=self.user)
+        self.client.login(username='dashuser', password='password123')
+
+    def test_dashboard_with_no_arcs(self):
+        response = self.client.get(reverse('dashboard'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.context['primary_arc'])
+        self.assertContains(response, 'Create your first Arc')
+        self.assertContains(response, 'No active Arcs found')
+
+    def test_dashboard_with_active_arc_not_primary(self):
+        from arcs.models import Arc
+        from datetime import date, timedelta
+        Arc.objects.create(
+            user=self.user,
+            name="Non-Primary Active Arc",
+            objective="Hold the line",
+            start_date=date.today(),
+            end_date=date.today() + timedelta(days=30),
+            status='ACTIVE',
+            is_primary=False
+        )
+        response = self.client.get(reverse('dashboard'))
+        self.assertEqual(response.status_code, 200)
+        # MUST NEVER arbitrarily select active arc if user did not mark it primary
+        self.assertIsNone(response.context['primary_arc'])
+        self.assertContains(response, 'Select Primary Arc')
+        self.assertContains(response, 'No Primary Arc selected')
+
+    def test_dashboard_with_primary_arc(self):
+        from arcs.models import Arc
+        from goals.models import Goal
+        from datetime import date, timedelta
+        arc = Arc.objects.create(
+            user=self.user,
+            name="Alpha Arc",
+            objective="Mastery",
+            start_date=date.today(),
+            end_date=date.today() + timedelta(days=30),
+            status='ACTIVE',
+            is_primary=True
+        )
+        goal = Goal.objects.create(
+            user=self.user,
+            arc=arc,
+            title="Conquer Mountain",
+            status='IN_PROGRESS'
+        )
+        response = self.client.get(reverse('dashboard'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['primary_arc'], arc)
+        self.assertIn(goal, response.context['goals'])
+        self.assertContains(response, 'Alpha Arc')
+        self.assertContains(response, 'Conquer Mountain')
+

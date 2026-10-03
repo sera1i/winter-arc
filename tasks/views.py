@@ -92,8 +92,15 @@ def task_uncomplete(request, pk):
 def task_delete(request, pk):
     task = get_object_or_404(Task, pk=pk, user=request.user)
     if request.method == 'POST':
-        task.status = 'CANCELLED'
-        task.save(update_fields=['status', 'updated_at'])
-        messages.success(request, f'Task "{task.title}" cancelled.')
+        action = request.POST.get('action')
+        if action == 'cancel':
+            task.status = 'CANCELLED'
+            task.save(update_fields=['status', 'updated_at'])
+            messages.success(request, f'Task "{task.title}" cancelled.')
+        else:
+            task_title = task.title
+            task.delete()
+            messages.success(request, f'Task "{task_title}" permanently deleted.')
         return redirect('tasks:list')
     return render(request, 'tasks/task_confirm_delete.html', {'task': task})
+

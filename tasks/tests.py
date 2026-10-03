@@ -91,10 +91,17 @@ class TaskCRUDTests(TestCase):
 
     def test_task_cancel(self):
         task = Task.objects.create(user=self.user, title='Cancel Me')
-        r = self.client.post(reverse('tasks:delete', args=[task.pk]))
+        r = self.client.post(reverse('tasks:delete', args=[task.pk]), {'action': 'cancel'})
         self.assertRedirects(r, reverse('tasks:list'))
         task.refresh_from_db()
         self.assertEqual(task.status, 'CANCELLED')
+
+    def test_task_hard_delete(self):
+        task = Task.objects.create(user=self.user, title='Delete Me')
+        r = self.client.post(reverse('tasks:delete', args=[task.pk]), {'action': 'delete'})
+        self.assertRedirects(r, reverse('tasks:list'))
+        self.assertFalse(Task.objects.filter(pk=task.pk).exists())
+
 
     def test_task_goal_link_scoped_to_user(self):
         """Goal belonging to other user must not be attachable."""

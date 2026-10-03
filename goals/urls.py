@@ -10,6 +10,7 @@ urlpatterns = [
     path('<int:pk>/delete/', views.goal_delete, name='delete'),
     
     path('<int:goal_id>/milestones/new/', views.milestone_create, name='milestone_create'),
+    path('milestones/<int:pk>/edit/', views.milestone_update, name='milestone_update'),
     path('milestones/<int:pk>/toggle/', views.milestone_toggle, name='milestone_toggle'),
     path('milestones/<int:pk>/delete/', views.milestone_delete, name='milestone_delete'),
 ]

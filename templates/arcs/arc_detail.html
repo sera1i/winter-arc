@@ -31,6 +31,29 @@
                     </button>
                 </form>
             {% endif %}
+
+            {% if arc.status == 'ACTIVE' %}
+                <form method="post" action="{% url 'arcs:pause' arc.pk %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2.5">
+                        Pause Arc
+                    </button>
+                </form>
+                <form method="post" action="{% url 'arcs:complete' arc.pk %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2.5 text-crimson-light hover:text-crimson">
+                        Complete Arc
+                    </button>
+                </form>
+            {% elif arc.status == 'PAUSED' or arc.status == 'DRAFT' %}
+                <form method="post" action="{% url 'arcs:resume' arc.pk %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2.5">
+                        Activate Arc
+                    </button>
+                </form>
+            {% endif %}
+
             <a href="{% url 'arcs:update' arc.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2.5">
                 Edit Arc
             </a>

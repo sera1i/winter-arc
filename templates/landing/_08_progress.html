@@ -88,23 +88,22 @@
                 </div>
             </div>
 
-            <!-- Right: Clean summit artwork and Master Charts titles -->
-            <div class="space-y-6">
-                <!-- Clean mountain summit image from useful source (no baked-in Canva text) -->
-                <div class="relative aspect-[16/9] overflow-hidden border border-steel/20 rounded-sm">
+            <!-- Right: 4-Panel Rank Progression Artwork and Metrics -->
+            <div class="space-y-4">
+                <div class="relative aspect-[16/9] overflow-hidden border border-steel/30 shadow-2xl rounded-sm">
                     <img src="{% static 'images/clean/progress_clean.webp' %}"
-                         alt="Mountain peak above the clouds at dawn"
+                         alt="Rank Progression: Recruit, Sentinel, Ranger, Warden"
                          class="w-full h-full object-cover object-center"
                          loading="eager">
-                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(11,13,18,0.85) 0%, transparent 60%);"></div>
-                    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-                        <span class="font-serif text-xl text-bone italic">"Be the fire the cold remembers."</span>
-                        <span class="font-mono text-[10px] uppercase text-crimson-light tracking-widest">Level 18 · 2,480 XP</span>
-                    </div>
+                </div>
+
+                <div class="flex items-center justify-between px-1 text-xs">
+                    <span class="font-serif text-bone/90 italic">"Be the fire the cold remembers."</span>
+                    <span class="font-mono text-[11px] uppercase text-crimson-light tracking-widest font-medium">Level 18 · 2,480 XP</span>
                 </div>
 
                 <!-- 3 Master Chart cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                     <div class="p-3.5 bg-steel/5 border border-steel/20 rounded-sm space-y-1.5">
                         <span class="font-mono text-[9px] uppercase tracking-widest text-ice/50 block">Chart 01</span>
                         <p class="font-sans text-xs text-bone font-medium">Weekly task completion</p>

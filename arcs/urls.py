@@ -10,4 +10,7 @@ urlpatterns = [
     path('<int:pk>/edit/', views.arc_update, name='update'),
     path('<int:pk>/delete/', views.arc_delete, name='delete'),
     path('<int:pk>/make_primary/', views.arc_make_primary, name='make_primary'),
+    path('<int:pk>/pause/', views.arc_pause, name='pause'),
+    path('<int:pk>/resume/', views.arc_resume, name='resume'),
+    path('<int:pk>/complete/', views.arc_complete, name='complete'),
 ]

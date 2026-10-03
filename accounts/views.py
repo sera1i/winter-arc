@@ -59,19 +59,16 @@ def dashboard_view(request):
     user = request.user
     today = _get_user_today(user)
 
-    # Arcs: Primary arc or first active arc
-    primary_arc = Arc.objects.filter(user=user, is_primary=True).first()
+    # Arcs: Primary arc
+    primary_arc = Arc.objects.filter(user=user, is_primary=True).exclude(status='ARCHIVED').first()
     active_arcs_qs = Arc.objects.filter(user=user, status='ACTIVE')
     active_arcs = active_arcs_qs.count()
 
-    if not primary_arc and active_arcs_qs.exists():
-        primary_arc = active_arcs_qs.first()
-
-    # Goals: display goals for the primary arc or for the user
+    # Goals: display goals for the primary arc
     if primary_arc:
         goals = primary_arc.goals.all().prefetch_related('milestones')
     else:
-        goals = Goal.objects.filter(user=user).exclude(status='CANCELLED').prefetch_related('milestones')[:6]
+        goals = []
 
     # Tasks: pending & in-progress tasks display immediately
     pending_tasks = Task.objects.filter(

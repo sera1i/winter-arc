@@ -73,3 +73,35 @@ def arc_make_primary(request, pk):
         arc.save()
         messages.success(request, f'"{arc.name}" is now your primary Arc.')
     return redirect(request.META.get('HTTP_REFERER') or 'arcs:list')
+
+
+@login_required
+def arc_pause(request, pk):
+    arc = get_object_or_404(Arc, pk=pk, user=request.user)
+    if request.method == 'POST':
+        arc.status = 'PAUSED'
+        arc.save()
+        messages.success(request, f'Winter Arc "{arc.name}" paused.')
+    return redirect(request.META.get('HTTP_REFERER') or 'arcs:detail', pk=arc.pk)
+
+
+@login_required
+def arc_resume(request, pk):
+    arc = get_object_or_404(Arc, pk=pk, user=request.user)
+    if request.method == 'POST':
+        arc.status = 'ACTIVE'
+        arc.save()
+        messages.success(request, f'Winter Arc "{arc.name}" resumed.')
+    return redirect(request.META.get('HTTP_REFERER') or 'arcs:detail', pk=arc.pk)
+
+
+@login_required
+def arc_complete(request, pk):
+    arc = get_object_or_404(Arc, pk=pk, user=request.user)
+    if request.method == 'POST':
+        arc.status = 'COMPLETED'
+        arc.is_primary = False
+        arc.save()
+        messages.success(request, f'Winter Arc "{arc.name}" marked as completed. Well done.')
+    return redirect(request.META.get('HTTP_REFERER') or 'arcs:detail', pk=arc.pk)
+

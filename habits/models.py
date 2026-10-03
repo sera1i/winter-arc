@@ -83,6 +83,29 @@ class Habit(models.Model):
 
         return streak
 
+    @property
+    def best_streak(self):
+        """
+        Calculate the longest consecutive-day completion streak in this habit's history.
+        """
+        dates = sorted(set(self.completions.values_list('local_date', flat=True)))
+        if not dates:
+            return 0
+
+        max_streak = 0
+        current = 0
+        prev_date = None
+        for d in dates:
+            if prev_date is None or d == prev_date + timedelta(days=1):
+                current += 1
+            else:
+                current = 1
+            if current > max_streak:
+                max_streak = current
+            prev_date = d
+
+        return max_streak
+
     def get_completion_history(self, days=30):
         """Return completion records for the last N days, ordered by date desc."""
         today = self.get_user_today()
