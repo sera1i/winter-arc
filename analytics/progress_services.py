@@ -12,11 +12,15 @@ from gamification.services import get_user_total_xp, get_user_rank
 from analytics.models import ActivityEvent
 
 def get_user_local_date(user):
-    """Return user's local date based on profile timezone or UTC."""
+    """Return user's local date based on profile timezone or configured TIME_ZONE."""
     try:
-        user_tz = ZoneInfo(user.profile.timezone or 'UTC')
+        from django.conf import settings
+        tz_name = getattr(user.profile, 'timezone', None) if (user and hasattr(user, 'profile')) else None
+        if not tz_name:
+            tz_name = getattr(settings, 'TIME_ZONE', 'Asia/Kolkata')
+        user_tz = ZoneInfo(tz_name)
     except Exception:
-        user_tz = ZoneInfo('UTC')
+        user_tz = timezone.get_current_timezone()
     return timezone.now().astimezone(user_tz).date()
 
 def calculate_arc_progress(arc):

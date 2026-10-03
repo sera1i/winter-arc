@@ -10,9 +10,13 @@ from .forms import HabitForm
 def _get_user_today(user):
     """Return today's date in the user's configured timezone."""
     try:
-        user_tz = ZoneInfo(user.profile.timezone or 'UTC')
+        from django.conf import settings
+        tz_name = getattr(user.profile, 'timezone', None) if (user and hasattr(user, 'profile')) else None
+        if not tz_name:
+            tz_name = getattr(settings, 'TIME_ZONE', 'Asia/Kolkata')
+        user_tz = ZoneInfo(tz_name)
     except Exception:
-        user_tz = ZoneInfo('UTC')
+        user_tz = timezone.get_current_timezone()
     return timezone.now().astimezone(user_tz).date()
 
 

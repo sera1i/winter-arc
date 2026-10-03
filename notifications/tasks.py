@@ -18,9 +18,13 @@ User = get_user_model()
 def _get_user_local_now(user):
     """Return user's localized current datetime."""
     try:
-        user_tz = ZoneInfo(user.profile.timezone or 'UTC')
+        from django.conf import settings
+        tz_name = getattr(user.profile, 'timezone', None) if (user and hasattr(user, 'profile')) else None
+        if not tz_name:
+            tz_name = getattr(settings, 'TIME_ZONE', 'Asia/Kolkata')
+        user_tz = ZoneInfo(tz_name)
     except Exception:
-        user_tz = ZoneInfo('UTC')
+        user_tz = timezone.get_current_timezone()
     return timezone.now().astimezone(user_tz)
 
 def _get_user_local_date(user):

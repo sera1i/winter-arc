@@ -18,6 +18,7 @@ from notifications.tasks import (
     process_habit_reminders,
     process_deadline_notifications,
     process_streak_notifications,
+    _get_user_local_date,
 )
 from tasks.models import Task
 from habits.models import Habit, HabitCompletion
@@ -185,7 +186,7 @@ class CeleryTaskWorkerTests(TestCase):
         self.assertEqual(Notification.objects.filter(user=self.user).count(), 2)
 
     def test_process_habit_reminders_unlit_and_suppression(self):
-        today = timezone.now().date()
+        today = _get_user_local_date(self.user)
         # Habit 1: Active and unlit today
         h1 = Habit.objects.create(user=self.user, name="Deep Reading", active_from=today, is_archived=False)
         # Habit 2: Active and completed today
@@ -216,7 +217,7 @@ class CeleryTaskWorkerTests(TestCase):
         self.assertEqual(process_deadline_notifications(), 0)
 
     def test_process_streak_notifications(self):
-        today = timezone.now().date()
+        today = _get_user_local_date(self.user)
         h = Habit.objects.create(user=self.user, name="Meditation", active_from=today - timedelta(days=10), is_archived=False)
         # Seed 7 consecutive days of completions
         for i in range(7):

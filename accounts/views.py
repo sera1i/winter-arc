@@ -14,9 +14,13 @@ def landing_view(request):
 
 def _get_user_today(user):
     try:
-        tz = ZoneInfo(user.profile.timezone or 'UTC')
+        from django.conf import settings
+        tz_name = getattr(user.profile, 'timezone', None) if (user and hasattr(user, 'profile')) else None
+        if not tz_name:
+            tz_name = getattr(settings, 'TIME_ZONE', 'Asia/Kolkata')
+        tz = ZoneInfo(tz_name)
     except Exception:
-        tz = ZoneInfo('UTC')
+        tz = timezone.get_current_timezone()
     return timezone.now().astimezone(tz).date()
 
 def register_view(request):

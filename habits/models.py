@@ -42,10 +42,13 @@ class Habit(models.Model):
     def get_user_today(self):
         """Return today's date in the user's configured timezone."""
         try:
-            profile = self.user.profile
-            user_tz = ZoneInfo(profile.timezone or 'UTC')
+            profile = getattr(self.user, 'profile', None)
+            tz_name = getattr(profile, 'timezone', None) if profile else None
+            if not tz_name:
+                tz_name = getattr(settings, 'TIME_ZONE', 'Asia/Kolkata')
+            user_tz = ZoneInfo(tz_name)
         except Exception:
-            user_tz = ZoneInfo('UTC')
+            user_tz = timezone.get_current_timezone()
         return timezone.now().astimezone(user_tz).date()
 
     def is_completed_today(self):

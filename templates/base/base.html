@@ -52,5 +52,17 @@
     </div>
 
     {% block extra_scripts %}{% endblock %}
+    <script>
+        (function() {
+            try {
+                if (!document.cookie.includes('django_timezone=')) {
+                    var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    if (tz) {
+                        document.cookie = 'django_timezone=' + encodeURIComponent(tz) + '; path=/; max-age=31536000; SameSite=Lax';
+                    }
+                }
+            } catch(e) {}
+        })();
+    </script>
 </body>
 </html>
