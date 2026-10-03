@@ -1,84 +1,73 @@
 {% extends 'base/base.html' %}
 {% load widget_tweaks %}
 
-{% block title %}{{ title }} | Winter Arc{% endblock %}
+{% block title %}{% if form.instance.pk %}Edit Habit{% else %}Create Habit{% endif %} | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto space-y-6">
-    <div>
-        <a href="{% url 'habits:list' %}" class="btn-ghost text-xs inline-flex items-center gap-1.5">
-            &larr; Back to Habits
-        </a>
+<div class="page-container-narrow pt-8 sm:pt-10">
+
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">Habit</span>
+            <h1 class="page-title">
+                {% if form.instance.pk %}Edit Habit{% else %}Create Habit{% endif %}
+            </h1>
+            <p class="page-subtitle">
+                A recurring ritual practiced day after day.
+            </p>
+        </div>
     </div>
 
-    <div class="arc-card space-y-6">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-bone tracking-tight">{{ title }}</h1>
-            <p class="text-bone-muted text-xs mt-1">Configure habit recurring frequency and scheduling period.</p>
-        </div>
-
-        <form method="post" class="space-y-5">
+    <div class="wa-form-card">
+        <form method="post" class="space-y-6" novalidate>
             {% csrf_token %}
 
             {% if form.non_field_errors %}
-                <div class="p-4 bg-red-950/50 border border-red-800/60 text-red-300 rounded-xl text-sm font-medium">
+                <div class="p-3.5 bg-crimson/10 border border-crimson/30 text-crimson-light text-sm" role="alert">
                     {{ form.non_field_errors }}
                 </div>
             {% endif %}
 
-            <!-- Name -->
-            <div>
-                <label for="{{ form.name.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
-                    Habit Name <span class="text-vermilion">*</span>
-                </label>
-                {{ form.name|add_class:"input-text" }}
-                {% if form.name.errors %}
-                    <p class="mt-1 text-xs text-red-400 font-medium">{{ form.name.errors.0 }}</p>
-                {% endif %}
-            </div>
-
-            <!-- Description -->
-            <div>
-                <label for="{{ form.description.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
-                    Description
-                </label>
-                {{ form.description|add_class:"input-text" }}
-            </div>
-
-            <!-- Frequency -->
-            <div>
-                <label for="{{ form.frequency.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
-                    Recurrence Frequency
-                </label>
-                {{ form.frequency|add_class:"input-text" }}
-            </div>
-
-            <!-- Active Dates -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label for="{{ form.active_from.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
-                        Start Date <span class="text-vermilion">*</span>
+            {% for field in form %}
+                <div class="space-y-1.5">
+                    <label for="{{ field.id_for_label }}" class="wa-label">
+                        {{ field.label }}
                     </label>
-                    {{ form.active_from|add_class:"input-text" }}
-                    {% if form.active_from.errors %}
-                        <p class="mt-1 text-xs text-red-400 font-medium">{{ form.active_from.errors.0 }}</p>
+
+                    {% if field.field.widget.input_type == "select" or "select" in field.field.widget.template_name or field.name == "frequency" %}
+                        <div class="relative w-full">
+                            {{ field|add_class:"wa-input w-full cursor-pointer appearance-none pr-10" }}
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-ice/60">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    {% elif field.field.widget.input_type == "textarea" %}
+                        {{ field|add_class:"wa-textarea" }}
+                    {% else %}
+                        {{ field|add_class:"wa-input" }}
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <p class="wa-field-error" role="alert">{{ field.errors.0 }}</p>
+                    {% endif %}
+                    {% if field.help_text %}
+                        <p class="wa-help-text">{{ field.help_text }}</p>
                     {% endif %}
                 </div>
-                <div>
-                    <label for="{{ form.active_until.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">
-                        End Date <span class="text-slate-600">(Optional)</span>
-                    </label>
-                    {{ form.active_until|add_class:"input-text" }}
-                </div>
-            </div>
+            {% endfor %}
 
-            <div class="pt-6 border-t border-white/5 flex items-center justify-end gap-3">
-                <a href="{% url 'habits:list' %}" class="btn-ghost text-xs">Cancel</a>
-                <button type="submit" class="btn-primary text-xs">
+            <div class="flex items-center justify-end gap-4 pt-6 border-t border-steel/20">
+                <a href="{% url 'habits:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-8 py-2.5">
                     Save Habit
                 </button>
             </div>
         </form>
     </div>
+
 </div>
 {% endblock %}

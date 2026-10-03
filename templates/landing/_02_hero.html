@@ -1,0 +1,79 @@
+{% load static %}
+<!-- HERO — Kill the boy. Let the man be born. -->
+<section id="hero"
+         class="relative min-h-screen w-full bg-ink flex items-center overflow-hidden"
+         aria-label="Hero">
+
+    <!-- Full-bleed atmospheric background using clean useful source -->
+    <div class="absolute inset-0 z-0" aria-hidden="true">
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+             style="background-image: url('{% static 'images/clean/hero_clean.webp' %}'); opacity: 0.55;"></div>
+        <!-- Layered overlays for depth and text legibility -->
+        <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(11,13,18,0.92) 0%, rgba(11,13,18,0.70) 50%, rgba(11,13,18,0.35) 100%);"></div>
+        <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(11,13,18,1) 0%, rgba(11,13,18,0.0) 35%);"></div>
+        <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,13,18,0.7) 0%, rgba(11,13,18,0.0) 25%);"></div>
+        <!-- Three.js canvas will be inserted here -->
+        <div id="three-hero-container" class="absolute inset-0 z-10 pointer-events-none"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24 sm:pt-40 sm:pb-32">
+        <div class="max-w-2xl space-y-8">
+
+            <!-- Eyebrow -->
+            <div class="flex items-center gap-3">
+                <span class="w-0.5 h-5 bg-crimson flex-shrink-0"></span>
+                <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson font-medium">
+                    One Season · One Oath
+                </span>
+            </div>
+
+            <!-- Main Heading with Master Quote -->
+            <div class="space-y-3">
+                <h1 class="font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight">
+                    Kill the boy.<br>
+                    Let the man be born.
+                </h1>
+                <p class="font-serif text-base sm:text-lg text-crimson-light/80 italic tracking-wide">
+                    — Maester Aemon
+                </p>
+            </div>
+
+            <!-- Subline -->
+            <p class="font-sans text-lg sm:text-xl text-ice/85 leading-relaxed max-w-lg">
+                One brutal season. One oath. Winter Arc turns it into daily discipline.
+            </p>
+
+            <!-- CTAs -->
+            <div class="flex flex-wrap items-center gap-4 pt-2">
+                <a href="{% url 'register' %}"
+                   class="btn-primary text-sm uppercase tracking-widest px-8 py-4"
+                   style="box-shadow: 0 0 28px rgba(179,21,27,0.45);">
+                    Take the Oath
+                </a>
+                <a href="{% url 'login' %}"
+                   class="btn-secondary text-sm uppercase tracking-widest px-8 py-4">
+                    Log in
+                </a>
+            </div>
+
+            <!-- Beacons lit row -->
+            <div class="flex items-center gap-4 pt-4 border-t border-steel/20">
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 bg-crimson rounded-full shadow-[0_0_8px_rgba(179,21,27,0.8)]"></span>
+                    <span class="w-2.5 h-2.5 bg-crimson rounded-full shadow-[0_0_8px_rgba(179,21,27,0.8)]"></span>
+                    <span class="w-2.5 h-2.5 bg-crimson rounded-full shadow-[0_0_8px_rgba(179,21,27,0.8)]"></span>
+                    <span class="w-2.5 h-2.5 bg-steel/30 rounded-full border border-steel/40"></span>
+                    <span class="w-2.5 h-2.5 bg-steel/30 rounded-full border border-steel/40"></span>
+                </div>
+                <p class="font-mono text-[11px] uppercase tracking-widest text-ice/60">
+                    Beacons lit · Hold the line
+                </p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="{% static 'js/vendor/three.min.js' %}"></script>
+<script src="{% static 'js/three_hero.js' %}"></script>

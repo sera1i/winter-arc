@@ -69,7 +69,10 @@ def task_complete(request, pk):
     if request.method == 'POST':
         task = get_object_or_404(Task, pk=pk, user=request.user)
         task.complete()
-        messages.success(request, f'"{task.title}" marked complete.')
+        messages.success(request, 'Done. The frost gives way.')
+        next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+        if next_url:
+            return redirect(next_url)
     return redirect('tasks:detail', pk=pk)
 
 
@@ -79,6 +82,9 @@ def task_uncomplete(request, pk):
         task = get_object_or_404(Task, pk=pk, user=request.user)
         task.uncomplete()
         messages.success(request, f'"{task.title}" marked incomplete.')
+        next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+        if next_url:
+            return redirect(next_url)
     return redirect('tasks:detail', pk=pk)
 
 

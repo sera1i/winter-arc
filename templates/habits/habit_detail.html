@@ -3,79 +3,81 @@
 {% block title %}{{ habit.name }} | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
-        <a href="{% url 'habits:list' %}" class="btn-ghost text-xs flex items-center gap-1.5">
-            &larr; Back to Habits
-        </a>
-        <div class="flex gap-2">
-            <a href="{% url 'habits:update' habit.pk %}" class="btn-secondary text-xs !py-1.5 !px-3">Edit</a>
-            <a href="{% url 'habits:archive' habit.pk %}" class="btn-danger text-xs !py-1.5 !px-3">Archive</a>
+<div class="page-container-narrow pt-8 sm:pt-10">
+
+    <div class="page-header">
+        <div class="space-y-2 max-w-xl">
+            <span class="page-eyebrow">Habit Detail</span>
+            <h1 class="page-title">{{ habit.name }}</h1>
+            {% if habit.description %}
+                <p class="page-subtitle">
+                    {{ habit.description }}
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="flex items-center gap-3 self-start sm:self-auto">
+            {% if completed_today %}
+                <span class="font-mono text-xs uppercase tracking-wider text-crimson-light/80 border border-crimson/30 px-4 py-2 bg-crimson/5">
+                    Completed Today ✓
+                </span>
+            {% else %}
+                <form method="post" action="{% url 'habits:complete' habit.pk %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-6 py-2.5">
+                        Mark Done
+                    </button>
+                </form>
+            {% endif %}
+            <a href="{% url 'habits:update' habit.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2.5">
+                Edit
+            </a>
+            <a href="{% url 'habits:archive' habit.pk %}" class="text-xs font-mono text-crimson-light/70 hover:text-crimson transition-colors px-2 py-2">
+                Archive
+            </a>
         </div>
     </div>
 
-    <!-- Header Card with Streak -->
-    <div class="arc-card relative overflow-hidden space-y-6">
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-            <div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-bone tracking-tight mb-1">{{ habit.name }}</h1>
-                <p class="text-bone-muted text-xs">{{ habit.get_frequency_display }} &bull; Active from {{ habit.active_from|date:"M j, Y" }}</p>
-            </div>
-
-            <!-- Streak Display -->
-            <div class="text-center bg-gradient-to-b from-orange-950/40 to-ink-surface border border-orange-700/40 rounded-2xl px-6 py-4 flex-shrink-0 shadow-lg">
-                <div class="text-4xl sm:text-5xl font-black text-orange-400">{{ streak }}</div>
-                <div class="text-[10px] text-orange-300/80 uppercase tracking-widest font-bold mt-1">Day Streak 🔥</div>
+    <!-- Streak Metrics -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-8">
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Current Streak</span>
+            <div class="font-serif text-3xl sm:text-4xl text-crimson mt-1">
+                {{ current_streak }} <span class="font-mono text-xs text-ice/50 font-normal">days</span>
             </div>
         </div>
-
-        {% if habit.description %}
-        <div class="p-4 rounded-xl bg-ink-surface border border-white/5">
-            <p class="text-bone-dim text-sm leading-relaxed whitespace-pre-line">{{ habit.description }}</p>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Best Streak</span>
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">
+                {{ best_streak }} <span class="font-mono text-xs text-ice/50 font-normal">days</span>
+            </div>
         </div>
-        {% endif %}
-
-        <!-- Today Action -->
-        <div class="border-t border-white/5 pt-6">
-            <form method="post" action="{% url 'habits:complete' habit.pk %}">
-                {% csrf_token %}
-                {% if completed_today %}
-                <button id="habit-complete-btn" type="submit" class="btn-secondary !border-green-700/50 !text-green-300 hover:!border-red-700/50 hover:!text-red-300">
-                    ✓ Completed Today &bull; Click to Undo
-                </button>
-                {% else %}
-                <button id="habit-complete-btn" type="submit" class="btn-primary">
-                    Mark Complete for Today
-                </button>
-                {% endif %}
-            </form>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Cadence</span>
+            <div class="font-serif text-xl sm:text-2xl text-bone mt-1">{{ habit.frequency }}</div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Target</span>
+            <div class="font-serif text-xl sm:text-2xl text-bone mt-1">{{ habit.target_count }} times</div>
         </div>
     </div>
 
-    <!-- 30-Day Completion History -->
-    <div class="arc-card space-y-4">
-        <h2 class="text-lg font-bold text-bone tracking-tight">
-            Completion History <span class="text-bone-muted text-xs font-normal">(Last 30 Days)</span>
-        </h2>
-
-        {% if history %}
-        <div class="space-y-2">
-            {% for record in history %}
-            <div class="flex items-center justify-between p-3 rounded-xl bg-ink-surface border border-white/5 text-xs">
-                <div class="flex items-center gap-3">
-                    <span class="w-5 h-5 rounded bg-green-500/20 border border-green-500/40 text-green-400 flex items-center justify-center font-bold">✓</span>
-                    <span class="text-bone font-medium">{{ record.local_date|date:"l, M j, Y" }}</span>
-                </div>
-                <span class="text-bone-muted">{{ record.completed_at|date:"g:i A" }}</span>
+    <!-- Completion History -->
+    <div class="wa-card space-y-6">
+        <h2 class="section-heading border-b border-steel/20 pb-4">Recent Completions</h2>
+        {% if completions %}
+            <div class="space-y-2">
+                {% for c in completions %}
+                    <div class="flex justify-between items-center p-3 bg-steel/5 border border-steel/15 text-xs font-mono">
+                        <span class="text-bone">{{ c.local_date|date:"l, F j, Y" }}</span>
+                        <span class="text-crimson-light/80">Completed at {{ c.completed_at|date:"g:i A" }}</span>
+                    </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
         {% else %}
-        <div class="text-center py-8">
-            <p class="text-bone-muted text-sm mb-1">No completions recorded yet.</p>
-            <p class="text-slate-600 text-xs">Complete today to start building your streak.</p>
-        </div>
+            <p class="text-xs text-ice/50 py-8 text-center font-mono">No completions recorded yet.</p>
         {% endif %}
     </div>
+
 </div>
 {% endblock %}

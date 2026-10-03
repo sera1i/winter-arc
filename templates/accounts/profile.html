@@ -1,51 +1,65 @@
 {% extends 'base/base.html' %}
 {% load widget_tweaks %}
 
-{% block title %}Profile | Winter Arc{% endblock %}
+{% block title %}Profile & Settings | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto space-y-6">
-    <div class="arc-card space-y-6">
+<div class="page-container-narrow pt-8 sm:pt-10">
+
+    <div class="page-header">
         <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-bone tracking-tight">Profile Settings</h1>
-            <p class="text-bone-muted text-xs mt-1">Manage your identity, avatar, and timezone preferences.</p>
+            <span class="page-eyebrow">Account</span>
+            <h1 class="page-title">Profile & Settings</h1>
+            <p class="page-subtitle">
+                Configure your identity, bio, and time preferences.
+            </p>
         </div>
-        
-        <form method="post" enctype="multipart/form-data" class="space-y-5">
+        <div class="font-mono text-xs text-ice/60 border border-steel/30 px-3 py-1.5 self-start sm:self-auto">
+            {{ user.username }}
+        </div>
+    </div>
+
+    <div class="wa-form-card">
+        <form method="post" enctype="multipart/form-data" class="space-y-6" novalidate>
             {% csrf_token %}
-            
+
             {% if form.non_field_errors %}
-                <div class="p-4 bg-red-950/50 border border-red-800/60 text-red-300 rounded-xl text-sm font-medium">
+                <div class="p-3.5 bg-crimson/10 border border-crimson/30 text-crimson-light text-sm" role="alert">
                     {{ form.non_field_errors }}
                 </div>
             {% endif %}
-            
-            <div class="space-y-5">
-                {% for field in form %}
-                    <div>
-                        <label for="{{ field.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wider text-bone-muted mb-1.5">{{ field.label }}</label>
-                        {% if field.field.widget.input_type == 'file' %}
-                            {{ field|add_class:"w-full text-xs text-bone-muted file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border file:border-white/10 file:text-xs file:font-semibold file:bg-ink-surface file:text-bone hover:file:bg-ink-hover cursor-pointer" }}
-                        {% else %}
-                            {{ field|add_class:"input-text" }}
-                        {% endif %}
-                        
-                        {% if field.errors %}
-                            <p class="mt-1 text-xs text-red-400 font-medium">{{ field.errors.0 }}</p>
-                        {% endif %}
-                        {% if field.help_text %}
-                            <p class="mt-1 text-[11px] text-bone-muted">{{ field.help_text }}</p>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-            
-            <div class="pt-6 border-t border-white/5 flex justify-end">
-                <button type="submit" class="btn-primary text-xs">
+
+            {% for field in form %}
+                <div class="space-y-1.5">
+                    <label for="{{ field.id_for_label }}" class="wa-label">
+                        {{ field.label }}
+                    </label>
+                    {% if field.field.widget.input_type == "select" or "select" in field.field.widget.template_name %}
+                        {{ field|add_class:"wa-input cursor-pointer" }}
+                    {% elif field.field.widget.input_type == "file" %}
+                        {{ field|add_class:"wa-input file:mr-4 file:py-1 file:px-3 file:border file:border-steel/40 file:text-xs file:font-mono file:bg-steel/20 file:text-bone hover:file:bg-steel/30" }}
+                    {% else %}
+                        {{ field|add_class:"wa-input" }}
+                    {% endif %}
+                    {% if field.errors %}
+                        <p class="wa-field-error" role="alert">{{ field.errors.0 }}</p>
+                    {% endif %}
+                    {% if field.help_text %}
+                        <p class="wa-help-text">{{ field.help_text }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="flex items-center justify-end gap-4 pt-6 border-t border-steel/20">
+                <a href="{% url 'dashboard' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-8 py-2.5">
                     Save Changes
                 </button>
             </div>
         </form>
     </div>
+
 </div>
 {% endblock %}

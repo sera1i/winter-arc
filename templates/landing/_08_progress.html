@@ -1,0 +1,129 @@
+{% load static %}
+<!-- ANALYTICS & RANKS — Every action earns XP. Every day forges your rank. -->
+<section id="progress-preview"
+         class="bg-ink py-24 sm:py-32 border-b border-steel/20 overflow-hidden"
+         aria-labelledby="progress-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section header with Master copy -->
+        <div class="max-w-3xl mb-16 sm:mb-20">
+            <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson font-medium block mb-4">
+                VI · Analytics &amp; Ranks
+            </span>
+            <h2 id="progress-heading" class="font-serif text-4xl sm:text-5xl lg:text-6xl text-bone leading-tight mb-4">
+                Every action earns XP.<br>
+                Every day forges your rank.
+            </h2>
+            <p class="font-sans text-base sm:text-lg text-ice/75 leading-relaxed">
+                Discipline turns from an uphill struggle into identity. Track your weekly task completion, habit consistency, and deep study blocks.
+            </p>
+        </div>
+
+        <!-- 2-Column layout: Ranks ladder & Analytics preview -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+            <!-- Ranks Ladder: Recruit -> Sentinel -> Ranger -> Warden -->
+            <div class="space-y-4">
+                <h3 class="font-sans text-xs font-medium uppercase tracking-widest text-ice/50 border-b border-steel/20 pb-4 mb-6">
+                    Rank Progression · Words of the North
+                </h3>
+
+                <!-- Recruit -->
+                <div class="flex items-start gap-5 p-5 border border-steel/20 bg-steel/5 rounded-sm">
+                    <div class="flex flex-col items-center gap-1 pt-0.5">
+                        <span class="font-mono text-xs text-steel uppercase font-bold">01</span>
+                        <div class="w-px flex-1 bg-steel/20 min-h-[2rem]"></div>
+                    </div>
+                    <div class="flex-1 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="font-serif text-xl text-bone">Recruit</span>
+                            <span class="font-mono text-[10px] text-steel uppercase tracking-widest">Oath Taken</span>
+                        </div>
+                        <p class="font-sans text-xs text-ice/60 leading-relaxed">The winter begins. The line is drawn. Initial consistency is established.</p>
+                    </div>
+                </div>
+
+                <!-- Sentinel -->
+                <div class="flex items-start gap-5 p-5 border border-steel/30 bg-steel/8 rounded-sm">
+                    <div class="flex flex-col items-center gap-1 pt-0.5">
+                        <span class="font-mono text-xs text-crimson/70 uppercase font-bold">02</span>
+                        <div class="w-px flex-1 bg-steel/20 min-h-[2rem]"></div>
+                    </div>
+                    <div class="flex-1 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="font-serif text-xl text-bone">Sentinel</span>
+                            <span class="font-mono text-[10px] text-crimson/70 uppercase tracking-widest">30+ Days</span>
+                        </div>
+                        <p class="font-sans text-xs text-ice/60 leading-relaxed">Standing fast against the frost. Habits become automatic. The system holds.</p>
+                    </div>
+                </div>
+
+                <!-- Ranger -->
+                <div class="flex items-start gap-5 p-5 border border-crimson/30 bg-crimson/5 rounded-sm">
+                    <div class="flex flex-col items-center gap-1 pt-0.5">
+                        <span class="font-mono text-xs text-crimson uppercase font-bold">03</span>
+                        <div class="w-px flex-1 bg-crimson/25 min-h-[2rem]"></div>
+                    </div>
+                    <div class="flex-1 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="font-serif text-xl text-bone">Ranger</span>
+                            <span class="font-mono text-[10px] text-crimson uppercase tracking-widest font-bold">60+ Days</span>
+                        </div>
+                        <p class="font-sans text-xs text-ice/60 leading-relaxed">Venturing deep into the cold. High completion velocity. Discipline is second nature.</p>
+                    </div>
+                </div>
+
+                <!-- Warden -->
+                <div class="flex items-start gap-5 p-5 border border-crimson/50 bg-crimson/10 rounded-sm">
+                    <div class="flex flex-col items-center gap-1 pt-0.5">
+                        <span class="font-mono text-xs text-crimson-light uppercase font-bold">04</span>
+                    </div>
+                    <div class="flex-1 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="font-serif text-2xl text-bone font-medium">Warden</span>
+                            <span class="font-mono text-[10px] text-crimson-light uppercase tracking-widest font-bold">Arc Complete (90d)</span>
+                        </div>
+                        <p class="font-sans text-xs text-ice/70 leading-relaxed">The season was held. The wall stands unbroken. The boy is gone; the man is born.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Clean summit artwork and Master Charts titles -->
+            <div class="space-y-6">
+                <!-- Clean mountain summit image from useful source (no baked-in Canva text) -->
+                <div class="relative aspect-[16/9] overflow-hidden border border-steel/20 rounded-sm">
+                    <img src="{% static 'images/clean/progress_clean.webp' %}"
+                         alt="Mountain peak above the clouds at dawn"
+                         class="w-full h-full object-cover object-center"
+                         loading="eager">
+                    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(11,13,18,0.85) 0%, transparent 60%);"></div>
+                    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+                        <span class="font-serif text-xl text-bone italic">"Be the fire the cold remembers."</span>
+                        <span class="font-mono text-[10px] uppercase text-crimson-light tracking-widest">Level 18 · 2,480 XP</span>
+                    </div>
+                </div>
+
+                <!-- 3 Master Chart cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="p-3.5 bg-steel/5 border border-steel/20 rounded-sm space-y-1.5">
+                        <span class="font-mono text-[9px] uppercase tracking-widest text-ice/50 block">Chart 01</span>
+                        <p class="font-sans text-xs text-bone font-medium">Weekly task completion</p>
+                        <p class="font-mono text-sm text-crimson font-light">94.2%</p>
+                    </div>
+                    <div class="p-3.5 bg-steel/5 border border-steel/20 rounded-sm space-y-1.5">
+                        <span class="font-mono text-[9px] uppercase tracking-widest text-ice/50 block">Chart 02</span>
+                        <p class="font-sans text-xs text-bone font-medium">Habit consistency</p>
+                        <p class="font-mono text-sm text-crimson font-light">98.0%</p>
+                    </div>
+                    <div class="p-3.5 bg-steel/5 border border-steel/20 rounded-sm space-y-1.5">
+                        <span class="font-mono text-[9px] uppercase tracking-widest text-ice/50 block">Chart 03</span>
+                        <p class="font-sans text-xs text-bone font-medium">Study time</p>
+                        <p class="font-mono text-sm text-crimson font-light">38.5 hrs</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>

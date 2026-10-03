@@ -3,79 +3,95 @@
 {% block title %}Habits | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="max-w-5xl mx-auto space-y-8">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-6">
+<div class="page-container pt-8 sm:pt-10">
+
+    <div class="page-header">
         <div>
-            <div class="flex items-center gap-2 mb-1.5">
-                <span class="w-2 h-2 rounded-full bg-vermilion shadow-glow-vermilion"></span>
-                <span class="text-xs uppercase tracking-widest text-vermilion font-bold">Ritual Conditioning</span>
-            </div>
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-bone tracking-tight">Habits</h1>
-            <p class="text-bone-muted text-sm mt-0.5">{{ active_count }} active rituals &bull; {{ completed_today_count }} completed today.</p>
+            <span class="page-eyebrow">Consistency</span>
+            <h1 class="page-title">Habits & Streaks</h1>
+            <p class="page-subtitle">
+                The daily rituals that build the season.
+            </p>
         </div>
-        <a href="{% url 'habits:create' %}" class="btn-primary self-start sm:self-auto">
-            + New Habit
+        <a href="{% url 'habits:create' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 self-start sm:self-auto">
+            Create Habit
         </a>
     </div>
 
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-2 gap-4">
-        <div class="arc-card text-center p-4">
-            <div class="text-2xl sm:text-3xl font-extrabold text-bone">{{ active_count }}</div>
-            <div class="text-[11px] uppercase tracking-wider text-bone-muted font-semibold mt-1">Active Habits</div>
-        </div>
-        <div class="arc-card text-center p-4">
-            <div class="text-2xl sm:text-3xl font-extrabold text-gold">{{ completed_today_count }}</div>
-            <div class="text-[11px] uppercase tracking-wider text-bone-muted font-semibold mt-1">Completed Today</div>
-        </div>
-    </div>
-
-    <!-- Habit Cards -->
     {% if habit_data %}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for item in habit_data %}
-            <div class="arc-card flex flex-col justify-between space-y-4 {% if item.completed_today %}border-green-800/40 bg-green-950/10{% endif %}">
-                <div>
-                    <div class="flex justify-between items-start gap-3 mb-2">
-                        <div class="min-w-0">
-                            <a href="{% url 'habits:detail' item.habit.pk %}" class="font-bold text-bone text-lg hover:text-white transition-colors truncate block">
-                                {{ item.habit.name }}
-                            </a>
-                            <p class="text-xs text-bone-muted mt-0.5">{{ item.habit.get_frequency_display }}</p>
+                <div class="wa-card flex flex-col justify-between">
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="badge-pending">
+                                {{ item.habit.frequency }}
+                            </span>
+                            <span class="font-mono text-xs {% if item.streak > 7 %}text-crimson{% else %}text-ice/70{% endif %} font-medium">
+                                Streak: {{ item.streak }}d
+                            </span>
                         </div>
-                        {% if item.streak > 0 %}
-                        <div class="badge-streak flex-shrink-0">
-                            <span>🔥</span>
-                            <span>{{ item.streak }}d</span>
-                        </div>
+
+                        <h2 class="font-serif text-2xl text-bone hover:text-crimson-light transition-colors">
+                            <a href="{% url 'habits:detail' item.habit.pk %}">{{ item.habit.name }}</a>
+                        </h2>
+
+                        {% if item.habit.description %}
+                            <p class="text-xs text-ice/70 line-clamp-2 leading-relaxed">
+                                {{ item.habit.description }}
+                            </p>
                         {% endif %}
                     </div>
 
-                    {% if item.habit.description %}
-                    <p class="text-bone-muted text-xs line-clamp-2 leading-relaxed">{{ item.habit.description }}</p>
-                    {% endif %}
-                </div>
+                    <div class="space-y-4 border-t border-steel/20 pt-4 mt-4">
+                        <div class="flex justify-between items-center text-xs font-mono text-ice/60">
+                            <span>Best: <strong class="text-bone font-normal">{{ item.habit.best_streak }}d</strong></span>
+                            <span>Target: <strong class="text-bone font-normal">{{ item.habit.target_count }}x</strong></span>
+                        </div>
 
-                <form method="post" action="{% url 'habits:complete' item.habit.pk %}" class="pt-2">
-                    {% csrf_token %}
-                    <button id="habit-toggle-{{ item.habit.pk }}" type="submit" class="w-full py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5
-                        {% if item.completed_today %}
-                            bg-green-950/40 border border-green-700/50 text-green-400 hover:bg-red-950/40 hover:border-red-700/50 hover:text-red-400
-                        {% else %}
-                            bg-ink-surface border border-white/10 text-bone hover:border-green-600/50 hover:text-green-400
-                        {% endif %}">
-                        {% if item.completed_today %}✓ Done Today — Undo{% else %}Mark Done Today{% endif %}
-                    </button>
-                </form>
-            </div>
+                        <div class="flex items-center justify-between pt-2">
+                            {% if item.completed_today %}
+                                <span class="font-mono text-[10px] uppercase text-crimson-light/80 border border-crimson/30 px-3 py-1.5 bg-crimson/5">
+                                    Done Today ✓
+                                </span>
+                            {% else %}
+                                <form method="post" action="{% url 'habits:complete' item.habit.pk %}" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button type="submit" class="btn-primary text-[11px] uppercase tracking-wider px-4 py-1.5">
+                                        Mark done
+                                    </button>
+                                </form>
+                            {% endif %}
+
+                            <div class="flex items-center gap-3">
+                                <a href="{% url 'habits:update' item.habit.pk %}" class="text-xs font-mono text-ice/70 hover:text-bone transition-colors">
+                                    Edit
+                                </a>
+                                <a href="{% url 'habits:archive' item.habit.pk %}" class="text-xs font-mono text-crimson-light/80 hover:text-crimson transition-colors">
+                                    Archive
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             {% endfor %}
         </div>
     {% else %}
-        <div class="arc-card border-dashed text-center py-16">
-            <div class="w-12 h-12 rounded-2xl bg-ink-surface border border-white/5 flex items-center justify-center text-xl mx-auto mb-3">🌱</div>
-            <p class="text-bone-muted text-sm mb-4">No active habits defined.</p>
-            <a href="{% url 'habits:create' %}" class="btn-secondary inline-flex text-xs">+ Build First Habit</a>
+        <div class="wa-empty">
+            <h2 class="wa-empty-title">No habits established yet.</h2>
+            <p class="wa-empty-body">
+                Daily repetition holds back the winter. Establish your daily habits.
+            </p>
+            <div class="pt-2">
+                <a href="{% url 'habits:create' %}" class="btn-primary text-xs uppercase tracking-widest px-8 py-3 inline-flex">
+                    Create Habit
+                </a>
+            </div>
         </div>
     {% endif %}
+
 </div>
 {% endblock %}

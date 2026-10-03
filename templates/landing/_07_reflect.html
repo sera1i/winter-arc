@@ -1,0 +1,58 @@
+{% load static %}
+<!-- REST & REFLECT — Even the watch rests by the fire. (Bone background) -->
+<section id="privacy"
+         class="bg-bone text-ink py-24 sm:py-32 border-b border-dawn/40 overflow-hidden"
+         aria-labelledby="reflect-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            <!-- Clean kneeling knight image from useful source (no baked-in Canva text) -->
+            <div class="relative aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] overflow-hidden border border-dawn/60 shadow-xl order-2 lg:order-1 rounded-sm bg-ink">
+                <img src="{% static 'images/clean/reflect_clean.webp' %}"
+                     alt="Knight kneeling in contemplation at winter waterside"
+                     class="w-full h-full object-cover object-center"
+                     loading="eager">
+                <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to top, rgba(244,241,236,0.3) 0%, transparent 50%);"></div>
+            </div>
+
+            <!-- Master Copy & Quote -->
+            <div class="space-y-8 order-1 lg:order-2">
+                <div>
+                    <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson font-bold block mb-4">
+                        V · Rest &amp; Reflect
+                    </span>
+                    <h2 id="reflect-heading" class="font-serif text-4xl sm:text-5xl lg:text-6xl text-ink leading-tight mb-6">
+                        Even the watch<br>rests by the fire.
+                    </h2>
+                </div>
+
+                <p class="font-sans text-base sm:text-lg text-ink/80 leading-relaxed">
+                    Write your daily check-in and journal. Private by default. Never sold. Never shared. Excluded from analytics unless you choose otherwise.
+                </p>
+
+                <blockquote class="border-l-2 border-l-crimson pl-6 space-y-2">
+                    <p class="font-serif text-2xl text-ink leading-snug italic">
+                        "A mind needs books as a sword needs a whetstone."
+                    </p>
+                    <footer class="font-mono text-xs text-steel/80 uppercase tracking-widest">— Tyrion Lannister</footer>
+                </blockquote>
+
+                <div class="space-y-3 pt-4 border-t border-dawn/60">
+                    <div class="flex items-start gap-3">
+                        <span class="text-crimson font-bold text-sm">✓</span>
+                        <p class="font-sans text-sm text-ink/75"><strong class="font-medium text-ink">Written by firelight:</strong> Kept strictly private on your encrypted watch.</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-crimson font-bold text-sm">✓</span>
+                        <p class="font-sans text-sm text-ink/75"><strong class="font-medium text-ink">Zero tracking:</strong> No analytics pixels, no third-party telemetry, no surveillance.</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-crimson font-bold text-sm">✓</span>
+                        <p class="font-sans text-sm text-ink/75"><strong class="font-medium text-ink">Honest audit:</strong> Review what was done, rest without guilt, rise prepared.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

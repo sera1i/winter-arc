@@ -1,0 +1,103 @@
+{% load static %}
+<!-- HABITS AND STREAKS — Keep the fire lit. -->
+<section id="habits-preview"
+         class="bg-ink py-24 sm:py-32 border-b border-steel/20 overflow-hidden"
+         aria-labelledby="habits-heading">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Banner image using clean useful source (no baked-in Canva text) -->
+        <div class="relative aspect-[21/7] sm:aspect-[21/6] lg:aspect-[21/5] overflow-hidden border border-steel/20 mb-16 sm:mb-20 rounded-sm">
+            <img src="{% static 'images/clean/habits_clean.webp' %}"
+                 alt="Warrior raising crimson standard on the mountain summit"
+                 class="w-full h-full object-cover object-center"
+                 loading="eager">
+            <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,13,18,0.4) 0%, rgba(11,13,18,0.2) 30%, rgba(11,13,18,0.85) 100%);"></div>
+            <div class="absolute bottom-6 left-6 sm:bottom-10 sm:left-10 right-6">
+                <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson font-medium block mb-2">IV · Consistency</span>
+                <h2 id="habits-heading" class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone leading-tight">
+                    Keep the fire lit.
+                </h2>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+            <!-- Left: master copy -->
+            <div class="space-y-6">
+                <p class="font-sans text-base sm:text-lg text-ice/85 leading-relaxed">
+                    Every completed day lights another beacon. Miss one, and the next day is a chance to rise again.
+                </p>
+                <p class="font-sans text-base text-ice/65 leading-relaxed">
+                    Small fires, lit daily, hold back the longest winter. Winter Arc tracks your streaks honestly—turning repetition into identity.
+                </p>
+                <blockquote class="border-l-2 border-l-crimson pl-6 mt-6 space-y-1">
+                    <p class="font-serif text-xl sm:text-2xl text-bone italic leading-snug">
+                        "What is dead may never die, but rises again harder and stronger."
+                    </p>
+                    <footer class="font-mono text-xs text-steel uppercase tracking-widest">— House Greyjoy</footer>
+                </blockquote>
+            </div>
+
+            <!-- Right: streak visualization with Master labels: Current streak, Best streak -->
+            <div class="space-y-6 bg-steel/5 p-6 border border-steel/20 rounded-sm">
+                <h3 class="font-sans text-xs font-medium uppercase tracking-widest text-ice/60 border-b border-steel/20 pb-4">
+                    Habit Horizon &amp; Beacons
+                </h3>
+
+                <!-- Habit 1 -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="font-sans text-bone font-medium">Morning cold exposure</span>
+                        <div class="font-mono text-xs text-ice/70 flex gap-4">
+                            <span>Current streak: <strong class="text-crimson font-bold">21d</strong></span>
+                            <span>Best streak: <strong class="text-bone">31d</strong></span>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5 flex-wrap">
+                        {% for i in "123456789012345678901"|make_list %}
+                        <span class="w-3 h-3 bg-crimson shadow-[0_0_6px_rgba(179,21,27,0.6)]" aria-hidden="true"></span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Habit 2 -->
+                <div class="space-y-2 pt-2">
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="font-sans text-bone font-medium">Evening journal &amp; reflection</span>
+                        <div class="font-mono text-xs text-ice/70 flex gap-4">
+                            <span>Current streak: <strong class="text-crimson font-bold">14d</strong></span>
+                            <span>Best streak: <strong class="text-bone">24d</strong></span>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5 flex-wrap">
+                        {% for i in "12345678901234"|make_list %}
+                        <span class="w-3 h-3 bg-crimson/80 shadow-[0_0_6px_rgba(179,21,27,0.4)]" aria-hidden="true"></span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Habit 3 -->
+                <div class="space-y-2 pt-2">
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="font-sans text-bone font-medium">Deep work blocks (90 min)</span>
+                        <div class="font-mono text-xs text-ice/70 flex gap-4">
+                            <span>Current streak: <strong class="text-ice font-bold">5d</strong></span>
+                            <span>Best streak: <strong class="text-bone">18d</strong></span>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5 flex-wrap">
+                        {% for i in "12345"|make_list %}
+                        <span class="w-3 h-3 bg-crimson/50" aria-hidden="true"></span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <p class="font-mono text-[10px] uppercase tracking-widest text-steel/50 pt-2 border-t border-steel/15">
+                    "Not today. Keep the fire alive."
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

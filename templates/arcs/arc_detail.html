@@ -3,91 +3,134 @@
 {% block title %}{{ arc.name }} | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="max-w-5xl mx-auto space-y-8">
-    
-    <div class="flex items-center justify-between">
-        <a href="{% url 'arcs:list' %}" class="btn-ghost text-xs flex items-center gap-1.5">
-            &larr; Back to Arcs
-        </a>
-        <div class="flex gap-2">
-            {% if not arc.is_primary and arc.status == 'ACTIVE' %}
-            <form method="post" action="{% url 'arcs:make_primary' arc.pk %}">
-                {% csrf_token %}
-                <button type="submit" class="btn-secondary text-xs !py-1.5 !px-3 !border-vermilion/40 !text-vermilion hover:!bg-vermilion/10">
-                    Make Primary
-                </button>
-            </form>
+<div class="page-container pt-8 sm:pt-10">
+
+    <!-- Arc Header -->
+    <div class="page-header">
+        <div class="space-y-2 max-w-3xl">
+            <div class="flex items-center gap-3">
+                <span class="page-eyebrow">Arc Overview</span>
+                {% if arc.is_primary %}
+                    <span class="badge-primary">★ Primary Active Arc</span>
+                {% endif %}
+            </div>
+            <h1 class="page-title">{{ arc.name }}</h1>
+            {% if arc.objective %}
+                <p class="page-subtitle">
+                    {{ arc.objective }}
+                </p>
             {% endif %}
-            <a href="{% url 'arcs:update' arc.pk %}" class="btn-secondary text-xs !py-1.5 !px-3">Edit</a>
-            <a href="{% url 'arcs:delete' arc.pk %}" class="btn-danger text-xs !py-1.5 !px-3">Archive</a>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 self-start sm:self-auto">
+            {% if not arc.is_primary and arc.status == 'ACTIVE' %}
+                <form method="post" action="{% url 'arcs:make_primary' arc.pk %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2.5">
+                        Set Primary
+                    </button>
+                </form>
+            {% endif %}
+            <a href="{% url 'arcs:update' arc.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2.5">
+                Edit Arc
+            </a>
+            <a href="{% url 'arcs:delete' arc.pk %}" class="text-xs font-mono text-crimson-light/80 hover:text-crimson transition-colors border border-crimson/30 hover:border-crimson px-3 py-2.5">
+                Archive / Delete
+            </a>
+            <a href="{% url 'goals:create' arc_id=arc.pk %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-2.5">
+                Add Goal
+            </a>
         </div>
     </div>
 
-    <!-- Arc Overview Container -->
-    <div class="arc-card relative overflow-hidden space-y-6">
-        {% if arc.is_primary %}
-            <div class="absolute top-0 right-0 bg-vermilion text-[10px] font-extrabold px-3.5 py-1.5 text-white rounded-bl-xl uppercase tracking-wider shadow-glow-vermilion">
-                PRIMARY ARC
-            </div>
-        {% endif %}
+    <!-- Timeline & Status Card -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10">
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Status</span>
+            <div class="font-serif text-2xl text-bone mt-1">{{ arc.status }}</div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Start Date</span>
+            <div class="font-serif text-xl text-bone mt-1">{{ arc.start_date|date:"F j, Y" }}</div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">End Date</span>
+            <div class="font-serif text-xl text-bone mt-1">{{ arc.end_date|date:"F j, Y" }}</div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Timezone</span>
+            <div class="font-mono text-sm text-ice/80 mt-1 truncate">{{ arc.timezone }}</div>
+        </div>
+    </div>
 
-        <div>
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-bone tracking-tight mb-2 pr-28">{{ arc.name }}</h1>
-            <div class="flex flex-wrap gap-3 items-center text-xs text-bone-muted">
-                <span class="px-2.5 py-0.5 rounded-full font-semibold bg-ink-surface text-bone-dim border border-white/5">
-                    {{ arc.get_status_display }}
-                </span>
-                <span>{{ arc.start_date|date:"M j, Y" }} &rarr; {{ arc.end_date|date:"M j, Y" }}</span>
-                <span>&bull;</span>
-                <span class="text-slate-500">{{ arc.timezone }}</span>
+    <!-- Goals Section -->
+    <div class="space-y-6">
+        <div class="flex justify-between items-center border-b border-steel/20 pb-4">
+            <div>
+                <span class="section-eyebrow">Chain of Command</span>
+                <h2 class="section-heading">Goals & Objectives</h2>
             </div>
+            <a href="{% url 'goals:create' arc_id=arc.pk %}" class="btn-ghost text-xs">
+                + Add Goal
+            </a>
         </div>
 
-        <div class="p-5 rounded-xl bg-ink-surface border border-white/5">
-            <h3 class="text-[10px] font-bold text-bone-muted uppercase tracking-wider mb-2">Core Transformation Objective</h3>
-            <p class="text-bone-dim text-sm leading-relaxed whitespace-pre-line">{{ arc.objective }}</p>
-        </div>
-
-        <!-- Goals Section -->
-        <div class="pt-4 border-t border-white/5 space-y-4">
-            <div class="flex justify-between items-center">
-                <h2 class="text-lg font-bold text-bone tracking-tight">Arc Goals</h2>
-                <a id="add-goal-btn" href="{% url 'goals:create' arc.pk %}" class="btn-secondary text-xs !py-1.5 !px-3">
-                    + Add Goal
-                </a>
-            </div>
-            
-            {% if arc.goals.all %}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {% for goal in arc.goals.all %}
-                        <a href="{% url 'goals:detail' goal.pk %}" class="arc-card-interactive block space-y-3">
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-bone text-base truncate">{{ goal.title }}</h3>
-                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-ink-surface text-bone-muted border border-white/5">
-                                    {{ goal.get_category_display }}
+        {% if goals %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for goal in goals %}
+                    <div class="wa-card flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start gap-3">
+                                <div>
+                                    <span class="badge-pending">
+                                        {{ goal.category }}
+                                    </span>
+                                    <h3 class="font-serif text-xl text-bone mt-2">
+                                        <a href="{% url 'goals:detail' goal.pk %}" class="hover:text-crimson-light transition-colors">
+                                            {{ goal.title }}
+                                        </a>
+                                    </h3>
+                                </div>
+                                <span class="font-serif text-xl text-crimson font-light flex-shrink-0">
+                                    {{ goal.progress_percentage }}%
                                 </span>
                             </div>
-                            
-                            <!-- Progress Track -->
-                            <div>
-                                <div class="flex justify-between text-xs text-bone-muted mb-1.5 font-medium">
-                                    <span>Progress</span>
-                                    <span class="text-ice font-bold">{{ goal.progress_percentage }}%</span>
-                                </div>
-                                <div class="w-full bg-ink-surface rounded-full h-1.5 overflow-hidden border border-white/5">
-                                    <div class="bg-gradient-to-r from-blue-500 to-ice h-1.5 rounded-full transition-all duration-300" style="width: {{ goal.progress_percentage }}%"></div>
-                                </div>
+
+                            {% if goal.description %}
+                                <p class="text-xs text-ice/70 line-clamp-2 leading-relaxed">
+                                    {{ goal.description }}
+                                </p>
+                            {% endif %}
+                        </div>
+
+                        <div class="space-y-4 pt-4 border-t border-steel/20 mt-4">
+                            <!-- Progress Bar -->
+                            <div class="progress-bar-track">
+                                <div class="progress-bar-fill" style="width: {{ goal.progress_percentage }}%;"></div>
                             </div>
-                        </a>
-                    {% endfor %}
+
+                            <div class="flex justify-between items-center text-xs font-mono text-ice/60">
+                                <span>Due: {{ goal.deadline|date:"M j, Y" }}</span>
+                                <a href="{% url 'goals:detail' goal.pk %}" class="text-bone hover:text-crimson-light underline transition-colors">
+                                    Milestones ({{ goal.milestones.count }}) →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="wa-empty">
+                <p class="wa-empty-title">No goals attached to this Arc yet.</p>
+                <p class="wa-empty-body">Goals anchor the Arc into concrete milestones and daily actions.</p>
+                <div class="pt-2">
+                    <a href="{% url 'goals:create' arc_id=arc.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5 inline-flex">
+                        Add Goal
+                    </a>
                 </div>
-            {% else %}
-                <div class="p-8 rounded-xl bg-ink-surface/50 border border-white/5 border-dashed text-center">
-                    <p class="text-bone-muted text-xs mb-3">No specific goals set for this Arc yet.</p>
-                    <a href="{% url 'goals:create' arc.pk %}" class="text-xs text-ice hover:underline font-semibold">+ Add your first goal</a>
-                </div>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
+
 </div>
 {% endblock %}

@@ -1,0 +1,88 @@
+{% load static %}
+<!-- THE COLD — Bone background, clean artwork from useful source -->
+<section id="how-it-works"
+         class="bg-bone text-ink py-24 sm:py-32 border-b border-dawn/40 overflow-hidden"
+         aria-labelledby="call-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section header -->
+        <div class="max-w-3xl mb-16 sm:mb-20">
+            <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson font-bold block mb-4">
+                I · The Cold
+            </span>
+            <h2 id="call-heading" class="font-serif text-4xl sm:text-5xl lg:text-6xl text-ink leading-tight mb-6">
+                The cold does not care about your plans.
+            </h2>
+            <p class="font-sans text-base sm:text-lg text-ink/75 leading-relaxed max-w-2xl">
+                Goals without a daily system stay wishes. Winter Arc connects the season you want to the day in front of you. Ambition needs a chain of command—bringing high-level objectives into Today, where execution becomes measurable.
+            </p>
+        </div>
+
+        <!-- Product chain & artwork grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+            <!-- Chain visualization -->
+            <div class="space-y-2">
+                <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-steel mb-6">The chain of command</p>
+                
+                <div class="space-y-0">
+                    <!-- Goal -->
+                    <div class="flex items-start gap-4 p-4 border-l-2 border-l-crimson bg-ink/5 hover:bg-ink/10 transition-colors">
+                        <span class="font-mono text-xs text-crimson font-bold uppercase tracking-widest pt-0.5 w-24 flex-shrink-0">Goal</span>
+                        <div>
+                            <p class="font-sans text-sm text-ink font-medium">The high-level target</p>
+                            <p class="font-sans text-xs text-ink/60 mt-0.5">What the season is built around.</p>
+                        </div>
+                    </div>
+                    <div class="ml-[calc(1rem+1px)] w-px h-4 bg-crimson/30"></div>
+
+                    <!-- Milestone -->
+                    <div class="flex items-start gap-4 p-4 border-l-2 border-l-steel/60 bg-ink/3 hover:bg-ink/8 transition-colors">
+                        <span class="font-mono text-xs text-ink/70 font-bold uppercase tracking-widest pt-0.5 w-24 flex-shrink-0">Milestone</span>
+                        <div>
+                            <p class="font-sans text-sm text-ink font-medium">Concrete checkpoint</p>
+                            <p class="font-sans text-xs text-ink/60 mt-0.5">Proof the goal is on track.</p>
+                        </div>
+                    </div>
+                    <div class="ml-[calc(1rem+1px)] w-px h-4 bg-steel/30"></div>
+
+                    <!-- Task and Habit -->
+                    <div class="flex items-start gap-4 p-4 border-l-2 border-l-steel/60 hover:bg-ink/8 transition-colors">
+                        <span class="font-mono text-xs text-ink/70 font-bold uppercase tracking-widest pt-0.5 w-24 flex-shrink-0">Task &amp; Habit</span>
+                        <div>
+                            <p class="font-sans text-sm text-ink font-medium">Daily action &amp; ritual</p>
+                            <p class="font-sans text-xs text-ink/60 mt-0.5">Atomic execution and repeating consistency.</p>
+                        </div>
+                    </div>
+                    <div class="ml-[calc(1rem+1px)] w-px h-4 bg-steel/30"></div>
+
+                    <!-- Today -->
+                    <div class="flex items-start gap-4 p-4 border-l-2 border-l-crimson bg-crimson/10 hover:bg-crimson/15 transition-colors">
+                        <span class="font-mono text-xs text-crimson font-bold uppercase tracking-widest pt-0.5 w-24 flex-shrink-0">Today</span>
+                        <div>
+                            <p class="font-sans text-sm text-ink font-medium">The ground in front of you</p>
+                            <p class="font-sans text-xs text-ink/60 mt-0.5">Where discipline meets reality.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: clean useful artwork -->
+            <div class="space-y-8">
+                <div class="relative aspect-[4/3] overflow-hidden border border-dawn/60 shadow-xl bg-ink rounded-sm">
+                    <img src="{% static 'images/clean/call_clean.webp' %}"
+                         alt="Fortress in the northern winter mountains"
+                         class="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to top, rgba(244,241,236,0.3) 0%, transparent 50%);"></div>
+                </div>
+
+                <blockquote class="border-l-2 border-l-crimson pl-6 space-y-2">
+                    <p class="font-serif text-2xl text-ink leading-snug italic">
+                        "Nothing burns like the cold."
+                    </p>
+                    <footer class="font-mono text-xs text-steel/80 uppercase tracking-widest">— George R. R. Martin</footer>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</section>

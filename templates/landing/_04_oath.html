@@ -1,0 +1,89 @@
+{% load static %}
+<!-- THE OATH — 4 Movements, clean panoramic rider artwork from useful source -->
+<section id="features"
+         class="bg-ink py-24 sm:py-32 border-b border-steel/20 overflow-hidden"
+         aria-labelledby="oath-heading">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+
+        <!-- Section header -->
+        <div class="max-w-2xl mb-16 sm:mb-20">
+            <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson font-medium block mb-4">
+                II · The Oath
+            </span>
+            <h2 id="oath-heading" class="font-serif text-4xl sm:text-5xl lg:text-6xl text-bone leading-tight mb-4">
+                Four movements.<br>One season.
+            </h2>
+            <p class="font-sans text-base text-ice/70 leading-relaxed">
+                The Arc is not a goal-tracking app. It is a discipline operating system. Each movement builds on the last.
+            </p>
+        </div>
+
+        <!-- 4 Steps grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-steel/20 mb-16">
+
+            <!-- Step 01: Swear -->
+            <div class="bg-ink p-8 sm:p-10 space-y-4 group hover:bg-steel/5 transition-colors">
+                <div class="flex items-start justify-between">
+                    <span class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson font-bold">01 · Swear</span>
+                </div>
+                <h3 class="font-serif text-2xl text-bone">Create your Arc</h3>
+                <p class="font-sans text-sm text-ice/65 leading-relaxed">
+                    Set fixed start and end dates with a singular, non-negotiable objective.
+                </p>
+            </div>
+
+            <!-- Step 02: Arm -->
+            <div class="bg-ink p-8 sm:p-10 space-y-4 group hover:bg-steel/5 transition-colors">
+                <div class="flex items-start justify-between">
+                    <span class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson font-bold">02 · Arm</span>
+                </div>
+                <h3 class="font-serif text-2xl text-bone">Set the system</h3>
+                <p class="font-sans text-sm text-ice/65 leading-relaxed">
+                    Define measurable goals, concrete milestones, recurring habits, and atomic tasks.
+                </p>
+            </div>
+
+            <!-- Step 03: Ride -->
+            <div class="bg-ink p-8 sm:p-10 space-y-4 group hover:bg-steel/5 transition-colors">
+                <div class="flex items-start justify-between">
+                    <span class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson font-bold">03 · Ride</span>
+                </div>
+                <h3 class="font-serif text-2xl text-bone">Execute daily</h3>
+                <p class="font-sans text-sm text-ice/65 leading-relaxed">
+                    Show up each morning and execute from the Today command center.
+                </p>
+            </div>
+
+            <!-- Step 04: Reflect -->
+            <div class="bg-ink p-8 sm:p-10 space-y-4 group hover:bg-steel/5 transition-colors">
+                <div class="flex items-start justify-between">
+                    <span class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson font-bold">04 · Reflect</span>
+                </div>
+                <h3 class="font-serif text-2xl text-bone">Review &amp; adapt</h3>
+                <p class="font-sans text-sm text-ice/65 leading-relaxed">
+                    Private evening check-ins, honest audit, and cumulative progress analytics.
+                </p>
+            </div>
+        </div>
+
+        <!-- Clean panoramic rider banner (NO baked-in Canva text) -->
+        <div class="relative aspect-[21/6] sm:aspect-[21/5] lg:aspect-[21/4] overflow-hidden border border-steel/25 rounded-sm">
+            <img src="{% static 'images/clean/oath_clean.webp' %}"
+                 alt="Rider in winter pass"
+                 class="w-full h-full object-cover object-center"
+                 loading="eager">
+            <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(11,13,18,0.85) 0%, rgba(11,13,18,0.3) 40%, rgba(11,13,18,0.3) 60%, rgba(11,13,18,0.85) 100%);"></div>
+            
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                <p class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone italic tracking-wide mb-2 drop-shadow-lg">
+                    "Winter is coming."
+                </p>
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-crimson-light font-medium">
+                    — House Stark
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>

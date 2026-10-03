@@ -10,8 +10,7 @@ from .models import Profile
 def landing_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
-    return render(request, 'landing.html')
-
+    return render(request, 'landing/index.html')
 
 def _get_user_today(user):
     try:
@@ -19,7 +18,6 @@ def _get_user_today(user):
     except Exception:
         tz = ZoneInfo('UTC')
     return timezone.now().astimezone(tz).date()
-
 
 def register_view(request):
     if request.user.is_authenticated:
@@ -38,7 +36,6 @@ def register_view(request):
         form = CustomUserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
 
-
 @login_required
 def profile_view(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
@@ -52,28 +49,39 @@ def profile_view(request):
         form = ProfileUpdateForm(instance=profile)
     return render(request, 'accounts/profile.html', {'form': form})
 
-
 @login_required
 def dashboard_view(request):
     from tasks.models import Task
     from habits.models import Habit, HabitCompletion
     from arcs.models import Arc
+    from goals.models import Goal
 
     user = request.user
     today = _get_user_today(user)
 
-    # Arc
+    # Arcs: Primary arc or first active arc
     primary_arc = Arc.objects.filter(user=user, is_primary=True).first()
-    active_arcs = Arc.objects.filter(user=user, status='ACTIVE').count()
+    active_arcs_qs = Arc.objects.filter(user=user, status='ACTIVE')
+    active_arcs = active_arcs_qs.count()
 
-    # Tasks
+    if not primary_arc and active_arcs_qs.exists():
+        primary_arc = active_arcs_qs.first()
+
+    # Goals: display goals for the primary arc or for the user
+    if primary_arc:
+        goals = primary_arc.goals.all().prefetch_related('milestones')
+    else:
+        goals = Goal.objects.filter(user=user).exclude(status='CANCELLED').prefetch_related('milestones')[:6]
+
+    # Tasks: pending & in-progress tasks display immediately
     pending_tasks = Task.objects.filter(
-        user=user, status='PENDING'
-    ).select_related('goal').order_by('priority', 'due_at')[:5]
+        user=user, status__in=['PENDING', 'IN_PROGRESS']
+    ).select_related('goal').order_by('priority', 'due_at')[:8]
+
     today_completed_tasks = Task.objects.filter(
         user=user, status='COMPLETED', completed_at__date=today
     ).count()
-    total_pending_count = Task.objects.filter(user=user, status='PENDING').count()
+    total_pending_count = Task.objects.filter(user=user, status__in=['PENDING', 'IN_PROGRESS']).count()
 
     # Habits
     active_habits = Habit.objects.filter(user=user, is_archived=False).prefetch_related('completions')
@@ -87,10 +95,11 @@ def dashboard_view(request):
     context = {
         'primary_arc': primary_arc,
         'active_arcs': active_arcs,
+        'goals': goals,
         'pending_tasks': pending_tasks,
         'total_pending_count': total_pending_count,
         'today_completed_tasks': today_completed_tasks,
-        'habit_data': habit_data[:4],
+        'habit_data': habit_data[:6],
         'habits_done_today': habits_done_today,
         'total_habits': active_habits.count(),
         'top_streaks': top_streaks,

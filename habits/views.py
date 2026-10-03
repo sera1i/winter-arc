@@ -104,7 +104,11 @@ def habit_complete(request, pk):
             completion.delete()
             messages.info(request, f'"{habit.name}" marked incomplete for today.')
         else:
-            messages.success(request, f'"{habit.name}" completed for today! 🔥')
+            messages.success(request, 'Another beacon lit.')
+
+        next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+        if next_url:
+            return redirect(next_url)
     return redirect('habits:detail', pk=pk)
 
 

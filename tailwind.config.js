@@ -7,40 +7,46 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: {
-          DEFAULT: '#05070a',
-          deep: '#030407',
-          surface: '#0b0e14',
-          card: '#0f141c',
-          border: 'rgba(223,231,224,0.08)',
-          hover: '#161c26',
+        ink: '#0B0D12',
+        bone: '#F4F1EC',
+        crimson: {
+          DEFAULT: '#B3151B',
+          bright: '#E0231C',
+          light: '#FF5A4F',
         },
-        bone: {
-          DEFAULT: '#f4f1ec',
-          dim: '#dfe7e0',
-          muted: '#94a3b8',
-        },
-        vermilion: {
-          DEFAULT: '#e0231c',
-          dark: '#b81b15',
-          glow: 'rgba(224,35,28,0.35)',
-        },
-        ember: '#ff5a3c',
-        gold: '#c9a24a',
-        ice: '#60a5fa',
+        ice: '#AEB8C6',
+        mist: '#AEB8C6',
+        steel: '#4A525E',
+        dawn: '#D6C9B0',
       },
       fontFamily: {
-        sans: ['Onest', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['Onest', 'sans-serif'],
+        serif: ['"Cormorant Garamond"', 'serif'],
       },
-      boxShadow: {
-        'glow-vermilion': '0 0 25px rgba(224, 35, 28, 0.45)',
-        'glow-subtle': '0 0 15px rgba(223, 231, 224, 0.05)',
-        'card-elevated': '0 8px 32px rgba(0, 0, 0, 0.6)',
+      animation: {
+        'fade-in': 'fadeIn 1.2s ease-out forwards',
+        'fade-in-up': 'fadeInUp 0.7s ease-out forwards',
+        'slide-up': 'slideUp 0.6s ease-out forwards',
+        'appear': 'appear 0.4s ease-out forwards',
       },
-      borderRadius: {
-        'xl': '12px',
-        '2xl': '16px',
-        '3xl': '24px',
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '10%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(30px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        appear: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        }
       }
     },
   },

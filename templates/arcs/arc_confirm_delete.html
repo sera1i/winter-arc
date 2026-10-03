@@ -1,27 +1,53 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Archive Arc | Winter Arc{% endblock %}
+{% block title %}Manage Arc | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="max-w-lg mx-auto mt-12">
-    <div class="arc-card text-center p-8 space-y-6">
-        <div class="w-14 h-14 rounded-2xl bg-red-950/40 border border-red-800/50 text-red-400 flex items-center justify-center mx-auto text-xl shadow-glow-vermilion">
-            🏔
+<div class="min-h-[70vh] flex items-center justify-center px-4 py-20">
+    <div class="w-full max-w-lg wa-form-card text-center space-y-6">
+        
+        <div class="w-12 h-12 mx-auto rounded-full bg-crimson/10 border border-crimson/40 flex items-center justify-center text-crimson text-xl font-mono">
+            !
         </div>
-        <div>
-            <h1 class="text-2xl font-bold text-bone">Archive Arc?</h1>
-            <p class="text-bone-muted text-sm mt-2">
-                Archive <strong class="text-bone">"{{ arc.name }}"</strong>?<br>
-                All associated goals, milestones, and progress will be safely archived.
+
+        <div class="space-y-2">
+            <span class="page-eyebrow">Arc Management</span>
+            <h1 class="font-serif text-3xl text-bone">Archive or Delete Arc</h1>
+            <p class="font-sans text-sm text-ice/70 leading-relaxed">
+                Choose what to do with <strong>"{{ arc.name }}"</strong>.
             </p>
         </div>
-        <form method="post" class="flex items-center justify-center gap-3 pt-2">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left border-t border-b border-steel/20 py-4 my-2">
+            <div class="p-3 bg-steel/5 border border-steel/20 space-y-1">
+                <span class="font-mono text-[10px] uppercase tracking-wider text-ice/70 block">Option A · Recommended</span>
+                <p class="font-serif text-base text-bone font-medium">Archive Arc</p>
+                <p class="font-sans text-xs text-ice/60 leading-normal">
+                    Preserves historical streaks, milestones, and progress. Removes from active watch.
+                </p>
+            </div>
+            <div class="p-3 bg-crimson/5 border border-crimson/25 space-y-1">
+                <span class="font-mono text-[10px] uppercase tracking-wider text-crimson-light block">Option B · Destructive</span>
+                <p class="font-serif text-base text-bone font-medium">Permanent Delete</p>
+                <p class="font-sans text-xs text-ice/60 leading-normal">
+                    Permanently deletes this Arc and its associated goals. Cannot be undone.
+                </p>
+            </div>
+        </div>
+
+        <form method="post" class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             {% csrf_token %}
-            <a href="{% url 'arcs:detail' arc.pk %}" class="btn-secondary text-xs">Keep Active</a>
-            <button type="submit" class="btn-danger text-xs font-bold !px-5 !py-2.5">
-                Yes, Archive Arc
+            <a href="{% url 'arcs:detail' arc.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-5 py-2.5 w-full sm:w-auto">
+                Cancel
+            </a>
+            <button type="submit" name="action" value="archive" class="btn-secondary text-xs uppercase tracking-widest px-5 py-2.5 border-steel/60 hover:border-ice w-full sm:w-auto">
+                Archive Arc
+            </button>
+            <button type="submit" name="action" value="delete" class="btn-danger text-xs uppercase tracking-widest px-5 py-2.5 w-full sm:w-auto">
+                Delete Permanently
             </button>
         </form>
+
     </div>
 </div>
 {% endblock %}

@@ -1,5 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
 from accounts.views import landing_view
 
 urlpatterns = [
@@ -11,3 +14,9 @@ urlpatterns = [
     path('habits/', include('habits.urls')),
     path('', landing_view, name='home'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('_styleguide/', TemplateView.as_view(template_name='debug/styleguide.html'), name='styleguide'),
+        path('_motion-spec/', TemplateView.as_view(template_name='debug/motion_spec.html'), name='motion_spec'),
+    ]

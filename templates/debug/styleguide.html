@@ -1,0 +1,72 @@
+{% extends "base/base.html" %}
+
+{% block title %}Styleguide | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-12">
+    <h1 class="text-4xl mb-8">Design System Styleguide</h1>
+    
+    <section class="mb-12">
+        <h2 class="text-2xl border-b border-steel pb-2 mb-4">Typography</h2>
+        <div class="space-y-4">
+            <h1 class="text-5xl">Heading 1 (Cormorant Garamond)</h1>
+            <h2 class="text-4xl">Heading 2 (Cormorant Garamond)</h2>
+            <h3 class="text-3xl">Heading 3 (Cormorant Garamond)</h3>
+            <p class="text-base text-mist">Body text (Onest). The Winter Arc is a period of focused self-improvement, typically occurring during the colder, darker months of the year.</p>
+        </div>
+    </section>
+
+    <section class="mb-12">
+        <h2 class="text-2xl border-b border-steel pb-2 mb-4">Colors</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-4 bg-ink border border-steel rounded-sm flex flex-col items-center">
+                <div class="w-12 h-12 bg-ink border border-steel mb-2 rounded-full"></div>
+                <span class="text-sm">Ink (#0B0D12)</span>
+            </div>
+            <div class="p-4 bg-ink border border-steel rounded-sm flex flex-col items-center">
+                <div class="w-12 h-12 bg-bone border border-steel mb-2 rounded-full"></div>
+                <span class="text-sm">Bone (#F4F1EC)</span>
+            </div>
+            <div class="p-4 bg-ink border border-steel rounded-sm flex flex-col items-center">
+                <div class="w-12 h-12 bg-crimson border border-steel mb-2 rounded-full"></div>
+                <span class="text-sm">Crimson (#B3151B)</span>
+            </div>
+            <div class="p-4 bg-ink border border-steel rounded-sm flex flex-col items-center">
+                <div class="w-12 h-12 bg-mist border border-steel mb-2 rounded-full"></div>
+                <span class="text-sm">Mist (#AEB8C6)</span>
+            </div>
+            <div class="p-4 bg-ink border border-steel rounded-sm flex flex-col items-center">
+                <div class="w-12 h-12 bg-steel border border-steel mb-2 rounded-full"></div>
+                <span class="text-sm">Steel (#4A525E)</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-12">
+        <h2 class="text-2xl border-b border-steel pb-2 mb-4">Components</h2>
+        <div class="space-y-6">
+            <div>
+                <h3 class="text-lg text-mist mb-2">Buttons</h3>
+                <div class="flex gap-4">
+                    <button class="btn-primary">Primary Button</button>
+                    <button class="btn-secondary">Secondary Button</button>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg text-mist mb-2">Cards</h3>
+                <div class="card max-w-sm">
+                    <h4 class="text-xl mb-2 text-bone">Card Title</h4>
+                    <p class="text-mist text-sm">This is a standard card component for displaying content or forms.</p>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg text-mist mb-2">Inputs</h3>
+                <div class="max-w-sm">
+                    <label class="label">Input Label</label>
+                    <input type="text" class="input-field" placeholder="Enter text here...">
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -32,7 +32,7 @@ def run_browser_tests():
             
         print("Checking Profile...")
         page.goto(f"{base_url}/accounts/profile/")
-        assert page.locator("h1:has-text('Profile')").is_visible()
+        assert page.locator("h2:has-text('Profile')").is_visible()
         
         print("=== 2. ARCS & PHASE 2 REGRESSION ===")
         page.goto(f"{base_url}/arcs/")
@@ -72,7 +72,6 @@ def run_browser_tests():
         page.fill("input[name='title']", "Core Winter Goal")
         page.fill("textarea[name='description']", "Goal to attach tasks and milestones.")
         page.select_option("select[name='category']", "PRODUCTIVITY")
-        page.fill("input[name='priority']", "1")
         page.fill("input[name='deadline']", "2027-03-31")
         with page.expect_navigation():
             page.click("button:has-text('Save Goal')")

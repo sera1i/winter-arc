@@ -1,0 +1,78 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Motion Spec | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-12">
+    <h1 class="text-4xl mb-8 animate-fade-in-up">Motion & 3D Spec Board</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="card animate-fade-in-up" style="animation-delay: 0.1s;">
+            <h2 class="text-xl text-bone mb-2 border-b border-steel pb-2">CSS Animations</h2>
+            <ul class="space-y-4 mt-4 text-mist text-sm">
+                <li>
+                    <strong>fade-in</strong>: <span class="px-2 py-1 bg-steel/20 rounded">1.2s ease-out forwards</span>
+                    <p class="mt-1">Used for global page load transitions and heavy assets.</p>
+                </li>
+                <li>
+                    <strong>fade-in-up</strong>: <span class="px-2 py-1 bg-steel/20 rounded">1s ease-out forwards</span>
+                    <p class="mt-1">Used for staggering content blocks into view (like this card).</p>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card animate-fade-in-up" style="animation-delay: 0.2s;">
+            <h2 class="text-xl text-bone mb-2 border-b border-steel pb-2">Three.js Requirements</h2>
+            <ul class="space-y-2 mt-4 text-mist text-sm list-disc pl-4">
+                <li>Target Framerate: 60fps</li>
+                <li>DPR Cap: 2 (window.devicePixelRatio)</li>
+                <li>Intersection Observer: Must pause WebGL loop when canvas is out of viewport to save battery.</li>
+                <li>Accessibility: Respect <code>prefers-reduced-motion</code> by showing static fallback image.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="mt-12 card animate-fade-in-up" style="animation-delay: 0.3s;">
+        <h2 class="text-xl text-bone mb-4 border-b border-steel pb-2">Three.js Hero Layer Specs</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-mist border-collapse">
+                <thead>
+                    <tr class="border-b border-steel">
+                        <th class="pb-2">Layer</th>
+                        <th class="pb-2">Description</th>
+                        <th class="pb-2">Parallax Multiplier</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-steel/50">
+                    <tr>
+                        <td class="py-3 font-medium text-bone">L0</td>
+                        <td class="py-3">Sky/Cliffs Background</td>
+                        <td class="py-3">0.05</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 font-medium text-bone">L1</td>
+                        <td class="py-3">Background Mist (Canvas Particles or Image)</td>
+                        <td class="py-3">0.10</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 font-medium text-bone">L2</td>
+                        <td class="py-3">Crimson Banner</td>
+                        <td class="py-3">0.15</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 font-medium text-bone">L3</td>
+                        <td class="py-3">Knight (Primary Subject)</td>
+                        <td class="py-3">0.25</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 font-medium text-bone">L4</td>
+                        <td class="py-3">Foreground Mist/Snow</td>
+                        <td class="py-3">0.40</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

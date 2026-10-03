@@ -1,27 +1,33 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Cancel Task | Winter Arc{% endblock %}
+{% block title %}Delete Task | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="max-w-lg mx-auto mt-12">
-    <div class="arc-card text-center p-8 space-y-6">
-        <div class="w-14 h-14 rounded-2xl bg-red-950/40 border border-red-800/50 text-red-400 flex items-center justify-center mx-auto text-xl shadow-glow-vermilion">
-            ⚠
+<div class="min-h-[70vh] flex items-center justify-center px-4 py-20">
+    <div class="w-full max-w-md wa-form-card text-center space-y-6">
+        
+        <div class="w-12 h-12 mx-auto rounded-full bg-crimson/10 border border-crimson/40 flex items-center justify-center text-crimson text-xl font-mono">
+            !
         </div>
-        <div>
-            <h1 class="text-2xl font-bold text-bone">Cancel Task?</h1>
-            <p class="text-bone-muted text-sm mt-2">
-                Are you sure you want to cancel <strong class="text-bone">"{{ task.title }}"</strong>?<br>
-                It will be archived from your active queue.
+
+        <div class="space-y-2">
+            <span class="page-eyebrow">Confirm Action</span>
+            <h1 class="font-serif text-3xl text-bone">Delete Task</h1>
+            <p class="font-sans text-sm text-ice/70 leading-relaxed">
+                Are you sure you want to permanently delete <strong>"{{ task.title }}"</strong>?
             </p>
         </div>
-        <form method="post" class="flex items-center justify-center gap-3 pt-2">
+
+        <form method="post" class="flex items-center justify-center gap-4 pt-4 border-t border-steel/20">
             {% csrf_token %}
-            <a href="{% url 'tasks:detail' task.pk %}" class="btn-secondary text-xs">Keep Task</a>
-            <button type="submit" class="btn-danger text-xs font-bold !px-5 !py-2.5">
-                Yes, Cancel
+            <a href="{% url 'tasks:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                Cancel
+            </a>
+            <button type="submit" class="btn-danger text-xs uppercase tracking-widest px-6 py-2.5">
+                Delete Task
             </button>
         </form>
+
     </div>
 </div>
 {% endblock %}

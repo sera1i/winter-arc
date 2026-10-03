@@ -1,42 +1,171 @@
-<nav class="bg-ink/90 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50">
+{% load static %}
+<nav id="global-navbar" 
+     class="fixed top-0 left-0 right-0 z-40 transition-all duration-300"
+     style="background: transparent;"
+     aria-label="Main navigation">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-18 py-3">
-            <div class="flex items-center gap-8">
-                <a href="/" class="flex items-center gap-2 group">
-                    <div class="w-2.5 h-2.5 rounded-full bg-vermilion shadow-glow-vermilion group-hover:scale-125 transition-transform"></div>
-                    <span class="text-xl font-extrabold tracking-widest text-bone group-hover:text-white transition-colors">
-                        WINTER<span class="text-vermilion">ARC</span>
-                    </span>
-                </a>
-                
+        <div class="flex items-center justify-between h-18 sm:h-20">
+
+            <!-- Brand Mark -->
+            <a href="{% url 'home' %}" 
+               class="flex items-center gap-3 group shrink-0"
+               aria-label="Winter Arc home">
+                <div class="w-0.5 h-7 bg-crimson flex-shrink-0"></div>
+                <span class="font-serif text-xl sm:text-2xl font-bold tracking-[0.18em] text-bone uppercase group-hover:text-bone/90 transition-colors">
+                    Winter Arc
+                </span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center gap-7">
                 {% if user.is_authenticated %}
-                <div class="hidden md:flex items-center space-x-1">
-                    <a href="{% url 'dashboard' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Dashboard</a>
-                    <a href="{% url 'tasks:list' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Tasks</a>
-                    <a href="{% url 'habits:list' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Habits</a>
-                    <a href="{% url 'arcs:list' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Arcs</a>
-                    <a href="{% url 'profile' %}" class="text-bone-muted hover:text-bone hover:bg-white/5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all">Profile</a>
-                </div>
+                    <a href="{% url 'dashboard' %}" 
+                       class="{% if request.resolver_match.url_name == 'dashboard' %}nav-link-active{% else %}nav-link{% endif %}">
+                        Dashboard
+                    </a>
+                    <a href="{% url 'arcs:list' %}" 
+                       class="{% if 'arcs' in request.path %}nav-link-active{% else %}nav-link{% endif %}">
+                        Arcs
+                    </a>
+                    <a href="{% url 'tasks:list' %}" 
+                       class="{% if 'tasks' in request.path %}nav-link-active{% else %}nav-link{% endif %}">
+                        Tasks
+                    </a>
+                    <a href="{% url 'habits:list' %}" 
+                       class="{% if 'habits' in request.path %}nav-link-active{% else %}nav-link{% endif %}">
+                        Habits
+                    </a>
+                {% else %}
+                    <a href="/#how-it-works" class="nav-link">How it works</a>
+                    <a href="/#features" class="nav-link">Features</a>
+                    <a href="/#privacy" class="nav-link">Privacy</a>
                 {% endif %}
             </div>
-            
-            <div class="flex items-center space-x-3">
+
+            <!-- Desktop Right Actions -->
+            <div class="hidden md:flex items-center gap-5">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'profile' %}" class="hidden sm:flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg bg-ink-surface border border-white/10 text-bone-muted hover:text-bone transition-all">
-                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                        <span>{{ user.username }}</span>
+                    <a href="{% url 'profile' %}" 
+                       class="font-mono text-xs text-ice/70 hover:text-bone transition-colors border border-steel/30 px-3 py-1.5 tracking-wide truncate max-w-[140px]"
+                       title="{{ user.username }}">
+                        {{ user.username }}
                     </a>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
-                        <button type="submit" class="text-bone-muted hover:text-vermilion text-xs font-medium px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition-colors">
-                            Logout
+                        <button type="submit" 
+                                class="text-sm font-sans text-ice/60 hover:text-crimson-light transition-colors tracking-wide">
+                            Log out
                         </button>
                     </form>
                 {% else %}
-                    <a href="{% url 'login' %}" class="text-bone-muted hover:text-bone px-4 py-2 rounded-xl text-sm font-medium transition-colors">Login</a>
-                    <a href="{% url 'register' %}" class="btn-primary text-sm !py-2 !px-5">Initiate Arc</a>
+                    <a href="{% url 'login' %}" class="text-sm font-sans font-medium text-ice/80 hover:text-bone transition-colors tracking-wide">
+                        Log in
+                    </a>
+                    <a href="{% url 'register' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5">
+                        Take the Oath
+                    </a>
                 {% endif %}
             </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" 
+                    type="button" 
+                    class="md:hidden p-2 text-ice hover:text-bone focus:outline-none focus:ring-1 focus:ring-crimson transition-colors"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false"
+                    aria-controls="mobile-menu">
+                <svg id="menu-icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <svg id="menu-icon-close" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
         </div>
     </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" 
+         class="hidden md:hidden bg-ink/98 border-t border-steel/20 px-4 pt-4 pb-8 space-y-1 backdrop-blur-lg"
+         role="menu">
+        {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="block text-bone text-base font-sans font-medium py-3 border-b border-steel/15" role="menuitem">Dashboard</a>
+            <a href="{% url 'arcs:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Arcs</a>
+            <a href="{% url 'tasks:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Tasks</a>
+            <a href="{% url 'habits:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Habits</a>
+            <a href="{% url 'profile' %}" class="block text-ice/80 hover:text-bone text-sm font-mono py-3 border-b border-steel/15 transition-colors" role="menuitem">Profile — {{ user.username }}</a>
+            <div class="pt-4">
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="text-crimson-light hover:text-crimson text-sm font-sans transition-colors" role="menuitem">
+                        Log out
+                    </button>
+                </form>
+            </div>
+        {% else %}
+            <a href="/#how-it-works" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">How it works</a>
+            <a href="/#features" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Features</a>
+            <a href="/#privacy" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Privacy</a>
+            <div class="pt-5 space-y-3">
+                <a href="{% url 'login' %}" class="block text-center text-bone text-sm font-sans py-3 border border-steel/40 hover:border-ice/50 transition-colors" role="menuitem">
+                    Log in
+                </a>
+                <a href="{% url 'register' %}" class="btn-primary w-full text-center text-xs uppercase tracking-widest py-3.5" role="menuitem">
+                    Take the Oath
+                </a>
+            </div>
+        {% endif %}
+    </div>
 </nav>
+
+<!-- Navbar spacer for non-landing pages -->
+{% if request.resolver_match.url_name != 'home' %}
+<div class="h-18 sm:h-20" aria-hidden="true"></div>
+{% endif %}
+
+<script>
+(function() {
+    const nav = document.getElementById('global-navbar');
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+    let menuOpen = false;
+
+    function applyScrolledState() {
+        if (window.scrollY > 50) {
+            nav.style.background = 'rgba(11,13,18,0.88)';
+            nav.style.backdropFilter = 'blur(12px)';
+            nav.style.borderBottom = '1px solid rgba(74,82,94,0.3)';
+        } else {
+            nav.style.background = 'transparent';
+            nav.style.backdropFilter = 'none';
+            nav.style.borderBottom = '1px solid transparent';
+        }
+    }
+
+    window.addEventListener('scroll', applyScrolledState, { passive: true });
+    applyScrolledState();
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', function() {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('hidden', !menuOpen);
+            menuBtn.setAttribute('aria-expanded', String(menuOpen));
+            iconOpen.classList.toggle('hidden', menuOpen);
+            iconClose.classList.toggle('hidden', !menuOpen);
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function(e) {
+            if (menuOpen && !nav.contains(e.target)) {
+                menuOpen = false;
+                mobileMenu.classList.add('hidden');
+                menuBtn.setAttribute('aria-expanded', 'false');
+                iconOpen.classList.remove('hidden');
+                iconClose.classList.add('hidden');
+            }
+        });
+    }
+})();
+</script>

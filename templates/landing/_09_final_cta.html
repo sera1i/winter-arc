@@ -1,0 +1,72 @@
+{% load static %}
+<!-- FINAL CTA — Winter is coming. Be ready. -->
+<section id="begin"
+         class="relative bg-ink py-28 sm:py-40 overflow-hidden"
+         aria-labelledby="cta-heading">
+
+    <!-- Full-bleed background using clean useful source (no baked-in Canva text) -->
+    <div class="absolute inset-0 z-0" aria-hidden="true">
+        <img src="{% static 'images/clean/final_cta_clean.webp' %}"
+             alt="Rising dawn above northern mountains"
+             class="w-full h-full object-cover object-center"
+             style="opacity: 0.32;"
+             loading="eager">
+        <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,13,18,0.85) 0%, rgba(11,13,18,0.70) 40%, rgba(11,13,18,0.92) 100%);"></div>
+    </div>
+
+    <!-- Horizontal rule decoration -->
+    <div class="absolute top-0 left-0 right-0" aria-hidden="true">
+        <div class="h-px bg-gradient-to-r from-transparent via-crimson/35 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-10">
+
+        <!-- Eyebrow -->
+        <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson font-medium block">
+            VII · Final Call to Action
+        </span>
+
+        <!-- Main headline with Master copy -->
+        <div class="space-y-4">
+            <h2 id="cta-heading" class="font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.05]">
+                Winter is coming.<br>
+                <span class="text-bone/90 italic">Be ready.</span>
+            </h2>
+        </div>
+
+        <!-- Master subquote by Ned Stark + Own your arc line -->
+        <div class="max-w-2xl mx-auto space-y-3">
+            <blockquote class="font-serif text-xl sm:text-2xl text-ice/85 italic leading-snug">
+                "The man who passes the sentence should swing the sword."
+            </blockquote>
+            <p class="font-mono text-xs text-crimson-light uppercase tracking-widest">— Ned Stark</p>
+            <p class="font-sans text-base sm:text-lg text-ice/70 pt-2 font-medium tracking-wide">
+                Own your arc. The season will pass either way—stand and hold the line.
+            </p>
+        </div>
+
+        <!-- CTA -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <a href="{% url 'register' %}"
+               class="btn-primary text-sm uppercase tracking-widest px-10 py-4 w-full sm:w-auto"
+               style="box-shadow: 0 0 35px rgba(179,21,27,0.55);">
+                Take the Oath
+            </a>
+            <a href="{% url 'login' %}"
+               class="btn-secondary text-sm uppercase tracking-widest px-10 py-4 w-full sm:w-auto">
+                Log in
+            </a>
+        </div>
+
+        <!-- Final note -->
+        <p class="font-mono text-[11px] uppercase tracking-widest text-ice/40 pt-4">
+            Private · Yours alone · No feeds · Just the work
+        </p>
+
+    </div>
+
+    <!-- Bottom decoration -->
+    <div class="absolute bottom-0 left-0 right-0" aria-hidden="true">
+        <div class="h-px bg-gradient-to-r from-transparent via-steel/30 to-transparent"></div>
+    </div>
+</section>

@@ -1,0 +1,85 @@
+{% load static %}
+<!-- LOADER — "Winter is coming", live counter 0-100%, clean helmet artwork -->
+<div id="wa-loader" 
+     class="fixed inset-0 z-[100] bg-ink flex flex-col items-center justify-center select-none"
+     aria-hidden="true"
+     aria-live="off">
+
+    <!-- Atmospheric clean helmet artwork -->
+    <div class="relative w-44 h-44 sm:w-56 sm:h-56 mb-8 overflow-hidden rounded-sm">
+        <img src="{% static 'images/clean/loader_clean.webp' %}"
+             alt=""
+             class="w-full h-full object-contain opacity-80"
+             loading="eager">
+        <div class="absolute inset-0 pointer-events-none"
+             style="background: radial-gradient(circle at 50% 60%, rgba(179,21,27,0.18) 0%, transparent 70%);"></div>
+    </div>
+
+    <!-- Master title -->
+    <h1 class="font-serif text-3xl sm:text-4xl text-bone tracking-widest uppercase mb-2">
+        Winter is coming
+    </h1>
+
+    <!-- Live counter and micro-label -->
+    <div class="flex items-center gap-3 mb-6">
+        <span class="w-1.5 h-1.5 bg-crimson rounded-full animate-ping"></span>
+        <p class="font-mono text-xs uppercase tracking-[0.3em] text-ice/70">
+            Lighting the beacons... <span id="loader-counter" class="text-bone font-bold ml-1">0%</span>
+        </p>
+    </div>
+
+    <!-- Laser progress bar -->
+    <div class="w-48 sm:w-64 h-0.5 bg-steel/30 relative overflow-hidden">
+        <div id="loader-progress" 
+             class="absolute left-0 top-0 h-full bg-crimson transition-all duration-300 ease-out"
+             style="width: 0%;"></div>
+    </div>
+
+</div>
+
+<script>
+(function() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        var el = document.getElementById('wa-loader');
+        if (el) el.style.display = 'none';
+        return;
+    }
+    var loader = document.getElementById('wa-loader');
+    var progress = document.getElementById('loader-progress');
+    var counter = document.getElementById('loader-counter');
+    if (!loader) return;
+
+    var p = 0;
+    var interval = setInterval(function() {
+        p += Math.floor(Math.random() * 20) + 8;
+        if (p >= 100) {
+            p = 100;
+            clearInterval(interval);
+        }
+        if (progress) progress.style.width = p + '%';
+        if (counter) counter.innerText = p + '%';
+    }, 90);
+
+    function hide() {
+        clearInterval(interval);
+        if (progress) progress.style.width = '100%';
+        if (counter) counter.innerText = '100%';
+        setTimeout(function() {
+            loader.style.transition = 'opacity 0.6s ease-out';
+            loader.style.opacity = '0';
+            setTimeout(function() {
+                loader.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 600);
+        }, 250);
+    }
+
+    document.body.style.overflow = 'hidden';
+    if (document.readyState === 'complete') {
+        setTimeout(hide, 300);
+    } else {
+        window.addEventListener('load', function() { setTimeout(hide, 300); });
+    }
+    setTimeout(hide, 2500);
+})();
+</script>

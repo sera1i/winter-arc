@@ -1,124 +1,140 @@
 {% extends 'base/base.html' %}
-{% load widget_tweaks %}
 
 {% block title %}{{ goal.title }} | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto space-y-6">
-    
-    <div class="flex items-center justify-between">
-        <a href="{% url 'arcs:detail' goal.arc.pk %}" class="btn-ghost text-xs flex items-center gap-1.5">
-            &larr; Back to {{ goal.arc.name }}
-        </a>
-        <div class="flex gap-2">
-            <a href="{% url 'goals:update' goal.pk %}" class="btn-secondary text-xs !py-1.5 !px-3">Edit Goal</a>
-            <a href="{% url 'goals:delete' goal.pk %}" class="btn-danger text-xs !py-1.5 !px-3">Cancel Goal</a>
+<div class="page-container-narrow pt-8 sm:pt-10">
+
+    <!-- Header -->
+    <div class="page-header">
+        <div class="space-y-2 max-w-xl">
+            <div class="flex items-center gap-3">
+                <span class="page-eyebrow">Goal</span>
+                <span class="badge-pending">
+                    {{ goal.category }}
+                </span>
+            </div>
+            <h1 class="page-title">{{ goal.title }}</h1>
+            {% if goal.description %}
+                <p class="page-subtitle">
+                    {{ goal.description }}
+                </p>
+            {% endif %}
+            {% if goal.arc %}
+                <div class="pt-1">
+                    <a href="{% url 'arcs:detail' goal.arc.pk %}" class="btn-ghost text-xs">
+                        ← Back to {{ goal.arc.name }}
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 self-start sm:self-auto">
+            <a href="#milestone-form" class="btn-primary text-xs uppercase tracking-widest px-6 py-2.5">
+                Add Milestone
+            </a>
+            <a href="{% url 'goals:update' goal.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2.5">
+                Edit Goal
+            </a>
+            <a href="{% url 'goals:delete' goal.pk %}" class="text-xs font-mono text-crimson-light/70 hover:text-crimson transition-colors px-2 py-2">
+                Delete
+            </a>
         </div>
     </div>
 
-    <!-- Goal Header Card -->
-    <div class="arc-card space-y-6">
-        <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+    <!-- Progress Card -->
+    <div class="wa-card space-y-4">
+        <div class="flex justify-between items-baseline">
+            <span class="section-eyebrow">Calculated Progression</span>
+            <span class="font-serif text-3xl text-crimson font-light">{{ goal.progress_percentage }}<span class="text-xl text-slate-400">%</span></span>
+        </div>
+        <div class="progress-bar-track">
+            <div class="progress-bar-fill" style="width: {{ goal.progress_percentage }}%;"></div>
+        </div>
+        <div class="flex justify-between text-xs font-mono text-ice/60 pt-1">
+            <span>Current: {{ goal.current_value }} {{ goal.unit }}</span>
+            <span>Target: {{ goal.target_value }} {{ goal.unit }}</span>
+        </div>
+    </div>
+
+    <!-- Milestones Section -->
+    <div class="space-y-6">
+        <div class="flex justify-between items-center border-b border-steel/20 pb-4">
             <div>
-                <h1 class="text-3xl font-extrabold text-bone tracking-tight mb-2">{{ goal.title }}</h1>
-                <div class="flex flex-wrap gap-2.5 items-center text-xs text-bone-muted">
-                    <span class="px-2.5 py-0.5 rounded-full font-semibold bg-ink-surface text-bone-dim border border-white/5">
-                        {{ goal.get_category_display }}
-                    </span>
-                    <span>
-                        {% if goal.deadline %}Due {{ goal.deadline|date:"M j, Y" }}{% else %}No deadline{% endif %}
-                    </span>
-                </div>
-            </div>
-            
-            <div class="text-left md:text-right bg-ink-surface p-3.5 rounded-xl border border-white/5 md:bg-transparent md:border-0 md:p-0">
-                <div class="text-3xl font-extrabold text-ice">{{ goal.progress_percentage }}<span class="text-lg text-bone-muted font-normal">%</span></div>
-                <div class="text-[10px] text-bone-muted uppercase tracking-wider font-bold mt-0.5">Progress Ratio</div>
+                <span class="section-eyebrow">Checkpoints</span>
+                <h2 class="section-heading">Milestones</h2>
             </div>
         </div>
 
-        <!-- Progress Track -->
-        <div class="w-full bg-ink-surface rounded-full h-2 overflow-hidden border border-white/5">
-            <div class="bg-gradient-to-r from-blue-500 to-ice h-2 rounded-full transition-all duration-500" style="width: {{ goal.progress_percentage }}%"></div>
-        </div>
-
-        {% if goal.description %}
-        <div class="p-4 rounded-xl bg-ink-surface border border-white/5">
-            <p class="text-bone-dim text-sm leading-relaxed whitespace-pre-line">{{ goal.description }}</p>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- Milestones Card -->
-    <div class="arc-card space-y-6">
-        <h2 class="text-lg font-bold text-bone tracking-tight">Milestones</h2>
-        
-        {% if milestones %}
-        <div class="space-y-2.5">
-            {% for milestone in milestones %}
-                <div class="flex items-center justify-between p-3.5 rounded-xl border transition-all
-                    {% if milestone.is_completed %}
-                        bg-ink-surface/50 border-white/5 text-bone-muted
-                    {% else %}
-                        bg-ink-surface border-white/10 text-bone
-                    {% endif %}">
-                    
-                    <div class="flex items-center gap-3.5 min-w-0">
-                        <form method="post" action="{% url 'goals:milestone_toggle' milestone.pk %}">
-                            {% csrf_token %}
-                            <button type="submit" class="w-5 h-5 rounded-md border flex items-center justify-center transition-all text-xs font-bold
-                                {% if milestone.is_completed %}
-                                    bg-ice border-ice text-ink
-                                {% else %}
-                                    bg-ink-card border-white/20 text-transparent hover:border-ice
-                                {% endif %}">
-                                ✓
-                            </button>
-                        </form>
-                        
-                        <div class="min-w-0">
-                            <p class="text-sm font-semibold truncate {% if milestone.is_completed %}line-through text-bone-muted{% endif %}">
-                                {{ milestone.title }}
-                            </p>
-                            {% if milestone.due_date %}
-                                <p class="text-[11px] text-bone-muted mt-0.5">Target: {{ milestone.due_date|date:"M j, Y" }}</p>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <form method="post" action="{% url 'goals:milestone_delete' milestone.pk %}" class="flex-shrink-0">
-                        {% csrf_token %}
-                        <button type="submit" class="text-bone-muted hover:text-red-400 text-xs px-2 py-1 rounded transition-colors">
-                            &times;
-                        </button>
-                    </form>
-                </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <div class="text-center py-6 text-xs text-bone-muted">
-            No milestones added yet. Add sub-objectives below to track progress.
-        </div>
-        {% endif %}
-
-        <!-- Add Milestone Form -->
-        <div class="pt-6 border-t border-white/5">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-bone-muted mb-3">+ Add New Milestone</h3>
-            <form method="post" action="{% url 'goals:milestone_create' goal.pk %}" class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+        <!-- Add Milestone Inline Form -->
+        <div id="milestone-form" class="wa-card bg-surface/70 border border-steel/30 p-5">
+            <h3 class="font-serif text-sm text-bone font-medium mb-3">Add Milestone Checkpoint</h3>
+            <form method="post" action="{% url 'goals:milestone_create' goal.pk %}" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
                 {% csrf_token %}
+                <div class="sm:col-span-7">
+                    <label for="id_title" class="block text-xs font-mono uppercase tracking-widest text-ice/60 mb-1">Checkpoint Title</label>
+                    <input type="text" name="title" id="id_title" required placeholder="e.g. Complete Chapters 1 to 5" 
+                           class="w-full bg-void border border-steel/40 text-bone px-3 py-2 text-sm focus:border-crimson focus:outline-none transition-colors">
+                </div>
+                <div class="sm:col-span-3">
+                    <label for="id_due_date" class="block text-xs font-mono uppercase tracking-widest text-ice/60 mb-1">Target Date</label>
+                    <input type="date" name="due_date" id="id_due_date" 
+                           class="w-full bg-void border border-steel/40 text-bone px-3 py-2 text-sm focus:border-crimson focus:outline-none transition-colors">
+                </div>
                 <div class="sm:col-span-2">
-                    {{ milestone_form.title|add_class:"input-text text-xs !py-2" }}
-                </div>
-                <div>
-                    {{ milestone_form.due_date|add_class:"input-text text-xs !py-2" }}
-                </div>
-                <div>
-                    <button type="submit" class="btn-primary w-full text-xs !py-2">
+                    <button type="submit" class="w-full btn-primary text-xs uppercase tracking-widest py-2.5 text-center">
                         Add
                     </button>
                 </div>
             </form>
         </div>
+
+        {% if milestones %}
+            <div class="space-y-2">
+                {% for m in milestones %}
+                    <div class="task-row justify-between">
+                        <div class="flex items-center gap-4 min-w-0">
+                            <form method="post" action="{% url 'goals:milestone_toggle' m.pk %}" class="flex-shrink-0">
+                                {% csrf_token %}
+                                <button type="submit" 
+                                        class="w-5 h-5 border {% if m.is_completed %}bg-crimson border-crimson text-bone{% else %}border-steel/50 hover:border-crimson text-transparent hover:text-crimson-light{% endif %} flex items-center justify-center text-xs transition-colors"
+                                        title="Toggle milestone">
+                                    ✓
+                                </button>
+                            </form>
+                            <div class="min-w-0">
+                                <span class="text-sm font-medium {% if m.is_completed %}line-through text-ice/50{% else %}text-bone{% endif %} block truncate">
+                                    {{ m.title }}
+                                </span>
+                                {% if m.due_date %}
+                                    <span class="font-mono text-[11px] text-ice/50 block mt-0.5">Target: {{ m.due_date|date:"M j, Y" }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 flex-shrink-0">
+                            <form method="post" action="{% url 'goals:milestone_delete' m.pk %}" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="text-xs font-mono text-crimson-light/70 hover:text-crimson transition-colors" title="Delete milestone">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="wa-empty">
+                <p class="wa-empty-title">No milestones set.</p>
+                <p class="wa-empty-body">Milestones are measurable checkpoints that prove progress toward this goal.</p>
+                <div class="pt-2">
+                    <a href="{% url 'goals:milestone_create' goal_id=goal.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5 inline-flex">
+                        Add Milestone
+                    </a>
+                </div>
+            </div>
+        {% endif %}
     </div>
+
 </div>
 {% endblock %}

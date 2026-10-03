@@ -27,12 +27,11 @@ class Arc(models.Model):
         super().clean()
         if self.start_date and self.end_date and self.start_date > self.end_date:
             raise ValidationError('Start date cannot be after end date.')
-        
-        # Ensure only one primary active arc
-        if self.is_primary:
-            primary_arcs = Arc.objects.filter(user=self.user, is_primary=True).exclude(pk=self.pk)
-            if primary_arcs.exists():
-                raise ValidationError('User can have at most one primary active Arc.')
+
+    def save(self, *args, **kwargs):
+        if self.is_primary and self.user_id:
+            Arc.objects.filter(user_id=self.user_id, is_primary=True).exclude(pk=self.pk).update(is_primary=False)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name} ({self.user.username})"
