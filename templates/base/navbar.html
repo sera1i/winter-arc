@@ -20,20 +20,24 @@
             <div class="hidden md:flex items-center gap-7">
                 {% if user.is_authenticated %}
                     <a href="{% url 'dashboard' %}" 
-                       class="{% if request.resolver_match.url_name == 'dashboard' %}nav-link-active{% else %}nav-link{% endif %}">
+                       class="{% if request.resolver_match.view_name == 'dashboard' %}nav-link-active{% else %}nav-link{% endif %}">
                         Dashboard
                     </a>
                     <a href="{% url 'arcs:list' %}" 
-                       class="{% if 'arcs' in request.path %}nav-link-active{% else %}nav-link{% endif %}">
+                       class="{% if request.resolver_match.app_name == 'arcs' %}nav-link-active{% else %}nav-link{% endif %}">
                         Arcs
                     </a>
                     <a href="{% url 'tasks:list' %}" 
-                       class="{% if 'tasks' in request.path %}nav-link-active{% else %}nav-link{% endif %}">
+                       class="{% if request.resolver_match.app_name == 'tasks' %}nav-link-active{% else %}nav-link{% endif %}">
                         Tasks
                     </a>
                     <a href="{% url 'habits:list' %}" 
-                       class="{% if 'habits' in request.path %}nav-link-active{% else %}nav-link{% endif %}">
+                       class="{% if request.resolver_match.app_name == 'habits' %}nav-link-active{% else %}nav-link{% endif %}">
                         Habits
+                    </a>
+                    <a href="{% url 'analytics:index' %}" 
+                       class="{% if request.resolver_match.app_name == 'analytics' %}nav-link-active{% else %}nav-link{% endif %}">
+                        Analytics
                     </a>
                 {% else %}
                     <a href="/#how-it-works" class="nav-link">How it works</a>
@@ -45,6 +49,19 @@
             <!-- Desktop Right Actions -->
             <div class="hidden md:flex items-center gap-5">
                 {% if user.is_authenticated %}
+                    <a href="{% url 'notifications:list' %}" 
+                       class="relative p-1.5 text-ice/70 hover:text-bone transition-colors"
+                       title="Notifications"
+                       aria-label="View notifications">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        {% if unread_notifications_count > 0 %}
+                            <span class="absolute -top-1 -right-1 px-1.5 py-0.2 bg-crimson text-bone font-mono text-[10px] font-bold leading-tight">
+                                {{ unread_notifications_count }}
+                            </span>
+                        {% endif %}
+                    </a>
                     <a href="{% url 'profile' %}" 
                        class="font-mono text-xs text-ice/70 hover:text-bone transition-colors border border-steel/30 px-3 py-1.5 tracking-wide truncate max-w-[140px]"
                        title="{{ user.username }}">
@@ -93,6 +110,15 @@
             <a href="{% url 'arcs:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Arcs</a>
             <a href="{% url 'tasks:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Tasks</a>
             <a href="{% url 'habits:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Habits</a>
+            <a href="{% url 'analytics:index' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Analytics</a>
+            <a href="{% url 'notifications:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors flex items-center justify-between" role="menuitem">
+                <span>Notifications</span>
+                {% if unread_notifications_count > 0 %}
+                    <span class="px-2 py-0.5 bg-crimson text-bone font-mono text-[10px] font-bold">
+                        {{ unread_notifications_count }}
+                    </span>
+                {% endif %}
+            </a>
             <a href="{% url 'profile' %}" class="block text-ice/80 hover:text-bone text-sm font-mono py-3 border-b border-steel/15 transition-colors" role="menuitem">Profile — {{ user.username }}</a>
             <div class="pt-4">
                 <form method="post" action="{% url 'logout' %}">

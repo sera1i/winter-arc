@@ -25,6 +25,15 @@ def arc_create(request):
             arc = form.save(commit=False)
             arc.user = request.user
             arc.save()
+            from analytics.services import log_activity
+            log_activity(
+                user=request.user,
+                event_type='ARC_STARTED',
+                title=f'Sworn: {arc.name}',
+                arc=arc,
+                source_type='arc',
+                source_id=arc.pk
+            )
             messages.success(request, 'Winter Arc created successfully!')
             return redirect('arcs:detail', pk=arc.pk)
     else:
@@ -102,6 +111,25 @@ def arc_complete(request, pk):
         arc.status = 'COMPLETED'
         arc.is_primary = False
         arc.save()
+        from gamification.services import award_xp, check_and_unlock_achievements
+        from analytics.services import log_activity
+        
+        award_xp(
+            user=request.user,
+            source_type='arc',
+            source_id=arc.pk,
+            description=f'Completed Winter Arc: {arc.name}',
+            arc=arc
+        )
+        log_activity(
+            user=request.user,
+            event_type='ARC_COMPLETED',
+            title=f'Crucible Concluded: {arc.name}',
+            arc=arc,
+            source_type='arc',
+            source_id=arc.pk
+        )
+        check_and_unlock_achievements(request.user)
         messages.success(request, f'Winter Arc "{arc.name}" marked as completed. Well done.')
     return redirect(request.META.get('HTTP_REFERER') or 'arcs:detail', pk=arc.pk)
 

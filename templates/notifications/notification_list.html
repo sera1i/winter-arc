@@ -1,0 +1,122 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Notifications | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container pt-8 sm:pt-10">
+
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">Dispatches</span>
+            <h1 class="page-title">Notifications</h1>
+            <p class="page-subtitle">
+                System signals, deadlines, habit reminders, and rank advancements.
+            </p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'notifications:preferences' %}" class="btn-ghost text-xs uppercase tracking-widest px-4 py-2.5">
+                Preferences
+            </a>
+            {% if unread_count > 0 %}
+                <form method="post" action="{% url 'notifications:mark_all_read' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-4 py-2.5">
+                        Mark All As Read
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="flex items-center gap-4 border-b border-steel/20 pb-4 mb-6">
+        <a href="{% url 'notifications:list' %}" 
+           class="font-mono text-xs uppercase tracking-wider pb-1 transition-colors {% if filter_type != 'unread' %}text-bone border-b-2 border-crimson font-medium{% else %}text-ice/60 hover:text-bone{% endif %}">
+            All Dispatches
+        </a>
+        <a href="{% url 'notifications:list' %}?filter=unread" 
+           class="font-mono text-xs uppercase tracking-wider pb-1 transition-colors flex items-center gap-1.5 {% if filter_type == 'unread' %}text-bone border-b-2 border-crimson font-medium{% else %}text-ice/60 hover:text-bone{% endif %}">
+            Unread
+            {% if unread_count > 0 %}
+                <span class="px-1.5 py-0.2 bg-crimson text-bone text-[10px] rounded-none font-bold">
+                    {{ unread_count }}
+                </span>
+            {% endif %}
+        </a>
+    </div>
+
+    <!-- Notification Feed -->
+    {% if page_obj %}
+        <div class="space-y-3">
+            {% for n in page_obj %}
+                <div class="wa-card transition-all {% if not n.is_read %}border-l-4 border-l-crimson bg-steel/10{% else %}opacity-75{% endif %} flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="space-y-1 sm:max-w-3xl">
+                        <div class="flex items-center gap-3">
+                            <span class="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 border {% if n.notification_type == 'TASK_OVERDUE' or n.notification_type == 'ARC_DEADLINE' %}border-crimson/50 text-crimson-light bg-crimson/10{% elif n.notification_type == 'RANK_ACHIEVED' or n.notification_type == 'ACHIEVEMENT_UNLOCKED' %}border-amber-500/50 text-amber-300 bg-amber-500/10{% else %}border-steel/40 text-ice/70 bg-steel/20{% endif %}">
+                                {{ n.get_notification_type_display }}
+                            </span>
+                            <span class="font-mono text-[11px] text-ice/50">
+                                {{ n.created_at|date:"M d, H:i" }}
+                            </span>
+                            {% if not n.is_read %}
+                                <span class="w-1.5 h-1.5 rounded-full bg-crimson inline-block" title="Unread"></span>
+                            {% endif %}
+                        </div>
+
+                        <h2 class="font-serif text-lg text-bone font-medium">
+                            {{ n.title }}
+                        </h2>
+
+                        <p class="text-sm text-ice/80 leading-relaxed font-sans">
+                            {{ n.message }}
+                        </p>
+                    </div>
+
+                    <div class="shrink-0 flex items-center gap-3 self-end sm:self-center">
+                        {% if not n.is_read %}
+                            <form method="post" action="{% url 'notifications:mark_read' n.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" 
+                                        class="font-mono text-[11px] uppercase tracking-wider text-ice/70 hover:text-bone border border-steel/30 hover:border-steel px-3 py-1.5 transition-colors"
+                                        aria-label="Mark notification as read">
+                                    Mark Read
+                                </button>
+                            </form>
+                        {% else %}
+                            <span class="font-mono text-[10px] text-ice/40 tracking-wider uppercase">
+                                Read
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+            <div class="flex justify-center items-center gap-3 pt-8 font-mono text-xs">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}{% if filter_type == 'unread' %}&filter=unread{% endif %}" class="btn-ghost px-3 py-1">Previous</a>
+                {% endif %}
+                <span class="text-ice/60">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if filter_type == 'unread' %}&filter=unread{% endif %}" class="btn-ghost px-3 py-1">Next</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    {% else %}
+        <div class="wa-card text-center py-12">
+            <p class="font-serif text-xl text-bone mb-2">No notifications found.</p>
+            <p class="font-sans text-xs text-ice/60">
+                {% if filter_type == 'unread' %}
+                    You have caught up with all current system dispatches.
+                {% else %}
+                    No notification events have been recorded yet.
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

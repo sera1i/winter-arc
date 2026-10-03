@@ -1,0 +1,303 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Analytics &amp; Ranks | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container pt-8 sm:pt-10">
+
+    <!-- Header & Arc Scope Selector -->
+    <div class="border-b border-steel/20 pb-8 mb-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-5">
+            <div>
+                <span class="page-eyebrow">VI · Analytics &amp; Ranks</span>
+                <h1 class="font-serif text-4xl sm:text-5xl text-bone mt-1 leading-tight">
+                    Progress &amp; Ledger
+                </h1>
+                <p class="font-sans text-sm text-ice/50 mt-2 max-w-xl">
+                    Every statistic, XP event, and badge is derived strictly from verified historical action. No fabricated metrics.
+                </p>
+            </div>
+
+            <!-- Arc Filter Dropdown Form -->
+            {% if user_arcs %}
+            <form method="get" action="{% url 'analytics:index' %}" class="flex items-center gap-3">
+                <label for="arc_select" class="font-mono text-xs text-ice/50 uppercase tracking-wider">Scope Arc:</label>
+                <select id="arc_select" name="arc_id" onchange="this.form.submit()" 
+                        class="bg-ink/80 border border-steel/30 text-bone text-xs font-mono px-3 py-2 focus:outline-none focus:border-crimson">
+                    {% for a in user_arcs %}
+                        <option value="{{ a.pk }}" {% if selected_arc and selected_arc.pk == a.pk %}selected{% endif %}>
+                            {{ a.name }}{% if a.is_primary %} (Primary){% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Rank & Progression Banner -->
+    <section class="wa-card mb-8 space-y-6" aria-labelledby="rank-heading">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-steel/15 pb-6">
+            <div>
+                <span class="section-eyebrow">Current Standing</span>
+                <div class="flex items-baseline gap-4 mt-1">
+                    <h2 id="rank-heading" class="font-serif text-3xl sm:text-4xl text-bone font-medium">
+                        {{ rank_info.current_rank }}
+                    </h2>
+                    <span class="font-mono text-sm text-crimson-light font-medium">Tier {{ rank_info.current_level }}</span>
+                </div>
+                <p class="font-mono text-xs text-ice/50 mt-1">
+                    Verified Total: <strong class="text-bone font-normal">{{ rank_info.current_xp }} XP</strong>
+                </p>
+            </div>
+
+            <div class="w-full md:w-72 space-y-2">
+                <div class="flex justify-between items-center text-xs font-mono">
+                    {% if rank_info.is_max_rank %}
+                        <span class="text-crimson-light">Maximum Rank Attained</span>
+                        <span class="text-ice/40">Warden of the Watch</span>
+                    {% else %}
+                        <span class="text-ice/60">Next: {{ rank_info.next_rank }}</span>
+                        <span class="text-crimson-light">{{ rank_info.xp_to_next }} XP remaining</span>
+                    {% endif %}
+                </div>
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" style="width: {{ rank_info.progress_percentage }}%;"></div>
+                </div>
+                <div class="text-right font-mono text-[10px] text-ice/40">
+                    {{ rank_info.progress_percentage }}% tier progression
+                </div>
+            </div>
+        </div>
+
+        <!-- Four Ranks Ladder Reference -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div class="p-3 border {% if rank_info.current_rank == 'Recruit' %}border-crimson bg-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
+                <span class="font-mono text-[10px] uppercase text-ice/40 block">Tier I</span>
+                <span class="font-serif text-base text-bone font-medium">Recruit</span>
+                <span class="font-mono text-[11px] text-ice/50 block mt-1">0 – 299 XP</span>
+            </div>
+            <div class="p-3 border {% if rank_info.current_rank == 'Sentinel' %}border-crimson bg-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
+                <span class="font-mono text-[10px] uppercase text-ice/40 block">Tier II</span>
+                <span class="font-serif text-base text-bone font-medium">Sentinel</span>
+                <span class="font-mono text-[11px] text-ice/50 block mt-1">300 – 899 XP</span>
+            </div>
+            <div class="p-3 border {% if rank_info.current_rank == 'Ranger' %}border-crimson bg-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
+                <span class="font-mono text-[10px] uppercase text-ice/40 block">Tier III</span>
+                <span class="font-serif text-base text-bone font-medium">Ranger</span>
+                <span class="font-mono text-[11px] text-ice/50 block mt-1">900 – 1,999 XP</span>
+            </div>
+            <div class="p-3 border {% if rank_info.current_rank == 'Warden' %}border-crimson bg-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
+                <span class="font-mono text-[10px] uppercase text-ice/40 block">Tier IV</span>
+                <span class="font-serif text-base text-bone font-medium">Warden</span>
+                <span class="font-mono text-[11px] text-ice/50 block mt-1">2,000+ XP</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Metrics Summary Row -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Arc Completion</span>
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">
+                {{ arc_progress }}%
+            </div>
+            <div class="font-mono text-[10px] text-ice/40 mt-1 truncate">
+                {% if selected_arc %}{{ selected_arc.name }}{% else %}No Arc Selected{% endif %}
+            </div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Task Success Rate</span>
+            <div class="font-serif text-3xl sm:text-4xl text-crimson-light font-medium mt-1">
+                {{ task_stats.completion_rate }}%
+            </div>
+            <div class="font-mono text-[10px] text-ice/40 mt-1">
+                {{ task_stats.completed }} done / {{ task_stats.total }} total
+            </div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Habit Longest Streak</span>
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">
+                {{ habit_stats.top_current_streak }}<span class="text-ice/40 text-lg font-mono">d</span>
+            </div>
+            <div class="font-mono text-[10px] text-ice/40 mt-1">
+                Historical Best: {{ habit_stats.top_best_streak }}d
+            </div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">30-Day Consistency</span>
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">
+                {{ habit_stats.consistency_rate }}%
+            </div>
+            <div class="font-mono text-[10px] text-ice/40 mt-1">
+                {{ habit_stats.completions_30d }} habit beacons lit
+            </div>
+        </div>
+    </div>
+
+    <!-- 7-Day Activity Horizon Chart (Accessible CSS Bar Grid) -->
+    <section class="wa-card mb-8 space-y-4" aria-labelledby="activity-horizon-heading">
+        <div class="flex items-center justify-between border-b border-steel/15 pb-4">
+            <div>
+                <span class="section-eyebrow">Momentum</span>
+                <h2 id="activity-horizon-heading" class="section-heading">7-Day Execution Horizon</h2>
+            </div>
+            <div class="flex items-center gap-4 text-xs font-mono">
+                <span class="flex items-center gap-1.5 text-ice/70">
+                    <span class="w-2.5 h-2.5 bg-crimson inline-block"></span> Tasks
+                </span>
+                <span class="flex items-center gap-1.5 text-ice/70">
+                    <span class="w-2.5 h-2.5 bg-steel/60 inline-block"></span> Habits
+                </span>
+            </div>
+        </div>
+
+        <div class="pt-4">
+            <div class="grid grid-cols-7 gap-2 sm:gap-4 items-end h-48 border-b border-steel/20 pb-2">
+                {% for label in activity_7d.labels %}
+                    {% with task_count=activity_7d.tasks_data|slice:forloop.counter0|last habit_count=activity_7d.habits_data|slice:forloop.counter0|last %}
+                    <div class="flex flex-col items-center justify-end h-full gap-1">
+                        <div class="w-full flex items-end justify-center gap-1 h-36">
+                            <!-- Task bar -->
+                            <div class="w-3 sm:w-4 bg-crimson transition-all"
+                                 style="height: {% if task_count %}{% widthratio task_count 5 100 %}{% else %}4{% endif %}%; min-height: 4px;"
+                                 title="{{ task_count }} tasks on {{ label }}"></div>
+                            <!-- Habit bar -->
+                            <div class="w-3 sm:w-4 bg-steel/50 transition-all"
+                                 style="height: {% if habit_count %}{% widthratio habit_count 5 100 %}{% else %}4{% endif %}%; min-height: 4px;"
+                                 title="{{ habit_count }} habits on {{ label }}"></div>
+                        </div>
+                        <span class="font-mono text-[10px] sm:text-xs text-ice/50 truncate">{{ label }}</span>
+                    </div>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+            <div class="flex justify-between items-center text-xs font-mono text-ice/40 pt-3">
+                <span>Total Tasks This Week: <strong class="text-bone">{{ activity_7d.total_tasks_period }}</strong></span>
+                <span>Habit Beacons Lit: <strong class="text-bone">{{ activity_7d.total_habits_period }}</strong></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Two Column Layout: Goals Progression + Achievements -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-8">
+
+        <!-- Goals Breakdown (7 cols) -->
+        <section class="lg:col-span-7 wa-card space-y-4" aria-labelledby="goals-progress-heading">
+            <div class="flex items-center justify-between border-b border-steel/15 pb-4">
+                <div>
+                    <span class="section-eyebrow">Strategic Focus</span>
+                    <h2 id="goals-progress-heading" class="section-heading">Active Goals Progress</h2>
+                </div>
+            </div>
+
+            {% if goals_data %}
+                <div class="space-y-4">
+                    {% for g in goals_data %}
+                        <div class="p-4 bg-steel/5 border border-steel/20 space-y-2.5">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="badge-pending text-[9px]">{{ g.goal.category }}</span>
+                                    <h3 class="font-serif text-lg text-bone mt-1">{{ g.goal.title }}</h3>
+                                </div>
+                                <span class="font-serif text-xl text-crimson font-light">{{ g.progress }}%</span>
+                            </div>
+                            <div class="progress-bar-track">
+                                <div class="progress-bar-fill" style="width: {{ g.progress }}%;"></div>
+                            </div>
+                            <div class="flex justify-between items-center font-mono text-[11px] text-ice/50">
+                                <span>{{ g.completed_milestones }} of {{ g.total_milestones }} checkpoints reached</span>
+                                <a href="{% url 'goals:detail' g.goal.pk %}" class="text-bone hover:text-crimson-light underline">Inspect →</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="wa-empty">
+                    <p class="wa-empty-title">No goals attached to this Arc.</p>
+                    <p class="wa-empty-body">Attach strategic goals to calculate measurable completion rates.</p>
+                </div>
+            {% endif %}
+        </section>
+
+        <!-- Achievements & Badges (5 cols) -->
+        <section class="lg:col-span-5 wa-card space-y-4" aria-labelledby="achievements-heading">
+            <div class="flex items-center justify-between border-b border-steel/15 pb-4">
+                <div>
+                    <span class="section-eyebrow">Honor &amp; Milestones</span>
+                    <h2 id="achievements-heading" class="section-heading">Crucible Badges</h2>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                {% for item in achievements_display %}
+                    <div class="p-3.5 border {% if item.is_unlocked %}border-crimson/50 bg-crimson/8{% else %}border-steel/20 bg-steel/5 opacity-60{% endif %} flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="font-mono text-xs font-bold {% if item.is_unlocked %}text-crimson-light{% else %}text-ice/40{% endif %}">
+                                    {% if item.is_unlocked %}✓{% else %}○{% endif %}
+                                </span>
+                                <span class="font-serif text-sm text-bone font-medium truncate">{{ item.achievement.name }}</span>
+                            </div>
+                            <p class="text-xs text-ice/50 mt-1 line-clamp-2">{{ item.achievement.description }}</p>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <span class="font-mono text-xs text-crimson-light font-medium">+{{ item.achievement.xp_reward }} XP</span>
+                            <span class="block font-mono text-[10px] text-ice/40 mt-0.5">
+                                {% if item.is_unlocked %}UNLOCKED{% else %}LOCKED{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="wa-empty">
+                        <p class="wa-empty-title">Badges will appear as criteria are met.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Verified Activity Log Ledger -->
+    <section class="wa-card space-y-4 mb-8" aria-labelledby="ledger-heading">
+        <div class="flex items-center justify-between border-b border-steel/15 pb-4">
+            <div>
+                <span class="section-eyebrow">Persistent Audit</span>
+                <h2 id="ledger-heading" class="section-heading">Verified Activity Ledger</h2>
+            </div>
+            <span class="font-mono text-xs text-ice/40">{{ recent_events.count }} records</span>
+        </div>
+
+        {% if recent_events %}
+            <div class="divide-y divide-steel/10">
+                {% for ev in recent_events %}
+                    <div class="py-3.5 flex items-center justify-between gap-4">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2.5">
+                                <span class="badge-active text-[9px]">{{ ev.event_type }}</span>
+                                <span class="font-sans text-sm text-bone font-medium truncate">{{ ev.title }}</span>
+                            </div>
+                            {% if ev.arc %}
+                                <span class="font-mono text-[10px] text-ice/40 block mt-0.5">
+                                    Arc: {{ ev.arc.name }}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <span class="font-mono text-xs text-ice/50 block">
+                                {{ ev.created_at|date:"M j, Y H:i" }}
+                            </span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="wa-empty">
+                <p class="wa-empty-title">The ledger is empty.</p>
+                <p class="wa-empty-body">Begin daily task and habit executions to record immutable event proof.</p>
+            </div>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

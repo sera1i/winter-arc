@@ -89,9 +89,22 @@ def dashboard_view(request):
     habits_done_today = sum(1 for h in habit_data if h['completed_today'])
     top_streaks = sorted(habit_data, key=lambda x: x['streak'], reverse=True)[:3]
 
+    # Progress and Gamification metrics from real persisted data
+    from gamification.services import get_user_rank, get_user_total_xp
+    from analytics.progress_services import calculate_arc_progress
+    from analytics.models import ActivityEvent
+
+    rank_info = get_user_rank(user)
+    total_xp = get_user_total_xp(user)
+    arc_progress = calculate_arc_progress(primary_arc) if primary_arc else 0
+    recent_activity = ActivityEvent.objects.filter(user=user)[:5]
+
     context = {
         'primary_arc': primary_arc,
         'active_arcs': active_arcs,
+        'arc_progress': arc_progress,
+        'rank_info': rank_info,
+        'total_xp': total_xp,
         'goals': goals,
         'pending_tasks': pending_tasks,
         'total_pending_count': total_pending_count,
@@ -101,5 +114,6 @@ def dashboard_view(request):
         'total_habits': active_habits.count(),
         'top_streaks': top_streaks,
         'today': today,
+        'recent_activity': recent_activity,
     }
     return render(request, 'accounts/dashboard.html', context)

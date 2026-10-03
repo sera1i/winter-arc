@@ -88,6 +88,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notifications.context_processors.notification_context',
             ],
         },
     },
@@ -181,6 +182,26 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+
+# Celery Beat Schedule
+CELERY_BEAT_SCHEDULE = {
+    'process-due-tasks-every-15-mins': {
+        'task': 'notifications.tasks.process_due_task_notifications',
+        'schedule': 900.0, # Every 15 minutes
+    },
+    'process-habit-reminders-every-hour': {
+        'task': 'notifications.tasks.process_habit_reminders',
+        'schedule': 3600.0, # Every hour
+    },
+    'process-deadlines-every-4-hours': {
+        'task': 'notifications.tasks.process_deadline_notifications',
+        'schedule': 14400.0, # Every 4 hours
+    },
+    'process-streak-milestones-every-hour': {
+        'task': 'notifications.tasks.process_streak_notifications',
+        'schedule': 3600.0, # Every hour
+    },
+}
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 LOGIN_REDIRECT_URL = 'dashboard'

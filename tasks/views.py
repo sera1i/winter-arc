@@ -34,6 +34,16 @@ def task_create(request):
             if task.goal and task.goal.user != request.user:
                 task.goal = None
             task.save()
+            from analytics.services import log_activity
+            arc = task.goal.arc if task.goal else None
+            log_activity(
+                user=request.user,
+                event_type='TASK_CREATED',
+                title=task.title,
+                arc=arc,
+                source_type='task',
+                source_id=task.pk
+            )
             messages.success(request, f'Task "{task.title}" created.')
             return redirect('tasks:detail', pk=task.pk)
     else:
@@ -68,7 +78,31 @@ def task_update(request, pk):
 def task_complete(request, pk):
     if request.method == 'POST':
         task = get_object_or_404(Task, pk=pk, user=request.user)
+        was_completed = task.is_completed
         task.complete()
+        
+        from gamification.services import award_xp, check_and_unlock_achievements
+        from analytics.services import log_activity
+
+        arc = task.goal.arc if task.goal else None
+        event, created = award_xp(
+            user=request.user,
+            source_type='task',
+            source_id=task.pk,
+            description=f'Completed task: {task.title}',
+            arc=arc
+        )
+        if not was_completed:
+            log_activity(
+                user=request.user,
+                event_type='TASK_COMPLETED',
+                title=f'Completed: {task.title}',
+                arc=arc,
+                source_type='task',
+                source_id=task.pk
+            )
+            check_and_unlock_achievements(request.user)
+
         messages.success(request, 'Done. The frost gives way.')
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
         if next_url:

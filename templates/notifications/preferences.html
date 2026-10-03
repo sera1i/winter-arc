@@ -1,0 +1,98 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Notification Preferences | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container pt-8 sm:pt-10 max-w-3xl">
+
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">Settings</span>
+            <h1 class="page-title">Notification Channels & Alerts</h1>
+            <p class="page-subtitle">
+                Configure which reminders and automated dispatches reach your feed.
+            </p>
+        </div>
+        <a href="{% url 'notifications:list' %}" class="btn-ghost text-xs uppercase tracking-widest px-4 py-2.5">
+            Back to Feed
+        </a>
+    </div>
+
+    <form method="post" class="wa-card space-y-6">
+        {% csrf_token %}
+
+        <div class="space-y-4">
+            <h2 class="font-serif text-lg text-bone border-b border-steel/20 pb-2">
+                Automated Reminders
+            </h2>
+
+            <div class="flex items-start gap-3">
+                <input type="checkbox" name="task_reminders_enabled" id="id_task_reminders_enabled" 
+                       {% if form.task_reminders_enabled.value %}checked{% endif %}
+                       class="mt-1 h-4 w-4 bg-ink border-steel/40 text-crimson focus:ring-crimson">
+                <label for="id_task_reminders_enabled" class="cursor-pointer">
+                    <span class="block text-sm font-sans font-medium text-bone">Task Due & Overdue Alerts</span>
+                    <span class="block text-xs text-ice/60">Receive notices when tasks are due within 24 hours or past their deadline.</span>
+                </label>
+            </div>
+
+            <div class="flex items-start gap-3">
+                <input type="checkbox" name="habit_reminders_enabled" id="id_habit_reminders_enabled" 
+                       {% if form.habit_reminders_enabled.value %}checked{% endif %}
+                       class="mt-1 h-4 w-4 bg-ink border-steel/40 text-crimson focus:ring-crimson">
+                <label for="id_habit_reminders_enabled" class="cursor-pointer">
+                    <span class="block text-sm font-sans font-medium text-bone">Habit Reminders & Streak Milestones</span>
+                    <span class="block text-xs text-ice/60">Daily reminders for unlit habit beacons and celebration of 7d & 30d streaks.</span>
+                </label>
+            </div>
+
+            <div class="flex items-start gap-3">
+                <input type="checkbox" name="deadline_reminders_enabled" id="id_deadline_reminders_enabled" 
+                       {% if form.deadline_reminders_enabled.value %}checked{% endif %}
+                       class="mt-1 h-4 w-4 bg-ink border-steel/40 text-crimson focus:ring-crimson">
+                <label for="id_deadline_reminders_enabled" class="cursor-pointer">
+                    <span class="block text-sm font-sans font-medium text-bone">Strategic Goal & Arc Deadlines</span>
+                    <span class="block text-xs text-ice/60">Advance notices when goals or full Arc seasons conclude within 7 days.</span>
+                </label>
+            </div>
+
+            <div class="flex items-start gap-3">
+                <input type="checkbox" name="gamification_alerts_enabled" id="id_gamification_alerts_enabled" 
+                       {% if form.gamification_alerts_enabled.value %}checked{% endif %}
+                       class="mt-1 h-4 w-4 bg-ink border-steel/40 text-crimson focus:ring-crimson">
+                <label for="id_gamification_alerts_enabled" class="cursor-pointer">
+                    <span class="block text-sm font-sans font-medium text-bone">Rank Promotions & Badge Unlocks</span>
+                    <span class="block text-xs text-ice/60">Dispatches whenever your tier advances or a new honor badge is unlocked.</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="space-y-4 pt-4 border-t border-steel/20">
+            <h2 class="font-serif text-lg text-bone border-b border-steel/20 pb-2">
+                Quiet Hours (Optional)
+            </h2>
+            <p class="text-xs text-ice/60">
+                Specify hours during which non-critical reminder generation should be suppressed.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-mono uppercase text-ice/70 mb-1" for="id_quiet_start">Quiet Start</label>
+                    {{ form.quiet_start }}
+                </div>
+                <div>
+                    <label class="block text-xs font-mono uppercase text-ice/70 mb-1" for="id_quiet_end">Quiet End</label>
+                    {{ form.quiet_end }}
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-steel/20 flex justify-end">
+            <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-6 py-3">
+                Save Preferences
+            </button>
+        </div>
+    </form>
+
+</div>
+{% endblock %}

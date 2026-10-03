@@ -55,22 +55,31 @@
     <!-- Metrics row -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
         <div class="wa-card-inset">
-            <span class="section-eyebrow">Active Arcs</span>
-            <div class="font-serif text-4xl text-bone mt-1">{{ active_arcs }}</div>
+            <div class="flex justify-between items-start">
+                <span class="section-eyebrow">Rank</span>
+                <span class="font-mono text-[10px] text-ice/40">Tier {{ rank_info.current_level }}</span>
+            </div>
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1 truncate">{{ rank_info.current_rank }}</div>
+            <div class="font-mono text-[11px] text-crimson-light mt-0.5">{{ total_xp }} XP</div>
         </div>
         <div class="wa-card-inset">
-            <span class="section-eyebrow">Pending Tasks</span>
-            <div class="font-serif text-4xl text-crimson-light font-medium mt-1">{{ total_pending_count }}</div>
+            <span class="section-eyebrow">Arc Progress</span>
+            <div class="font-serif text-3xl sm:text-4xl text-crimson-light font-medium mt-1">{{ arc_progress }}%</div>
+            <div class="progress-bar-track mt-2">
+                <div class="progress-bar-fill" style="width: {{ arc_progress }}%;"></div>
+            </div>
         </div>
         <div class="wa-card-inset">
-            <span class="section-eyebrow">Done Today</span>
-            <div class="font-serif text-4xl text-bone mt-1">{{ today_completed_tasks }}</div>
+            <span class="section-eyebrow">Tasks Done Today</span>
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">{{ today_completed_tasks }}</div>
+            <div class="font-mono text-[11px] text-ice/40 mt-0.5">{{ total_pending_count }} remaining</div>
         </div>
         <div class="wa-card-inset">
             <span class="section-eyebrow">Habits Today</span>
-            <div class="font-serif text-4xl text-bone mt-1">
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">
                 {{ habits_done_today }}<span class="text-ice/40 text-xl font-mono font-light"> / {{ total_habits }}</span>
             </div>
+            <div class="font-mono text-[11px] text-ice/40 mt-0.5">{{ active_arcs }} active arcs</div>
         </div>
     </div>
 
@@ -294,6 +303,37 @@
         </section>
 
     </div>
+
+    <!-- Recent Activity Feed -->
+    {% if recent_activity %}
+    <section class="mt-8 wa-card space-y-4" aria-labelledby="activity-heading">
+        <div class="flex items-center justify-between border-b border-steel/15 pb-4">
+            <div>
+                <span class="section-eyebrow">Audit &amp; Momentum</span>
+                <h2 id="activity-heading" class="section-heading">Recent Watch Activity</h2>
+            </div>
+            <a href="{% url 'analytics:index' %}" class="btn-ghost text-[11px]">Full Analytics →</a>
+        </div>
+        <div class="divide-y divide-steel/10">
+            {% for act in recent_activity %}
+                <div class="py-3 flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <span class="w-1.5 h-1.5 bg-crimson rounded-full flex-shrink-0"></span>
+                        <div class="truncate">
+                            <span class="text-sm font-medium text-bone">{{ act.title }}</span>
+                            {% if act.arc %}
+                                <span class="text-xs text-ice/40 ml-2 font-mono">[{{ act.arc.name }}]</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span class="text-xs font-mono text-ice/40 flex-shrink-0">
+                        {{ act.created_at|date:"M j, H:i" }}
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
 
     {% if not primary_arc %}
     <!-- Empty state: No Arc yet -->

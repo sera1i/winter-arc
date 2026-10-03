@@ -51,6 +51,14 @@ def habit_create(request):
             habit = form.save(commit=False)
             habit.user = request.user
             habit.save()
+            from analytics.services import log_activity
+            log_activity(
+                user=request.user,
+                event_type='HABIT_CREATED',
+                title=habit.name,
+                source_type='habit',
+                source_id=habit.pk
+            )
             messages.success(request, f'Habit "{habit.name}" created.')
             return redirect('habits:detail', pk=habit.pk)
     else:
@@ -104,6 +112,24 @@ def habit_complete(request, pk):
             completion.delete()
             messages.info(request, f'"{habit.name}" marked incomplete for today.')
         else:
+            from gamification.services import award_xp, check_and_unlock_achievements
+            from analytics.services import log_activity
+            
+            # Idempotency source_id combines habit id and date
+            award_xp(
+                user=request.user,
+                source_type='habit',
+                source_id=f"{habit.pk}_{today}",
+                description=f'Completed habit: {habit.name} on {today}'
+            )
+            log_activity(
+                user=request.user,
+                event_type='HABIT_COMPLETED',
+                title=f'Beacon lit: {habit.name}',
+                source_type='habit',
+                source_id=f"{habit.pk}_{today}"
+            )
+            check_and_unlock_achievements(request.user)
             messages.success(request, 'Another beacon lit.')
 
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')

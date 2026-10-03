@@ -12,6 +12,8 @@ urlpatterns = [
     path('goals/', include('goals.urls')),
     path('tasks/', include('tasks.urls')),
     path('habits/', include('habits.urls')),
+    path('analytics/', include('analytics.urls')),
+    path('notifications/', include('notifications.urls')),
     path('', landing_view, name='home'),
 ]
 

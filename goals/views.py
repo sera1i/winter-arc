@@ -16,6 +16,15 @@ def goal_create(request, arc_id):
             goal.user = request.user
             goal.arc = arc
             goal.save()
+            from analytics.services import log_activity
+            log_activity(
+                user=request.user,
+                event_type='GOAL_CREATED',
+                title=goal.title,
+                arc=arc,
+                source_type='goal',
+                source_id=goal.pk
+            )
             messages.success(request, 'Goal created successfully!')
             return redirect('arcs:detail', pk=arc.pk)
     else:
@@ -102,6 +111,50 @@ def milestone_toggle(request, pk):
             milestone.completed_at = None
         else:
             milestone.completed_at = timezone.now()
+            from gamification.services import award_xp, check_and_unlock_achievements
+            from analytics.services import log_activity
+            
+            arc = milestone.goal.arc if milestone.goal else None
+            award_xp(
+                user=request.user,
+                source_type='milestone',
+                source_id=milestone.pk,
+                description=f'Completed milestone: {milestone.title}',
+                arc=arc
+            )
+            log_activity(
+                user=request.user,
+                event_type='MILESTONE_COMPLETED',
+                title=f'Checkpoint reached: {milestone.title}',
+                arc=arc,
+                source_type='milestone',
+                source_id=milestone.pk
+            )
+            
+            # Check if this completed the parent goal
+            milestones = list(milestone.goal.milestones.all())
+            all_done = all(m.is_completed or m.pk == milestone.pk for m in milestones)
+            if all_done and milestone.goal.status != 'COMPLETED':
+                milestone.goal.status = 'COMPLETED'
+                milestone.goal.save(update_fields=['status', 'updated_at'])
+                award_xp(
+                    user=request.user,
+                    source_type='goal',
+                    source_id=milestone.goal.pk,
+                    description=f'Completed goal: {milestone.goal.title}',
+                    arc=arc
+                )
+                log_activity(
+                    user=request.user,
+                    event_type='GOAL_COMPLETED',
+                    title=f'Oath fulfilled: {milestone.goal.title}',
+                    arc=arc,
+                    source_type='goal',
+                    source_id=milestone.goal.pk
+                )
+
+            check_and_unlock_achievements(request.user)
+
         milestone.save()
     return redirect('goals:detail', pk=milestone.goal.pk)
 
