@@ -34,6 +34,13 @@
   input, textarea {
     @apply max-w-full;
     min-width: 0;
+    color-scheme: dark;
+  }
+  input::placeholder, textarea::placeholder {
+    @apply text-ice/50;
+  }
+  input[type="date"], input[type="time"], input[type="datetime-local"] {
+    color-scheme: dark;
   }
   button {
     @apply max-w-full;
@@ -176,13 +183,13 @@
   }
   .wa-input {
     @apply w-full min-w-0 bg-ink/60 border border-steel/50 px-3.5 py-2.5
-           text-sm text-bone placeholder-ice/30
+           text-sm text-bone placeholder-ice/50
            focus:outline-none focus:ring-1 focus:ring-crimson focus:border-crimson
            transition-colors duration-150;
   }
   .wa-textarea {
     @apply w-full min-w-0 bg-ink/60 border border-steel/50 px-3.5 py-2.5
-           text-sm text-bone placeholder-ice/30
+           text-sm text-bone placeholder-ice/50
            focus:outline-none focus:ring-1 focus:ring-crimson focus:border-crimson
            transition-colors duration-150 resize-y;
   }

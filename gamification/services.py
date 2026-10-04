@@ -3,12 +3,12 @@ from django.db.models import Sum
 from .models import XPEvent, Achievement, UserAchievement
 
 # Deterministic XP Rule Constants
-XP_TASK_COMPLETED = 50
+XP_TASK_COMPLETED = 20
 XP_HABIT_COMPLETED = 30
 XP_MILESTONE_COMPLETED = 100
-XP_GOAL_COMPLETED = 250
+XP_GOAL_COMPLETED = 150
 XP_JOURNAL_COMPLETED = 40
-XP_ARC_COMPLETED = 500
+XP_ARC_COMPLETED = 300
 
 XP_RULES = {
     'task': XP_TASK_COMPLETED,

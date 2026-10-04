@@ -211,3 +211,21 @@ class AnalyticsAndProgressTests(TestCase):
         u4 = check_and_unlock_achievements(self.user)
         self.assertEqual(len(u4), 1)
         self.assertEqual(u4[0].achievement.code, 'FIRST_ARC')
+
+    def test_activity_breakdown_daily_items_and_zero_activity(self):
+        """Verify activity breakdown returns daily_items with exact counts and handles zero activity days."""
+        breakdown = get_activity_breakdown(self.user, days=7)
+        self.assertEqual(len(breakdown['labels']), 7)
+        self.assertEqual(len(breakdown['tasks_data']), 7)
+        self.assertEqual(len(breakdown['habits_data']), 7)
+        self.assertEqual(len(breakdown['daily_items']), 7)
+        self.assertEqual(breakdown['total_tasks_period'], 0)
+        self.assertEqual(breakdown['total_habits_period'], 0)
+
+        # Complete a task today
+        t = Task.objects.create(user=self.user, title='Morning Drill', status='COMPLETED', completed_at=timezone.now())
+        breakdown_after = get_activity_breakdown(self.user, days=7)
+        self.assertEqual(breakdown_after['total_tasks_period'], 1)
+        self.assertEqual(breakdown_after['daily_items'][-1]['tasks'], 1)
+        self.assertEqual(breakdown_after['daily_items'][0]['tasks'], 0)
+

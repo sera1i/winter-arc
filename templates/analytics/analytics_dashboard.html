@@ -117,8 +117,8 @@
         </div>
         <div class="wa-card-inset">
             <span class="section-eyebrow">Habit Longest Streak</span>
-            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">
-                {{ habit_stats.top_current_streak }}<span class="text-ice/40 text-lg font-mono">d</span>
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1 flex items-baseline gap-0.5">
+                <span>{{ habit_stats.top_current_streak }}</span><span class="text-ice/40 text-lg font-mono">d</span>
             </div>
             <div class="font-mono text-[10px] text-ice/40 mt-1">
                 Historical Best: {{ habit_stats.top_best_streak }}d
@@ -130,7 +130,7 @@
                 {{ habit_stats.consistency_rate }}%
             </div>
             <div class="font-mono text-[10px] text-ice/40 mt-1">
-                {{ habit_stats.completions_30d }} habit beacons lit
+                {{ habit_stats.completions_30d }} habit beacon{{ habit_stats.completions_30d|pluralize }} lit
             </div>
         </div>
     </div>
@@ -154,22 +154,32 @@
 
         <div class="pt-4">
             <div class="grid grid-cols-7 gap-2 sm:gap-4 items-end h-48 border-b border-steel/20 pb-2">
-                {% for label in activity_7d.labels %}
-                    {% with task_count=activity_7d.tasks_data|slice:forloop.counter0|last habit_count=activity_7d.habits_data|slice:forloop.counter0|last %}
+                {% for item in activity_7d.daily_items %}
                     <div class="flex flex-col items-center justify-end h-full gap-1">
                         <div class="w-full flex items-end justify-center gap-1 h-36">
                             <!-- Task bar -->
+                            {% if item.tasks > 0 %}
                             <div class="w-3 sm:w-4 bg-crimson transition-all"
-                                 style="height: {% if task_count %}{% widthratio task_count 5 100 %}{% else %}4{% endif %}%; min-height: 4px;"
-                                 title="{{ task_count }} tasks on {{ label }}"></div>
+                                 style="height: {% widthratio item.tasks 5 100 %}%; min-height: 4px;"
+                                 title="{{ item.tasks }} tasks on {{ item.label }}"></div>
+                            {% else %}
+                            <div class="w-3 sm:w-4 transition-all opacity-0 pointer-events-none"
+                                 style="height: 0px;"
+                                 title="0 tasks on {{ item.label }}"></div>
+                            {% endif %}
                             <!-- Habit bar -->
+                            {% if item.habits > 0 %}
                             <div class="w-3 sm:w-4 bg-steel/50 transition-all"
-                                 style="height: {% if habit_count %}{% widthratio habit_count 5 100 %}{% else %}4{% endif %}%; min-height: 4px;"
-                                 title="{{ habit_count }} habits on {{ label }}"></div>
+                                 style="height: {% widthratio item.habits 5 100 %}%; min-height: 4px;"
+                                 title="{{ item.habits }} habits on {{ item.label }}"></div>
+                            {% else %}
+                            <div class="w-3 sm:w-4 transition-all opacity-0 pointer-events-none"
+                                 style="height: 0px;"
+                                 title="0 habits on {{ item.label }}"></div>
+                            {% endif %}
                         </div>
-                        <span class="font-mono text-[10px] sm:text-xs text-ice/50 truncate">{{ label }}</span>
+                        <span class="font-mono text-[10px] sm:text-xs text-ice/50 truncate">{{ item.label }}</span>
                     </div>
-                    {% endwith %}
                 {% endfor %}
             </div>
             <div class="flex justify-between items-center text-xs font-mono text-ice/40 pt-3">

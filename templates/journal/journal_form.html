@@ -1,0 +1,136 @@
+{% extends 'base/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}{{ title }} | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container-narrow pt-8 sm:pt-10">
+
+    <!-- Header -->
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">Inner Citadel · Reflection</span>
+            <h1 class="page-title">
+                {{ title }}
+            </h1>
+            <p class="page-subtitle">
+                {% if is_edit %}
+                    Revise your daily reflection. Historical records maintain their original XP award.
+                {% else %}
+                    Account for your actions, focus, and state of mind today (+40 XP).
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="wa-form-card">
+        <form method="post" class="space-y-6" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="p-3.5 bg-crimson/10 border border-crimson/30 text-crimson-light text-sm" role="alert">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <!-- Date -->
+            <div class="space-y-1.5">
+                <label for="{{ form.local_date.id_for_label }}" class="wa-label">
+                    {{ form.local_date.label }}
+                </label>
+                {{ form.local_date }}
+                {% if form.local_date.errors %}
+                    <p class="wa-field-error" role="alert">{{ form.local_date.errors.0 }}</p>
+                {% endif %}
+                {% if form.local_date.help_text %}
+                    <p class="wa-help-text">{{ form.local_date.help_text }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Vital Signs (Mood, Energy, Sleep) in a 3-column grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                <div class="space-y-1.5">
+                    <label for="{{ form.mood.id_for_label }}" class="wa-label">
+                        {{ form.mood.label }}
+                    </label>
+                    <div class="relative w-full">
+                        {{ form.mood }}
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-ice/60">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    {% if form.mood.errors %}
+                        <p class="wa-field-error" role="alert">{{ form.mood.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="space-y-1.5">
+                    <label for="{{ form.energy.id_for_label }}" class="wa-label">
+                        {{ form.energy.label }}
+                    </label>
+                    <div class="relative w-full">
+                        {{ form.energy }}
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-ice/60">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    {% if form.energy.errors %}
+                        <p class="wa-field-error" role="alert">{{ form.energy.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="space-y-1.5">
+                    <label for="{{ form.sleep_hours.id_for_label }}" class="wa-label">
+                        {{ form.sleep_hours.label }}
+                    </label>
+                    {{ form.sleep_hours }}
+                    {% if form.sleep_hours.errors %}
+                        <p class="wa-field-error" role="alert">{{ form.sleep_hours.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Reflection -->
+            <div class="space-y-1.5 pt-2">
+                <label for="{{ form.reflection.id_for_label }}" class="wa-label">
+                    {{ form.reflection.label }}
+                </label>
+                {{ form.reflection }}
+                {% if form.reflection.errors %}
+                    <p class="wa-field-error" role="alert">{{ form.reflection.errors.0 }}</p>
+                {% endif %}
+                {% if form.reflection.help_text %}
+                    <p class="wa-help-text">{{ form.reflection.help_text }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Tactical Notes -->
+            <div class="space-y-1.5">
+                <label for="{{ form.notes.id_for_label }}" class="wa-label">
+                    {{ form.notes.label }}
+                </label>
+                {{ form.notes }}
+                {% if form.notes.errors %}
+                    <p class="wa-field-error" role="alert">{{ form.notes.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end gap-4 pt-6 border-t border-steel/20">
+                <a href="{% if is_edit %}{% url 'journal:detail' entry.pk %}{% else %}{% url 'journal:list' %}{% endif %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-8 py-2.5">
+                    {% if is_edit %}Save Changes{% else %}Record Reflection{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

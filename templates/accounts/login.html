@@ -46,7 +46,27 @@
                     <label for="{{ form.password.id_for_label }}" class="wa-label">
                         Password
                     </label>
-                    {{ form.password|add_class:"wa-input" }}
+                    <div class="relative">
+                        {{ form.password|add_class:"wa-input pr-11" }}
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3.5">
+                            <button type="button"
+                                    id="toggle-password"
+                                    class="text-ice/40 hover:text-bone transition-colors focus:outline-none focus:text-bone"
+                                    aria-label="Show password"
+                                    aria-pressed="false"
+                                    tabindex="0">
+                                <!-- Eye icon (Show) -->
+                                <svg id="eye-icon-show" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                <!-- Eye-off icon (Hide) -->
+                                <svg id="eye-icon-hide" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                     {% if form.password.errors %}
                         <p class="wa-field-error" role="alert">{{ form.password.errors.0 }}</p>
                     {% endif %}
@@ -70,4 +90,34 @@
 
     </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('{{ form.password.id_for_label }}');
+        const eyeShow = document.getElementById('eye-icon-show');
+        const eyeHide = document.getElementById('eye-icon-hide');
+
+        if (toggleBtn && passwordInput) {
+            toggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                toggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+                toggleBtn.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
+
+                if (isPassword) {
+                    eyeShow.classList.add('hidden');
+                    eyeHide.classList.remove('hidden');
+                } else {
+                    eyeShow.classList.remove('hidden');
+                    eyeHide.classList.add('hidden');
+                }
+                passwordInput.focus();
+            });
+        }
+    });
+</script>
 {% endblock %}

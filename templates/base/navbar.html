@@ -35,6 +35,10 @@
                        class="{% if request.resolver_match.app_name == 'habits' %}nav-link-active{% else %}nav-link{% endif %}">
                         Habits
                     </a>
+                    <a href="{% url 'journal:list' %}" 
+                       class="{% if request.resolver_match.app_name == 'journal' %}nav-link-active{% else %}nav-link{% endif %}">
+                        Journal
+                    </a>
                     <a href="{% url 'analytics:index' %}" 
                        class="{% if request.resolver_match.app_name == 'analytics' %}nav-link-active{% else %}nav-link{% endif %}">
                         Analytics
@@ -110,6 +114,7 @@
             <a href="{% url 'arcs:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Arcs</a>
             <a href="{% url 'tasks:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Tasks</a>
             <a href="{% url 'habits:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Habits</a>
+            <a href="{% url 'journal:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Journal</a>
             <a href="{% url 'analytics:index' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Analytics</a>
             <a href="{% url 'notifications:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors flex items-center justify-between" role="menuitem">
                 <span>Notifications</span>

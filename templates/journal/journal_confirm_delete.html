@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Delete Journal Entry | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] flex items-center justify-center px-4 py-20">
+    <div class="w-full max-w-md wa-form-card text-center space-y-6">
+        
+        <div class="w-12 h-12 mx-auto rounded-full bg-crimson/10 border border-crimson/40 flex items-center justify-center text-crimson text-xl font-mono">
+            !
+        </div>
+
+        <div class="space-y-2">
+            <span class="page-eyebrow">Confirm Action</span>
+            <h1 class="font-serif text-3xl text-bone">Delete Journal Entry</h1>
+            <p class="font-sans text-sm text-ice/70 leading-relaxed">
+                Are you sure you want to permanently delete your journal entry for <strong>{{ entry.local_date|date:"l, F j, Y" }}</strong>?
+            </p>
+            <p class="font-mono text-xs text-ice/40">
+                This action cannot be undone.
+            </p>
+        </div>
+
+        <form method="post" class="flex items-center justify-center gap-4 pt-4 border-t border-steel/20">
+            {% csrf_token %}
+            <a href="{% url 'journal:detail' entry.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                Cancel
+            </a>
+            <button type="submit" class="btn-danger text-xs uppercase tracking-widest px-6 py-2.5">
+                Delete Entry
+            </button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

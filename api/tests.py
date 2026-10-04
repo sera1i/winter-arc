@@ -181,13 +181,13 @@ class WinterArcAPITests(APITestCase):
         self.assertTrue(m_xp.exists())
         self.assertEqual(m_xp.first().amount, 100)
 
-        # Complete Goal (triggers 250 XP)
+        # Complete Goal (triggers 150 XP)
         comp_g = self.client.post(f'/api/v1/goals/{goal_id}/complete/')
         self.assertEqual(comp_g.status_code, status.HTTP_200_OK)
         self.assertEqual(comp_g.data['status'], 'COMPLETED')
         g_xp = XPEvent.objects.filter(user=self.user_a, source_type='goal', source_id=str(goal_id))
         self.assertTrue(g_xp.exists())
-        self.assertEqual(g_xp.first().amount, 250)
+        self.assertEqual(g_xp.first().amount, 150)
 
     # -----------------------------------------------------------------------
     # 4. Tasks Lifecycle & XP
@@ -215,10 +215,10 @@ class WinterArcAPITests(APITestCase):
         self.assertEqual(comp_t.data['status'], 'COMPLETED')
         self.assertTrue(comp_t.data['is_completed'])
 
-        # Verify XP awarded (50 XP for task)
+        # Verify XP awarded (20 XP for task)
         t_xp = XPEvent.objects.filter(user=self.user_a, source_type='task', source_id=str(task_id))
         self.assertTrue(t_xp.exists())
-        self.assertEqual(t_xp.first().amount, 50)
+        self.assertEqual(t_xp.first().amount, 20)
 
         # Uncomplete task
         uncomp_t = self.client.post(f'/api/v1/tasks/{task_id}/uncomplete/')

@@ -97,11 +97,13 @@ def dashboard_view(request):
     from gamification.services import get_user_rank, get_user_total_xp
     from analytics.progress_services import calculate_arc_progress
     from analytics.models import ActivityEvent
+    from journal.models import JournalEntry
 
     rank_info = get_user_rank(user)
     total_xp = get_user_total_xp(user)
     arc_progress = calculate_arc_progress(primary_arc) if primary_arc else 0
     recent_activity = ActivityEvent.objects.filter(user=user)[:5]
+    today_journal_entry = JournalEntry.objects.filter(user=user, local_date=today).first()
 
     context = {
         'primary_arc': primary_arc,
@@ -119,5 +121,6 @@ def dashboard_view(request):
         'top_streaks': top_streaks,
         'today': today,
         'recent_activity': recent_activity,
+        'today_journal_entry': today_journal_entry,
     }
     return render(request, 'accounts/dashboard.html', context)

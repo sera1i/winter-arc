@@ -12,6 +12,7 @@ urlpatterns = [
     path('goals/', include('goals.urls')),
     path('tasks/', include('tasks.urls')),
     path('habits/', include('habits.urls')),
+    path('journal/', include('journal.urls')),
     path('analytics/', include('analytics.urls')),
     path('notifications/', include('notifications.urls')),
     path('api/v1/', include('api.urls')),

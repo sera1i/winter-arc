@@ -11,16 +11,20 @@ from journal.models import JournalEntry
 from gamification.services import get_user_total_xp, get_user_rank
 from analytics.models import ActivityEvent
 
-def get_user_local_date(user):
-    """Return user's local date based on profile timezone or configured TIME_ZONE."""
+def get_user_timezone(user):
+    """Return user's ZoneInfo based on profile timezone or configured TIME_ZONE."""
     try:
         from django.conf import settings
         tz_name = getattr(user.profile, 'timezone', None) if (user and hasattr(user, 'profile')) else None
         if not tz_name:
             tz_name = getattr(settings, 'TIME_ZONE', 'Asia/Kolkata')
-        user_tz = ZoneInfo(tz_name)
+        return ZoneInfo(tz_name)
     except Exception:
-        user_tz = timezone.get_current_timezone()
+        return timezone.get_current_timezone()
+
+def get_user_local_date(user):
+    """Return user's local date based on profile timezone or configured TIME_ZONE."""
+    user_tz = get_user_timezone(user)
     return timezone.now().astimezone(user_tz).date()
 
 def calculate_arc_progress(arc):
@@ -152,8 +156,11 @@ def get_activity_breakdown(user, days=7):
     # Map out days
     date_list = [today - timedelta(days=i) for i in reversed(range(days))]
 
+    user_tz = get_user_timezone(user)
+
     # Efficient bulk query for tasks completed in range
-    start_dt = timezone.make_aware(timezone.datetime.combine(date_list[0], timezone.datetime.min.time()))
+    # Start of the earliest day in user's timezone converted to UTC / aware dt
+    start_dt = timezone.datetime.combine(date_list[0], timezone.datetime.min.time(), tzinfo=user_tz)
     task_qs = Task.objects.filter(
         user=user,
         status='COMPLETED',
@@ -163,7 +170,7 @@ def get_activity_breakdown(user, days=7):
     task_day_counts = {}
     for dt in task_qs:
         if dt:
-            d = dt.date()
+            d = dt.astimezone(user_tz).date()
             task_day_counts[d] = task_day_counts.get(d, 0) + 1
 
     # Bulk query for habits in range
@@ -175,15 +182,26 @@ def get_activity_breakdown(user, days=7):
 
     habit_day_counts = {item['local_date']: item['count'] for item in habit_qs}
 
+    daily_items = []
     for d in date_list:
-        labels.append(d.strftime('%b %d'))
-        tasks_data.append(task_day_counts.get(d, 0))
-        habits_data.append(habit_day_counts.get(d, 0))
+        label = d.strftime('%b %d')
+        t_count = task_day_counts.get(d, 0)
+        h_count = habit_day_counts.get(d, 0)
+        labels.append(label)
+        tasks_data.append(t_count)
+        habits_data.append(h_count)
+        daily_items.append({
+            'label': label,
+            'date': d,
+            'tasks': t_count,
+            'habits': h_count,
+        })
 
     return {
         'labels': labels,
         'tasks_data': tasks_data,
         'habits_data': habits_data,
+        'daily_items': daily_items,
         'total_tasks_period': sum(tasks_data),
         'total_habits_period': sum(habits_data),
     }

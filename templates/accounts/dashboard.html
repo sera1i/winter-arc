@@ -13,9 +13,23 @@
                 <h1 class="font-serif text-4xl sm:text-5xl text-bone mt-1 leading-tight">
                     Your watch begins<br class="sm:hidden"> at dawn.
                 </h1>
-                <p class="font-sans text-sm text-ice/50 mt-2">
-                    {{ today|date:"l, F j, Y" }}
-                </p>
+                <div class="flex items-center gap-3 mt-2 flex-wrap">
+                    <p class="font-sans text-sm text-ice/50">
+                        {{ today|date:"l, F j, Y" }}
+                    </p>
+                    <span class="text-steel/40 text-xs hidden sm:inline">·</span>
+                    {% if today_journal_entry %}
+                        <a href="{% url 'journal:detail' today_journal_entry.pk %}" class="inline-flex items-center gap-1.5 font-mono text-[11px] text-ice/70 hover:text-bone transition-colors underline underline-offset-2">
+                            <span class="w-1.5 h-1.5 bg-crimson rounded-full"></span>
+                            Today's Reflection Logged
+                        </a>
+                    {% else %}
+                        <a href="{% url 'journal:create' %}" class="inline-flex items-center gap-1.5 font-mono text-[11px] text-crimson-light hover:text-crimson transition-colors underline underline-offset-2">
+                            <span>+</span>
+                            Write today's reflection (+40 XP)
+                        </a>
+                    {% endif %}
+                </div>
             </div>
 
             {% if primary_arc %}

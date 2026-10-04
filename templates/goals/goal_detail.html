@@ -67,19 +67,19 @@
         </div>
 
         <!-- Add Milestone Inline Form -->
-        <div id="milestone-form" class="wa-card bg-surface/70 border border-steel/30 p-5">
+        <div id="milestone-form" class="wa-card p-5">
             <h3 class="font-serif text-sm text-bone font-medium mb-3">Add Milestone Checkpoint</h3>
             <form method="post" action="{% url 'goals:milestone_create' goal.pk %}" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
                 {% csrf_token %}
                 <div class="sm:col-span-7">
                     <label for="id_title" class="block text-xs font-mono uppercase tracking-widest text-ice/60 mb-1">Checkpoint Title</label>
                     <input type="text" name="title" id="id_title" required placeholder="e.g. Complete Chapters 1 to 5" 
-                           class="w-full bg-void border border-steel/40 text-bone px-3 py-2 text-sm focus:border-crimson focus:outline-none transition-colors">
+                           class="wa-input text-bone placeholder:text-ice/40">
                 </div>
                 <div class="sm:col-span-3">
                     <label for="id_due_date" class="block text-xs font-mono uppercase tracking-widest text-ice/60 mb-1">Target Date</label>
                     <input type="date" name="due_date" id="id_due_date" 
-                           class="w-full bg-void border border-steel/40 text-bone px-3 py-2 text-sm focus:border-crimson focus:outline-none transition-colors">
+                           class="wa-input text-bone placeholder:text-ice/40 [color-scheme:dark]">
                 </div>
                 <div class="sm:col-span-2">
                     <button type="submit" class="w-full btn-primary text-xs uppercase tracking-widest py-2.5 text-center">

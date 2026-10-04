@@ -1,0 +1,109 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ entry.local_date|date:"F j, Y" }} · Journal | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container-narrow pt-8 sm:pt-10">
+
+    <!-- Header -->
+    <div class="page-header">
+        <div class="space-y-2">
+            <div class="flex items-center gap-3">
+                <span class="page-eyebrow">Journal Entry</span>
+                <span class="font-mono text-[11px] text-ice/40">{{ entry.created_at|date:"M j, Y · H:i" }}</span>
+            </div>
+            <h1 class="page-title">
+                {{ entry.local_date|date:"l, F j, Y" }}
+            </h1>
+        </div>
+        <div class="flex items-center gap-3 self-start sm:self-auto">
+            <a href="{% url 'journal:update' entry.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2">
+                Edit
+            </a>
+            <a href="{% url 'journal:delete' entry.pk %}" class="text-xs font-mono text-crimson-light/70 hover:text-crimson transition-colors px-2">
+                Delete
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="wa-card space-y-6">
+
+        <!-- Vital Signs Metrics Bar -->
+        <div class="grid grid-cols-3 gap-3 sm:gap-4 p-4 bg-steel/10 border border-steel/20">
+            <div>
+                <span class="section-eyebrow text-[9px] mb-1">Mindset / Mood</span>
+                <div class="font-serif text-lg sm:text-xl text-bone">
+                    {% if entry.mood %}
+                        {% if entry.mood == 5 %}5/5 · Peak
+                        {% elif entry.mood == 4 %}4/5 · Strong
+                        {% elif entry.mood == 3 %}3/5 · Steady
+                        {% elif entry.mood == 2 %}2/5 · Low
+                        {% else %}1/5 · Depleted{% endif %}
+                    {% else %}
+                        <span class="text-ice/40 text-sm font-sans">Unset</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <span class="section-eyebrow text-[9px] mb-1">Energy Level</span>
+                <div class="font-serif text-lg sm:text-xl text-bone">
+                    {% if entry.energy %}
+                        {{ entry.energy }}/5
+                    {% else %}
+                        <span class="text-ice/40 text-sm font-sans">Unset</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <span class="section-eyebrow text-[9px] mb-1">Hours Slept</span>
+                <div class="font-serif text-lg sm:text-xl text-bone">
+                    {% if entry.sleep_hours %}
+                        {{ entry.sleep_hours }} hrs
+                    {% else %}
+                        <span class="text-ice/40 text-sm font-sans">Unset</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Reflection Body -->
+        <div class="space-y-2 pt-2">
+            <span class="section-eyebrow">Daily Reflection</span>
+            {% if entry.reflection %}
+                <div class="bg-ink/60 border border-steel/30 p-5 font-sans text-sm text-bone leading-relaxed whitespace-pre-line">
+                    {{ entry.reflection }}
+                </div>
+            {% else %}
+                <p class="font-sans text-sm text-ice/40 italic py-2">
+                    No reflection text provided for this entry.
+                </p>
+            {% endif %}
+        </div>
+
+        <!-- Tactical Notes -->
+        {% if entry.notes %}
+            <div class="space-y-2 pt-2 border-t border-steel/20">
+                <span class="section-eyebrow">Tactical Notes &amp; Observations</span>
+                <div class="bg-steel/10 border border-steel/20 p-4 font-mono text-xs text-ice/90 leading-relaxed whitespace-pre-line">
+                    {{ entry.notes }}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Metadata & Actions footer -->
+        <div class="flex items-center justify-between pt-6 border-t border-steel/20">
+            <a href="{% url 'journal:list' %}" class="btn-ghost text-xs">
+                ← Back to Journal
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="{% url 'journal:update' entry.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                    Edit Entry
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

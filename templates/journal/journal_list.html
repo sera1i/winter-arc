@@ -1,0 +1,162 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Journal | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container pt-8 sm:pt-10">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <span class="page-eyebrow">Inner Citadel · Daily Ledger</span>
+            <h1 class="page-title">
+                Journal
+            </h1>
+            <p class="page-subtitle">
+                Private daily reflections, state of mind, and discipline logs across your watch.
+            </p>
+        </div>
+        <div class="flex items-center gap-3">
+            {% if not has_today_entry %}
+                <a href="{% url 'journal:create' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-2.5">
+                    + Log Today's Reflection
+                </a>
+            {% else %}
+                <a href="{% url 'journal:detail' today_entry.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                    View Today's Entry
+                </a>
+                <a href="{% url 'journal:create' %}" class="btn-ghost text-xs">
+                    Log Past Entry
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Overview Bar -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Total Entries</span>
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">{{ total_entries }}</div>
+            <div class="font-mono text-[11px] text-ice/40 mt-0.5">Logged reflections</div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Today's Status</span>
+            <div class="font-serif text-2xl sm:text-3xl mt-1 {% if has_today_entry %}text-bone{% else %}text-crimson-light{% endif %}">
+                {% if has_today_entry %}Completed{% else %}Unlogged{% endif %}
+            </div>
+            <div class="font-mono text-[11px] text-ice/40 mt-0.5">{{ today|date:"M j, Y" }}</div>
+        </div>
+        <div class="wa-card-inset col-span-2 sm:col-span-1">
+            <span class="section-eyebrow">Discipline XP</span>
+            <div class="font-serif text-3xl sm:text-4xl text-crimson-light font-medium mt-1">+40 XP</div>
+            <div class="font-mono text-[11px] text-ice/40 mt-0.5">Per daily reflection</div>
+        </div>
+    </div>
+
+    <!-- Entries List -->
+    {% if entries %}
+        <div class="space-y-4">
+            {% for entry in entries %}
+                <article class="wa-card p-6 transition-all duration-200 hover:border-steel/60">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/15 pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-crimson rounded-full flex-shrink-0"></span>
+                            <div>
+                                <h2 class="font-serif text-xl sm:text-2xl text-bone">
+                                    {{ entry.local_date|date:"l, F j, Y" }}
+                                </h2>
+                                <span class="font-mono text-[10px] uppercase tracking-widest text-ice/40 block mt-0.5">
+                                    Logged at {{ entry.created_at|date:"H:i" }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Metric indicators -->
+                        <div class="flex items-center gap-3 flex-wrap">
+                            {% if entry.mood %}
+                                <div class="px-2.5 py-1 bg-steel/10 border border-steel/25 font-mono text-[11px] text-bone">
+                                    <span class="text-ice/50 uppercase tracking-wider text-[9px] block">Mood</span>
+                                    <span class="font-bold text-bone">
+                                        {% if entry.mood == 5 %}Peak (5/5)
+                                        {% elif entry.mood == 4 %}Strong (4/5)
+                                        {% elif entry.mood == 3 %}Steady (3/5)
+                                        {% elif entry.mood == 2 %}Struggling (2/5)
+                                        {% else %}Depleted (1/5){% endif %}
+                                    </span>
+                                </div>
+                            {% endif %}
+                            {% if entry.energy %}
+                                <div class="px-2.5 py-1 bg-steel/10 border border-steel/25 font-mono text-[11px] text-bone">
+                                    <span class="text-ice/50 uppercase tracking-wider text-[9px] block">Energy</span>
+                                    <span class="font-bold text-bone">{{ entry.energy }}/5</span>
+                                </div>
+                            {% endif %}
+                            {% if entry.sleep_hours %}
+                                <div class="px-2.5 py-1 bg-steel/10 border border-steel/25 font-mono text-[11px] text-bone">
+                                    <span class="text-ice/50 uppercase tracking-wider text-[9px] block">Sleep</span>
+                                    <span class="font-bold text-bone">{{ entry.sleep_hours }} hrs</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Content preview -->
+                    <div class="pt-4 space-y-3">
+                        {% if entry.reflection %}
+                            <div>
+                                <span class="section-eyebrow text-[9px] mb-1">Reflection</span>
+                                <p class="font-sans text-sm text-bone/90 leading-relaxed line-clamp-2">
+                                    {{ entry.reflection }}
+                                </p>
+                            </div>
+                        {% endif %}
+
+                        {% if entry.notes and not entry.reflection %}
+                            <div>
+                                <span class="section-eyebrow text-[9px] mb-1">Tactical Notes</span>
+                                <p class="font-sans text-sm text-ice/80 leading-relaxed line-clamp-2">
+                                    {{ entry.notes }}
+                                </p>
+                            </div>
+                        {% endif %}
+
+                        {% if not entry.reflection and not entry.notes %}
+                            <p class="font-sans text-xs text-ice/40 italic">
+                                Check-in recorded without written reflection.
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Card footer actions -->
+                    <div class="flex items-center justify-between pt-4 mt-4 border-t border-steel/10 text-xs">
+                        <a href="{% url 'journal:detail' entry.pk %}" class="btn-ghost text-xs">
+                            Read full entry →
+                        </a>
+                        <div class="flex items-center gap-4">
+                            <a href="{% url 'journal:update' entry.pk %}" class="text-xs font-mono text-ice/70 hover:text-bone transition-colors">
+                                Edit
+                            </a>
+                            <a href="{% url 'journal:delete' entry.pk %}" class="text-xs font-mono text-crimson-light/70 hover:text-crimson transition-colors">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="wa-empty">
+            <p class="wa-empty-title">No journal entries yet.</p>
+            <p class="wa-empty-body">
+                The Winter Arc demands honest accounting. Log your daily state of mind, energy, and tactical reflection.
+            </p>
+            <div class="pt-2">
+                <a href="{% url 'journal:create' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-2.5 inline-flex">
+                    Write Your First Reflection
+                </a>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
