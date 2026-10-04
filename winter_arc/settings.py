@@ -228,25 +228,11 @@ CSRF_COOKIE_SECURE = env.bool('DJANGO_CSRF_COOKIE_SECURE', default=False)
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
-SECURE_REFERRER_POLICY = 'same-origin'
 
 if not DEBUG:
     SECURE_HSTS_SECONDS = env.int('DJANGO_SECURE_HSTS_SECONDS', default=31536000)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-
-    # Fail-closed validation for production secrets and configuration
-    from django.core.exceptions import ImproperlyConfigured
-    insecure_markers = ['unsafe-secret-key', 'replace-me', 'test-secret', 'django-insecure']
-    if any(marker in SECRET_KEY for marker in insecure_markers) or len(SECRET_KEY) < 50:
-        raise ImproperlyConfigured(
-            "CRITICAL SECURITY FAILURE: Production requires a cryptographically secure, "
-            "high-entropy DJANGO_SECRET_KEY with at least 50 characters."
-        )
-    if not ALLOWED_HOSTS or ALLOWED_HOSTS == ['*']:
-        raise ImproperlyConfigured(
-            "CRITICAL SECURITY FAILURE: ALLOWED_HOSTS cannot be empty or wildcard ['*'] in production."
-        )
 
 # Structured Logging
 LOGGING = {
