@@ -4,8 +4,11 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import landing_view
+from core.views import health_liveness, health_readiness
 
 urlpatterns = [
+    path('health/', health_liveness, name='health_liveness'),
+    path('health/ready/', health_readiness, name='health_readiness'),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('arcs/', include('arcs.urls')),

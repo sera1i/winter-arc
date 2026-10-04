@@ -29,11 +29,17 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('DJANGO_SECRET_KEY', default='unsafe-secret-key')
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJANGO_DEBUG', default=False)
+
+# SECURITY WARNING: keep the secret key used in production secret!
+if DEBUG:
+    SECRET_KEY = env('DJANGO_SECRET_KEY', default='unsafe-secret-key-development-only')
+else:
+    # Fail immediately if DJANGO_SECRET_KEY is missing or set to insecure default in production
+    SECRET_KEY = env('DJANGO_SECRET_KEY')
+    if not SECRET_KEY or SECRET_KEY in ('unsafe-secret-key', 'replace-me-in-production', 'unsafe-secret-key-development-only'):
+        raise ValueError("CRITICAL: A secure DJANGO_SECRET_KEY must be provided when DJANGO_DEBUG=False.")
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
 if 'testserver' not in ALLOWED_HOSTS:
@@ -70,6 +76,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -104,9 +111,39 @@ WSGI_APPLICATION = 'winter_arc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres://winter_user:winter_password@127.0.0.1:5432/winter_arc')
-}
+if not DEBUG:
+    # In production, require DATABASE_URL and reject SQLite
+    database_url = env('DATABASE_URL', default=None)
+    if not database_url:
+        raise ValueError("CRITICAL: DATABASE_URL must be provided when DJANGO_DEBUG=False.")
+    DATABASES = {
+        'default': env.db('DATABASE_URL')
+    }
+    if 'sqlite' in DATABASES['default']['ENGINE']:
+        raise ValueError("CRITICAL: SQLite is strictly prohibited in production (DJANGO_DEBUG=False). Use PostgreSQL.")
+else:
+    DATABASES = {
+        'default': env.db('DATABASE_URL', default='postgres://winter_user:winter_password@127.0.0.1:5432/winter_arc')
+    }
+
+# Cache Configuration (Redis required for production cache and Celery)
+if not DEBUG:
+    redis_url = env('REDIS_URL', default=None)
+    if not redis_url or redis_url.startswith('memory://'):
+        raise ValueError("CRITICAL: A valid REDIS_URL must be provided when DJANGO_DEBUG=False (memory:// is forbidden).")
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': redis_url,
+        }
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'winter-arc-dev-cache',
+        }
+    }
 
 
 
@@ -141,24 +178,35 @@ USE_I18N = True
 USE_TZ = True
 
 
+# Email Configuration
+if DEBUG:
+    EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+else:
+    EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+
+EMAIL_HOST = env('EMAIL_HOST', default='smtp.sendgrid.net')
+EMAIL_PORT = env.int('EMAIL_PORT', default=587)
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='Winter Arc <noreply@winterarc.com>')
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
-
-# Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
-MAILERS = {
-    'default': {
-        'BACKEND': env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend' if DEBUG else 'django.core.mail.backends.smtp.EmailBackend'),
-    },
-}
-
-STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -221,18 +269,25 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'login'
 
-# Production Security & Hardening (environment toggleable)
-SECURE_SSL_REDIRECT = env.bool('DJANGO_SECURE_SSL_REDIRECT', default=False)
-SESSION_COOKIE_SECURE = env.bool('DJANGO_SESSION_COOKIE_SECURE', default=False)
-CSRF_COOKIE_SECURE = env.bool('DJANGO_CSRF_COOKIE_SECURE', default=False)
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
-
+# Production Security & Hardening
 if not DEBUG:
+    SECURE_SSL_REDIRECT = env.bool('DJANGO_SECURE_SSL_REDIRECT', default=True)
+    SESSION_COOKIE_SECURE = env.bool('DJANGO_SESSION_COOKIE_SECURE', default=True)
+    CSRF_COOKIE_SECURE = env.bool('DJANGO_CSRF_COOKIE_SECURE', default=True)
     SECURE_HSTS_SECONDS = env.int('DJANGO_SECURE_HSTS_SECONDS', default=31536000)
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+    SECURE_REFERRER_POLICY = 'same-origin'
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+else:
+    SECURE_SSL_REDIRECT = env.bool('DJANGO_SECURE_SSL_REDIRECT', default=False)
+    SESSION_COOKIE_SECURE = env.bool('DJANGO_SESSION_COOKIE_SECURE', default=False)
+    CSRF_COOKIE_SECURE = env.bool('DJANGO_CSRF_COOKIE_SECURE', default=False)
+    SECURE_REFERRER_POLICY = 'no-referrer-when-downgrade'
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
 
 # Structured Logging
 LOGGING = {

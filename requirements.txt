@@ -5,6 +5,8 @@ celery
 redis
 django-environ
 django-cors-headers
+whitenoise>=6.6.0
+gunicorn>=21.2.0
 
 Pillow
 django-widget-tweaks

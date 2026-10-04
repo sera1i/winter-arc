@@ -199,3 +199,22 @@ class TemporalIntegrityTests(TestCase):
         """Settings TIME_ZONE and CELERY_TIMEZONE align with project configuration."""
         self.assertIn(settings.TIME_ZONE, ['Asia/Kolkata', 'UTC'])
         self.assertEqual(getattr(settings, 'CELERY_TIMEZONE', None), settings.TIME_ZONE)
+
+
+class HealthCheckTests(TestCase):
+    def test_health_liveness(self):
+        """GET /health/ returns 200 OK and healthy status."""
+        response = self.client.get('/health/')
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data.get('status'), 'ok')
+
+    def test_health_readiness(self):
+        """GET /health/ready/ returns 200 OK when DB and Cache are accessible."""
+        response = self.client.get('/health/ready/')
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data.get('status'), 'ready')
+        self.assertEqual(data.get('checks', {}).get('database'), 'ok')
+        self.assertEqual(data.get('checks', {}).get('cache'), 'ok')
+
