@@ -41,9 +41,10 @@ else:
     if not SECRET_KEY or SECRET_KEY in ('unsafe-secret-key', 'replace-me-in-production', 'unsafe-secret-key-development-only'):
         raise ValueError("CRITICAL: A secure DJANGO_SECRET_KEY must be provided when DJANGO_DEBUG=False.")
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
-if 'testserver' not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append('testserver')
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost', 'arcinwinter.up.railway.app', '.up.railway.app', '.railway.app'])
+for default_host in ['testserver', 'healthcheck.railway.app', 'arcinwinter.up.railway.app', '.up.railway.app', '.railway.app']:
+    if default_host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(default_host)
 
 
 # Application definition
@@ -211,8 +212,14 @@ STORAGES = {
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=['http://localhost:8000', 'http://127.0.0.1:8000'])
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=['http://localhost:8000', 'http://127.0.0.1:8000'])
+CORS_ALLOWED_ORIGINS = env.list(
+    'CORS_ALLOWED_ORIGINS',
+    default=['http://localhost:8000', 'http://127.0.0.1:8000', 'https://arcinwinter.up.railway.app']
+)
+CSRF_TRUSTED_ORIGINS = env.list(
+    'CSRF_TRUSTED_ORIGINS',
+    default=['http://localhost:8000', 'http://127.0.0.1:8000', 'https://*.up.railway.app', 'https://arcinwinter.up.railway.app']
+)
 
 
 REST_FRAMEWORK = {

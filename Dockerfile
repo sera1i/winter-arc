@@ -18,12 +18,18 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application source code
 COPY . /app/
 
-# Create non-root system user and adjust permissions
+# Create non-root system user with valid home directory and adjust permissions
 RUN addgroup --system --gid 1001 wintergroup \
-    && adduser --system --uid 1001 --ingroup wintergroup winteruser \
-    && chown -R winteruser:wintergroup /app
+    && adduser --system --uid 1001 --ingroup wintergroup --home /home/winteruser winteruser \
+    && mkdir -p /home/winteruser /app/staticfiles \
+    && chown -R winteruser:wintergroup /home/winteruser /app
+
+# Collect static assets into /app/staticfiles for WhiteNoise serving
+RUN DJANGO_DEBUG=True python manage.py collectstatic --noinput \
+    && chown -R winteruser:wintergroup /app/staticfiles
 
 USER winteruser
+ENV HOME=/home/winteruser
 
 EXPOSE 8000
 
