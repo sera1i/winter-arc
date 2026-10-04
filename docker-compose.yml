@@ -1,72 +1,109 @@
-version: '3.8'
-
 services:
   db:
-    image: postgres:15
+    image: postgres:15-alpine
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: winter_arc
-      POSTGRES_USER: winter_user
-      POSTGRES_PASSWORD: winter_password
+      POSTGRES_DB: ${POSTGRES_DB:-winter_arc}
+      POSTGRES_USER: ${POSTGRES_USER:-winter_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-winter_password}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-winter_user} -d ${POSTGRES_DB:-winter_arc}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
 
   redis:
-    image: redis:7
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
 
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: gunicorn winter_arc.wsgi:application --bind 0.0.0.0:8000 --workers 3 --threads 2 --timeout 60
     volumes:
-      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_DB=winter_arc
-      - POSTGRES_USER=winter_user
-      - POSTGRES_PASSWORD=winter_password
-      - POSTGRES_HOST=db
+      - DJANGO_DEBUG=${DJANGO_DEBUG:-False}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1,web}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-winter_user}:${POSTGRES_PASSWORD:-winter_password}@db:5432/${POSTGRES_DB:-winter_arc}
       - REDIS_URL=redis://redis:6379/0
-      - DJANGO_DEBUG=True
+      - DJANGO_TIME_ZONE=${DJANGO_TIME_ZONE:-Asia/Kolkata}
+      - CELERY_TIMEZONE=${CELERY_TIMEZONE:-Asia/Kolkata}
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   celery_worker:
-    build: .
-    command: celery -A winter_arc worker -l info
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: celery -A winter_arc worker -l info --concurrency=2
     volumes:
-      - .:/app
+      - media_volume:/app/media
     environment:
-      - POSTGRES_DB=winter_arc
-      - POSTGRES_USER=winter_user
-      - POSTGRES_PASSWORD=winter_password
-      - POSTGRES_HOST=db
+      - DJANGO_DEBUG=${DJANGO_DEBUG:-False}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-winter_user}:${POSTGRES_PASSWORD:-winter_password}@db:5432/${POSTGRES_DB:-winter_arc}
       - REDIS_URL=redis://redis:6379/0
-      - DJANGO_DEBUG=True
+      - DJANGO_TIME_ZONE=${DJANGO_TIME_ZONE:-Asia/Kolkata}
+      - CELERY_TIMEZONE=${CELERY_TIMEZONE:-Asia/Kolkata}
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   celery_beat:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
     command: celery -A winter_arc beat -l info
     volumes:
-      - .:/app
+      - media_volume:/app/media
     environment:
-      - POSTGRES_DB=winter_arc
-      - POSTGRES_USER=winter_user
-      - POSTGRES_PASSWORD=winter_password
-      - POSTGRES_HOST=db
+      - DJANGO_DEBUG=${DJANGO_DEBUG:-False}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DATABASE_URL=postgres://${POSTGRES_USER:-winter_user}:${POSTGRES_PASSWORD:-winter_password}@db:5432/${POSTGRES_DB:-winter_arc}
       - REDIS_URL=redis://redis:6379/0
-      - DJANGO_DEBUG=True
+      - DJANGO_TIME_ZONE=${DJANGO_TIME_ZONE:-Asia/Kolkata}
+      - CELERY_TIMEZONE=${CELERY_TIMEZONE:-Asia/Kolkata}
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
 volumes:
   postgres_data:
-
+  redis_data:
+  static_volume:
+  media_volume:
