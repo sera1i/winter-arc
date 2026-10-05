@@ -1,0 +1,265 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'winter_arc_pillar' %}" class="hover:text-bone transition-colors">Winter Arc</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">Rules</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Winter Arc",
+          "item": "{{ SITE_URL }}/winter-arc/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Rules",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "Winter Arc Rules — How to Set Measurable Daily Standards",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "inLanguage": "en-US",
+      "mainEntityOfPage": "{{ canonical_url }}",
+      "image": "{{ SITE_URL }}{% static 'images/og-winter-arc.jpg' %}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are there official rules made by a governing body?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Winter Arc is an open, decentralized philosophy. Any social media creator claiming their specific rules are 'the only official rules' is mistaken. You own your oath."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many rules should I set for my Winter Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most successful participants select between 3 and 5 core daily rules. Choosing more than 5 rules frequently leads to cognitive overload and habit failure when life friction occurs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I modify my rules after starting?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, if done with intention during a weekly review. Modifying a rule because it was unrealistically designed or causing injury is intelligent adaptation. Modifying a rule on a Tuesday morning because you feel lazy is rationalization. Know the difference."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Standards &amp; Principles</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        Winter Arc Rules: How to Build Measurable Daily Standards
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>Winter Arc does not have an official, universally binding rulebook.</strong> Rather than following an arbitrary checklist created by someone else, effective Winter Arc rules are personal, binary standards set by you. The most successful protocols limit daily non-negotiables to <strong>3 to 5 measurable habits</strong> across fitness, deep work, and mental discipline over a defined 90-day seasonal window.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-8 text-base leading-relaxed">
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The Fundamental Rule: Measurable vs Vague Ambition
+        </h2>
+        <p>
+            The number one reason self-improvement challenges collapse in the first three weeks is ambiguity. When a rule is subjective, your tired, low-dopamine brain will always rationalize taking the easy path.
+        </p>
+        <p>
+            Effective Winter Arc rules are <strong>binary</strong>: at the end of the day, looking in the mirror, there should be zero doubt whether the rule was honored or broken.
+        </p>
+
+        <!-- Measurable vs Vague Examples Table -->
+        <div class="overflow-x-auto my-6 border border-steel/30">
+            <table class="w-full text-left text-sm font-sans">
+                <thead class="bg-surface border-b border-steel/30 text-bone font-mono text-xs uppercase tracking-wider">
+                    <tr>
+                        <th class="p-3.5">Category</th>
+                        <th class="p-3.5 text-rose-400 font-semibold">Vague / Flawed Rule (Avoid)</th>
+                        <th class="p-3.5 text-emerald-400 font-semibold">Measurable Standard (Recommended)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-steel/20">
+                    <tr class="hover:bg-surface/30">
+                        <td class="p-3.5 font-mono text-xs text-bone">Study / Academics</td>
+                        <td class="p-3.5 text-ice/65">"Study more every afternoon."</td>
+                        <td class="p-3.5 font-medium text-bone">"Complete 60 minutes of uninterrupted study without phone in room."</td>
+                    </tr>
+                    <tr class="hover:bg-surface/30">
+                        <td class="p-3.5 font-mono text-xs text-bone">Physical Exercise</td>
+                        <td class="p-3.5 text-ice/65">"Workout regularly and stay active."</td>
+                        <td class="p-3.5 font-medium text-bone">"Complete 45 minutes of scheduled weight training or 8,000 steps."</td>
+                    </tr>
+                    <tr class="hover:bg-surface/30">
+                        <td class="p-3.5 font-mono text-xs text-bone">Nutrition</td>
+                        <td class="p-3.5 text-ice/65">"Eat cleaner and avoid junk food."</td>
+                        <td class="p-3.5 font-medium text-bone">"Hit 140g protein daily; zero sugary carbonated beverages."</td>
+                    </tr>
+                    <tr class="hover:bg-surface/30">
+                        <td class="p-3.5 font-mono text-xs text-bone">Intellectual</td>
+                        <td class="p-3.5 text-ice/65">"Read books instead of scrolling."</td>
+                        <td class="p-3.5 font-medium text-bone">"Read 15 pages of physical non-fiction before opening screens."</td>
+                    </tr>
+                    <tr class="hover:bg-surface/30">
+                        <td class="p-3.5 font-mono text-xs text-bone">Sleep / Rest</td>
+                        <td class="p-3.5 text-ice/65">"Try to get to bed early."</td>
+                        <td class="p-3.5 font-medium text-bone">"In bed with lights out by 10:30 PM; wake up at 6:30 AM."</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The 6 Core Guidelines for Structuring Your Arc
+        </h2>
+        <div class="space-y-6 my-6">
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Rule 1</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Define Concrete Start and End Dates</h3>
+                <p class="text-sm text-ice/75">
+                    An open-ended commitment is not an Arc—it is a daydream. A genuine season has clear boundaries. Whether it is October 1 to January 1 (92 days) or a targeted 60-day sprint, establish your finish line before Day 1.
+                </p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Rule 2</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Cap Daily Non-Negotiables at 3 to 5 Habits</h3>
+                <p class="text-sm text-ice/75">
+                    Ambition often tricks people into listing 12 daily habits: cold showers, two workouts, 2 hours reading, meditation, zero carbs, and 3 hours coding. By Day 10, real-world obligations intervene and the entire framework shatters. Pick 3 to 5 cornerstone habits that create disproportionate leverage.
+                </p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Rule 3</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Establish Unambiguous Completion Criteria</h3>
+                <p class="text-sm text-ice/75">
+                    Define what counts as a completed session. For example: "A workout counts only if recorded in the logbook with at least 3 working sets per exercise." Removing subjective gray areas keeps you honest.
+                </p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Rule 4</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Track Every Single Day</h3>
+                <p class="text-sm text-ice/75">
+                    What gets measured gets mastered. Unrecorded habits deteriorate into wishful thinking. Use a dedicated tracker like <a href="{% url 'home' %}" class="text-crimson-light hover:underline font-medium">Winter Arc</a> to maintain a binary daily ledger of completed tasks, habits, and streak metrics.
+                </p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Rule 5</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Conduct a Mandatory Weekly Review</h3>
+                <p class="text-sm text-ice/75">
+                    Every Sunday evening, spend 10 minutes reviewing your metrics. Which habits had the highest friction? Did you sleep enough? Where were the distraction leaks? Weekly reviews turn blind repetition into continuous optimization.
+                </p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Rule 6</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Adopt the 'Never Miss Twice' Protocol</h3>
+                <p class="text-sm text-ice/75">
+                    Missing a day due to illness or an emergency does not reset your season to Day 1. Punitive reset mechanics teach people to quit the moment perfection is broken. In a real Winter Arc, missing once is an anomaly; missing twice is the start of a new, bad habit. Protect the rebound.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blueprint CTA -->
+    <div class="my-10 p-8 border border-steel/30 bg-surface text-center sm:text-left sm:flex items-center justify-between gap-6 shadow-xl">
+        <div class="space-y-2 mb-6 sm:mb-0">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson-light font-semibold">Skip the Blank Canvas</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">Select a Proven Blueprint</h3>
+            <p class="text-sm text-ice/75 max-w-lg">
+                Explore structured starting blueprints for Fitness, Academics, Monk Mode, and Career sprint. Each blueprint is fully customizable to your personal rules.
+            </p>
+        </div>
+        <div class="shrink-0">
+            <a href="{% url 'winter_arc_templates' %}" class="btn-primary px-6 py-3 text-xs uppercase tracking-widest text-center inline-block">
+                View Blueprint Presets
+            </a>
+        </div>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            Rules FAQ
+        </h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Are there official rules made by a governing body?</h3>
+                <p class="text-sm text-ice/80">
+                    No. Winter Arc is an open, decentralized philosophy. Any social media creator claiming their specific rules are "the only official rules" is mistaken. You own your oath.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">How many rules should I set for my Winter Arc?</h3>
+                <p class="text-sm text-ice/80">
+                    Most successful participants select between 3 and 5 core daily rules. Choosing more than 5 rules frequently leads to cognitive overload and habit failure when life friction occurs.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Can I modify my rules after starting?</h3>
+                <p class="text-sm text-ice/80">
+                    Yes, if done with intention during a weekly review. Modifying a rule because it was unrealistically designed or causing injury is intelligent adaptation. Modifying a rule on a Tuesday morning because you feel lazy is rationalization. Know the difference.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Links -->
+    <section class="pt-8 border-t border-steel/25">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 font-semibold mb-4">Related Knowledge</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-mono">
+            <a href="{% url 'winter_arc_habits' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ 30+ Habit Ideas</a>
+            <a href="{% url 'winter_arc_templates' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Starting Blueprints</a>
+            <a href="{% url 'guide_build_habits' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ How to Build Habits</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

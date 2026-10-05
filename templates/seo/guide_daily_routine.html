@@ -1,0 +1,211 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'guides_index' %}" class="hover:text-bone transition-colors">Guides</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">Daily Routine</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "{{ SITE_URL }}/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "The Winter Arc Daily Routine",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "The Winter Arc Daily Routine — Realistic Schedules for Students & Professionals",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "inLanguage": "en-US",
+      "mainEntityOfPage": "{{ canonical_url }}",
+      "image": "{{ SITE_URL }}{% static 'images/og-winter-arc.jpg' %}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I have to wake up at 5:00 AM for a Winter Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. There is no mandatory wake-up time. Consistency is far more important than arbitrary early hours. Waking up at 7:00 AM every single day with 8 hours of sleep is vastly superior to sleeping at 2:00 AM and forcing a 5:00 AM alarm."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you handle weekends during a Winter Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Keep your wake-up time within a 30-minute window of your weekday routine to protect circadian stability. Use weekend mornings for outdoor walks, personal reading, and your weekly review session."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Routine Engineering</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        The Winter Arc Daily Routine: Realistic Schedules That Actually Work
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>There is no single universal Winter Arc daily routine.</strong> Instead of forcing rigid, theatrical 4:00 AM alarms, realistic Winter Arc schedules are built around four essential anchors: <strong>(1) a non-screen morning anchor</strong>, <strong>(2) an uninterrupted deep work window</strong>, <strong>(3) physical movement</strong>, and <strong>(4) an intentional evening wind-down</strong> protecting 7 to 9 hours of sleep.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-10 text-base leading-relaxed">
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The Myth of the 4:00 AM Protocol
+        </h2>
+        <p>
+            Social media often portrays winter discipline as a theatrical exercise in sleep deprivation: waking up at 4:00 AM, taking freezing cold showers in the dark, and running 10 miles before dawn.
+        </p>
+        <p>
+            In reality, chronic sleep deprivation spikes cortisol, suppresses the immune system during peak flu season, and damages prefrontal cognitive function. A genuine Winter Arc is built on sustainable, ruthless consistency—not performative burnout. Below are four realistic schedule templates designed for real-world constraints.
+        </p>
+    </section>
+
+    <!-- Schedule 1: 9-to-5 Professional -->
+    <section class="space-y-4 p-6 border border-steel/30 bg-surface/40">
+        <div class="border-b border-steel/20 pb-3">
+            <span class="font-mono text-xs text-crimson-light uppercase">Schedule A</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">The 9-to-5 Professional Sprint</h3>
+        </div>
+        <p class="text-sm text-ice/75">
+            Designed for knowledge workers, developers, and corporate professionals who must protect personal growth while managing employment demands.
+        </p>
+        <div class="space-y-2 text-xs font-mono pt-2">
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">06:00 AM</span><span>Wake up, 500ml water, 10 min mobility &amp; morning outdoor walk.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">06:30 AM</span><span><strong>Deep Work Sprint:</strong> 75 minutes of coding, writing, or portfolio project before corporate workday.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">08:00 AM</span><span>Breakfast, shower, transition to professional workday.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">12:30 PM</span><span>Lunch &amp; 15-minute brisk walk to break sedentary posture.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">05:30 PM</span><span><strong>Physical Crucible:</strong> 50 minutes strength training at gym or home workout.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">07:00 PM</span><span>Dinner &amp; family / personal connection time.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">09:30 PM</span><span>Screens off. 15 pages reading + 5 min Winter Arc reflection log.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">10:15 PM</span><span>Lights out (7h 45m restorative sleep).</span></div>
+        </div>
+    </section>
+
+    <!-- Schedule 2: University Student -->
+    <section class="space-y-4 p-6 border border-steel/30 bg-surface/40">
+        <div class="border-b border-steel/20 pb-3">
+            <span class="font-mono text-xs text-crimson-light uppercase">Schedule B</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">The University Student Lock-In</h3>
+        </div>
+        <p class="text-sm text-ice/75">
+            Designed for students managing college lectures, coursework deadlines, exam revision, and budget living.
+        </p>
+        <div class="space-y-2 text-xs font-mono pt-2">
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">07:00 AM</span><span>Wake up, cold water splash, 20 min morning daylight walk.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">07:45 AM</span><span><strong>Study Block 1:</strong> 50 min Pomodoro active recall / Anki flashcard review.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">09:00 AM</span><span>Attend campus lectures / university classes.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">02:00 PM</span><span><strong>Study Block 2:</strong> 90 min library session on difficult problem sets (phone in bag).</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">04:30 PM</span><span>Campus gym workout or running session.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">07:00 PM</span><span>Dinner &amp; social downtime with roommates.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">10:00 PM</span><span>Plan tomorrow's lecture prep + Winter Arc log.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">11:00 PM</span><span>Sleep.</span></div>
+        </div>
+    </section>
+
+    <!-- Schedule 3: Fitness First -->
+    <section class="space-y-4 p-6 border border-steel/30 bg-surface/40">
+        <div class="border-b border-steel/20 pb-3">
+            <span class="font-mono text-xs text-crimson-light uppercase">Schedule C</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">The Fitness &amp; Hypertrophy Athlete</h3>
+        </div>
+        <p class="text-sm text-ice/75">
+            Designed for those centering the winter season around progressive resistance training, body recomposition, and physical resilience.
+        </p>
+        <div class="space-y-2 text-xs font-mono pt-2">
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">06:30 AM</span><span>Hydration with electrolytes, 10 min dynamic mobility.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">07:00 AM</span><span><strong>Heavy Training Session:</strong> 60 minutes progressive lifting with tracked logbook.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">08:30 AM</span><span>High-protein post-workout meal (40g+ protein).</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">09:30 AM</span><span>Core work / daily responsibilities.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">01:00 PM</span><span>Nutrient-dense lunch + 20 min walk to hit step quota.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">09:00 PM</span><span>Warm shower, magnesium/hydration, 10 pages reading.</span></div>
+            <div class="flex gap-4 p-2 bg-ink/50 border border-steel/15"><span class="w-20 text-crimson-light shrink-0">10:00 PM</span><span>Deep restorative sleep (8h 30m).</span></div>
+        </div>
+    </section>
+
+    <!-- Contextual Conversion CTA -->
+    <div class="my-10 p-8 border border-crimson/40 bg-surface text-center sm:text-left sm:flex items-center justify-between gap-6 shadow-2xl">
+        <div class="space-y-2 mb-6 sm:mb-0">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson-light font-semibold">Automate Your Day</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">Build Your Daily System in Winter Arc</h3>
+            <p class="text-sm text-ice/75 max-w-lg">
+                Log your habits, check off daily tasks, and maintain streaks with our dedicated winter tracking engine.
+            </p>
+        </div>
+        <div class="shrink-0">
+            <a href="{% url 'register' %}" class="btn-primary px-6 py-3 text-xs uppercase tracking-widest text-center inline-block shadow-lg">
+                Start Your Arc
+            </a>
+        </div>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">Routine FAQ</h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">What should I do if my schedule is interrupted?</h3>
+                <p class="text-sm text-ice/80">
+                    Execute the "Minimum Effective Dose." If an emergency cuts your 60-minute workout to 15 minutes, do 15 minutes of push-ups and squats. Preserving the habit cue is 10 times more valuable than skipping it entirely.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">How do I overcome grogginess on dark winter mornings?</h3>
+                <p class="text-sm text-ice/80">
+                    Use a bright sunrise alarm lamp, drink 500ml of room-temperature water with a pinch of salt immediately upon waking, and step outside for 5 minutes into the cold air to trigger a natural cortisol surge.
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

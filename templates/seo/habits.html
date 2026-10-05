@@ -1,0 +1,303 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'winter_arc_pillar' %}" class="hover:text-bone transition-colors">Winter Arc</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">Habits</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Winter Arc",
+          "item": "{{ SITE_URL }}/winter-arc/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Habits",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "Winter Arc Habit Ideas — 30+ Measurable Habits for Mind, Body & Work",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "inLanguage": "en-US",
+      "mainEntityOfPage": "{{ canonical_url }}",
+      "image": "{{ SITE_URL }}{% static 'images/og-winter-arc.jpg' %}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many habits should I track during a Winter Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For maximum consistency and long-term adherence, choose between 3 and 5 daily habits. Stacking too many new habits at once creates high friction and increases the likelihood of total system collapse."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I fail a habit several days in a row?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Repeated failure is a signal that the habit was designed with too high a barrier to entry. Lower the minimum requirement temporarily. If 60 minutes of study is failing, commit to 20 minutes. Build consistency first, then scale intensity."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can habits be tracked on weekends differently?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. In Winter Arc, you can designate habits as Daily, Weekdays, or Custom schedules. However, anchor habits like wake-up time and basic movement are best maintained 7 days a week."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Habit Engineering</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        Winter Arc Habit Ideas: 30+ Measurable Habits for Mind, Body &amp; Focus
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>Winter Arc habits are specific, binary daily behaviors designed to compound personal discipline across 90 days.</strong> Rather than attempting a chaotic total life overhaul, high-performing participants select <strong>3 to 5 core habits</strong> categorized across Physical Training, Mental Discipline, Academic/Career Deep Work, Digital Boundaries, and Sleep Recovery.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-10 text-base leading-relaxed">
+    <section class="space-y-4">
+        <p>
+            Each habit below is structured with a clear operational definition: <strong>Why It Helps</strong>, an <strong>Example Measurable Target</strong>, and <strong>How to Track It</strong>. Select only those that directly address your current priorities.
+        </p>
+    </section>
+
+    <!-- Category 1: Physical Conditioning -->
+    <section class="space-y-4">
+        <div class="flex items-center gap-3 border-b border-steel/30 pb-3">
+            <span class="w-2.5 h-2.5 bg-crimson"></span>
+            <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold">1. Physical Conditioning &amp; Movement</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Morning Outdoor Walk</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Circadian alignment &amp; gentle movement</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> 15–20 minutes outside within 60 minutes of waking.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Binary checkbox after returning indoors.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Progressive Strength Training</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Muscle preservation &amp; physical resilience</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> 45–60 min structured session, 4 days per week.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Log working sets, load, and reps in workout logbook.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Hydration Baseline</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Cellular energy &amp; cognitive alertness</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> 2.5 to 3.5 liters of clean water daily.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Fill a marked 1L bottle 3 times throughout the day.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Daily Joint Mobility &amp; Stretching</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Reduces stiffness from cold weather &amp; sitting</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> 10 minutes of hips, spine, and shoulder mobility.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Complete immediately before evening wind-down.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category 2: Mental Discipline & Reflection -->
+    <section class="space-y-4">
+        <div class="flex items-center gap-3 border-b border-steel/30 pb-3">
+            <span class="w-2.5 h-2.5 bg-crimson"></span>
+            <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold">2. Mental Discipline &amp; Reflection</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Non-Fiction Deep Reading</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Expands attention span &amp; strategic thinking</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> Read 15 pages of philosophy, history, or science.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Track page count before turning off bedside lamp.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Evening Stoic Journaling</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Clears mental clutter &amp; records honest metrics</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> Write 3 bullet points: Wins, Friction points, Tomorrow's priorities.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Log directly in <a href="{% url 'home' %}" class="text-crimson-light hover:underline">Winter Arc Journal</a>.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Silent Meditation / Unplugged Pause</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Reduces baseline anxiety and impulse reaction</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> 10 minutes of silent breath observation without audio.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Set a 10-minute non-musical timer.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Weekly Retrospective</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Catches habit drift before an Arc unravels</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> 15 minutes every Sunday reviewing weekly completion rate.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Log in weekly Arc milestone review.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category 3: Academic & Skill Mastery -->
+    <section class="space-y-4">
+        <div class="flex items-center gap-3 border-b border-steel/30 pb-3">
+            <span class="w-2.5 h-2.5 bg-crimson"></span>
+            <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold">3. Study &amp; Academic Mastery</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Distraction-Free Study Blocks</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Maximizes cognitive absorption for exams</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> Two 50-minute Pomodoro sessions with phone locked away.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Record timestamps in daily task ledger.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Active Recall &amp; Anki Flashcards</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Solidifies long-term memory retrieval</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> Clear daily due review deck (approx. 50–100 cards).</p>
+                <p class="text-xs text-steel font-mono">Tracking: Zero pending due cards at end of session.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category 4: Career & Deep Work -->
+    <section class="space-y-4">
+        <div class="flex items-center gap-3 border-b border-steel/30 pb-3">
+            <span class="w-2.5 h-2.5 bg-crimson"></span>
+            <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold">4. Career &amp; Project Execution</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Deep Work Coding / Building Sprint</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Ships meaningful products and technical assets</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> 60 to 90 minutes of dedicated codebase or portfolio work.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Git commit or written documentation output.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Professional Upskilling</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Outpaces industry drift and builds marketable skill</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> 30 minutes of technical architecture, system design, or course study.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Summarize one key concept in personal knowledge base.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category 5: Digital Discipline & Recovery -->
+    <section class="space-y-4">
+        <div class="flex items-center gap-3 border-b border-steel/30 pb-3">
+            <span class="w-2.5 h-2.5 bg-crimson"></span>
+            <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold">5. Digital Discipline &amp; Sleep Hygiene</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Morning Screen Freeze</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Prevents morning reactive cortisol spikes</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> Zero social media, news, or messaging apps for 30 minutes post-wake.</p>
+                <p class="text-xs text-steel font-mono">Tracking: Phone remains on airplane mode on nightstand.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Consistent Sleep Anchor</h3>
+                <p class="text-xs text-crimson-light font-mono uppercase">Why it helps: Regulates hormones, recovery, and cognitive focus</p>
+                <p class="text-sm text-ice/75"><strong>Target:</strong> Wake up within a strict 30-minute window every day (e.g. 6:30 AM ±15m).</p>
+                <p class="text-xs text-steel font-mono">Tracking: Log wake time immediately upon rising.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Habit Tracker CTA -->
+    <div class="my-10 p-8 border border-crimson/40 bg-surface text-center sm:text-left sm:flex items-center justify-between gap-6 shadow-2xl">
+        <div class="space-y-2 mb-6 sm:mb-0">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson-light font-semibold">Habit Engine</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">Track Habits with Zero Friction</h3>
+            <p class="text-sm text-ice/75 max-w-lg">
+                Winter Arc tracks your daily habits, streaks, completion rates, and XP progression with an interface built for dark winter focus.
+            </p>
+        </div>
+        <div class="shrink-0">
+            <a href="{% url 'register' %}" class="btn-primary px-6 py-3 text-xs uppercase tracking-widest text-center inline-block">
+                Start Tracking Today
+            </a>
+        </div>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            Habit Selection FAQ
+        </h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">How many habits should I track during a Winter Arc?</h3>
+                <p class="text-sm text-ice/80">
+                    For maximum consistency and long-term adherence, choose between 3 and 5 daily habits. Stacking too many new habits at once creates high friction and increases the likelihood of total system collapse.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">What if I fail a habit several days in a row?</h3>
+                <p class="text-sm text-ice/80">
+                    Repeated failure is a signal that the habit was designed with too high a barrier to entry. Lower the minimum requirement temporarily. If 60 minutes of study is failing, commit to 20 minutes. Build consistency first, then scale intensity.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Can habits be tracked on weekends differently?</h3>
+                <p class="text-sm text-ice/80">
+                    Yes. In Winter Arc, you can designate habits as Daily, Weekdays, or Custom schedules. However, anchor habits like wake-up time and basic movement are best maintained 7 days a week.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Links -->
+    <section class="pt-8 border-t border-steel/25">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 font-semibold mb-4">Related Guides &amp; Blueprints</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-mono">
+            <a href="{% url 'guide_build_habits' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Habit Engineering Loop</a>
+            <a href="{% url 'guide_daily_routine' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Daily Routine Schedules</a>
+            <a href="{% url 'winter_arc_templates' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Pre-built Blueprints</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

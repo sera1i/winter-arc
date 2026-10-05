@@ -1,0 +1,187 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'winter_arc_pillar' %}" class="hover:text-bone transition-colors">Winter Arc</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">For Fitness</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Winter Arc",
+          "item": "{{ SITE_URL }}/winter-arc/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "For Fitness",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "Winter Arc for Fitness — Training, Nutrition & Physical Mastery",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "inLanguage": "en-US",
+      "mainEntityOfPage": "{{ canonical_url }}",
+      "image": "{{ SITE_URL }}{% static 'images/og-winter-arc.jpg' %}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Should you bulk or cut during a Winter Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most lifters use the 90 days of colder weather for a controlled hypertrophy phase ('lean bulk') or body recomposition. Cold weather and hearty nutrition support heavier resistance training and muscle preservation. Extreme calorie restriction is discouraged as it impairs immunity and recovery during winter."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many days a week should you workout on a Fitness Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "3 to 5 days of structured resistance training combined with daily low-intensity movement (like 8,000 to 10,000 daily steps) is the gold standard for sustainable muscle building and cardiovascular health."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Physical Crucible</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        Winter Arc for Fitness: Building Physical Strength and Resilience
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>A Fitness Winter Arc</strong> uses the 90 days of colder weather to build foundational strength, preserve muscle mass, and develop cardiovascular endurance while avoiding extreme fad diets or dangerous overtraining. It combines <strong>progressive resistance training 3–5x per week</strong>, consistent whole-food nutrition, 8,000+ daily steps, and restorative sleep.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-8 text-base leading-relaxed">
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The Winter Advantage: Training in the Cold
+        </h2>
+        <p>
+            Summer fitness is often characterized by frantic, short-term cutting for aesthetics. In contrast, winter training represents the serious lifter's sanctuary. When social events diminish and gyms quiet down in the late autumn, dedicated athletes put on their hoodies, log their progressive overload, and build genuine physical capability.
+        </p>
+        <p>
+            A proper Fitness Arc is not an endurance test of self-destruction. Extreme starvation diets, endless hours of punishing cardio, or lifting with injured joints are signs of amateur ego, not discipline. Winter Arc emphasizes sustainable, injury-free progression.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The 4 Pillars of Sustainable Physical Mastery
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 1</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Progressive Resistance Training</h3>
+                <p class="text-sm text-ice/75">Follow a structured 3 to 5-day split (Upper/Lower or Push/Pull/Legs). Prioritize compound movements and log every set to ensure progressive overload over 90 days.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 2</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Non-Exercise Activity (NEAT)</h3>
+                <p class="text-sm text-ice/75">Cold weather makes people sedentary. Maintain a baseline of 8,000 to 10,000 steps daily. Brisk walking preserves cardiovascular capacity and burns calories without taxing joint recovery.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 3</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Whole-Food Nutrition &amp; Protein</h3>
+                <p class="text-sm text-ice/75">Fuel performance with nutrient-dense meals. Prioritize lean proteins (approx. 1.6–2.2g per kg of bodyweight), complex carbohydrates, healthy fats, and 3L of water daily. Avoid liquid sugars.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 4</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Active Recovery &amp; Sleep</h3>
+                <p class="text-sm text-ice/75">Muscles do not grow in the gym; they grow during sleep. Aim for 7.5 to 9 hours of uninterrupted sleep and dedicate 10 minutes daily to hip and shoulder mobility drills.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fitness Blueprint Card -->
+    <div class="my-8 p-6 sm:p-8 border border-steel/30 bg-surface/60 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/20 pb-4">
+            <div>
+                <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Recommended Starting Point</span>
+                <h3 class="font-serif text-2xl font-bold text-bone">Fitness Arc Blueprint</h3>
+            </div>
+            <a href="{% url 'arcs:preset_review' key='fitness' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 shrink-0 text-center">
+                Build a Fitness Arc
+            </a>
+        </div>
+        <p class="text-sm text-ice/80">
+            Activate our pre-configured <strong>Fitness Arc</strong> blueprint with built-in strength targets, step tracking, hydration checkpoints, and progressive milestones.
+        </p>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">Fitness FAQ</h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Can I do a Fitness Arc at home without gym equipment?</h3>
+                <p class="text-sm text-ice/80">
+                    Yes. Calisthenics (pull-ups, dips, push-ups, pistol squats) combined with a weighted backpack or resistance bands can build immense functional strength and conditioning throughout winter.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">What should I do if I get sick during the winter?</h3>
+                <p class="text-sm text-ice/80">
+                    Take rest immediately. Training through a fever or chest infection slows recovery and prolongs illness. Rest, hydrate, sleep 9+ hours, and resume training once your resting heart rate normalizes. Winter Arc is about lifetime capability, not reckless pride.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Links -->
+    <section class="pt-8 border-t border-steel/25">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 font-semibold mb-4">Related Fitness Resources</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-mono">
+            <a href="{% url 'winter_arc_habits' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Physical Habit List</a>
+            <a href="{% url 'winter_arc_rules' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Setting Fitness Rules</a>
+            <a href="{% url 'winter_arc_templates' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ All Blueprints</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,236 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'guides_index' %}" class="hover:text-bone transition-colors">Guides</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">How to Start</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "{{ SITE_URL }}/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How to Start a Winter Arc",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "How to Start a Winter Arc — A 10-Step Guide to Complete Transformation",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "inLanguage": "en-US",
+      "mainEntityOfPage": "{{ canonical_url }}",
+      "image": "{{ SITE_URL }}{% static 'images/og-winter-arc.jpg' %}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I start a Winter Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Starting a Winter Arc requires defining your season's dates, selecting 3 to 5 high-leverage goals, breaking those goals down into non-negotiable daily habits, establishing a daily tracking system, and committing to weekly reviews. Success comes from simplicity, clear metrics, and treating consistency as a daily practice."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When is the best time to start a Winter Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The traditional start date is October 1, culminating on January 1. However, you can start anytime in the autumn or winter for any 60 to 90-day period."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Step-by-Step Blueprint</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        How to Start a Winter Arc: The Complete 10-Step Roadmap
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            To start a Winter Arc, follow a sequential 10-step protocol: <strong>(1) Set your season window</strong> (e.g. Oct 1 to Jan 1); <strong>(2) Define your core motivation</strong>; <strong>(3) Select 3–5 strategic goals</strong>; <strong>(4) Translate goals into binary daily habits</strong>; <strong>(5) Schedule tactical milestones</strong>; <strong>(6) Sanitize your digital environment</strong>; <strong>(7) Establish a persistent tracking ledger</strong>; <strong>(8) Enforce weekly reviews</strong>; <strong>(9) Adopt the 'never miss twice' principle</strong>; and <strong>(10) Execute consistently</strong> until completion.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-10 text-base leading-relaxed">
+    <section class="space-y-6">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The 10-Step Execution Protocol
+        </h2>
+
+        <div class="space-y-6">
+            <!-- Step 1 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 1</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Choose Your Season Window</h3>
+                <p class="text-sm text-ice/75">
+                    Define exact calendar dates. The classic period runs from <strong>October 1 to January 1</strong> (92 days). Setting fixed start and end dates creates the healthy psychological pressure of a deadline.
+                </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 2</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Define Your Core Oath</h3>
+                <p class="text-sm text-ice/75">
+                    Why are you undertaking this season? Vague desires ("I want to get fit") will fail on freezing dark mornings. Articulate a concrete reason: "To build a foundation of strength and ship my web project so I enter January with momentum."
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 3</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Select 3 to 5 Primary Goals</h3>
+                <p class="text-sm text-ice/75">
+                    Distribute goals across different areas of life: Physical Conditioning, Intellectual/Mental Growth, and Career/Academic Achievement. For a deep dive on goal mechanics, read our guide to 
+                    <a href="{% url 'guide_goals' %}" class="text-crimson-light hover:underline font-medium">Mastering Winter Arc Goals</a>.
+                </p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 4</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Convert Goals into Binary Daily Habits</h3>
+                <p class="text-sm text-ice/75">
+                    Goals provide direction; habits provide execution. Convert "Get strong" into "Lift 4x per week for 45 minutes." Convert "Learn programming" into "Complete 60 minutes of uninterrupted coding daily."
+                </p>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 5</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Add 30-Day and 60-Day Milestones</h3>
+                <p class="text-sm text-ice/75">
+                    Break 90 days into three 30-day blocks. Set intermediate checkpoints (e.g. Day 30: 50% course completed; Day 60: MVP deployed) to assess progress before the finish line.
+                </p>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 6</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Sanitize Your Environment</h3>
+                <p class="text-sm text-ice/75">
+                    Willpower is a depletable biological resource. Remove temptations before Day 1: delete entertainment apps from your phone, prepare workout clothes the night before, and keep your workspace clear of distractions.
+                </p>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 7</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Establish Your Persistent Tracking System</h3>
+                <p class="text-sm text-ice/75">
+                    Never rely on memory. Record your habits daily in a dedicated system like <a href="{% url 'home' %}" class="text-crimson-light hover:underline font-medium">Winter Arc</a> to watch your streaks grow and accumulate verifiable momentum.
+                </p>
+            </div>
+
+            <!-- Step 8 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 8</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Conduct a Mandatory Weekly Review</h3>
+                <p class="text-sm text-ice/75">
+                    Every Sunday evening, spend 10 minutes reviewing your metrics. Note what went well, identify friction points, and write a brief reflection in your journal.
+                </p>
+            </div>
+
+            <!-- Step 9 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 9</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Adopt the 'Never Miss Twice' Principle</h3>
+                <p class="text-sm text-ice/75">
+                    Life will intervene—you will get sick or face an emergency. A missed habit is not a failed Arc. Log the reason, do not restart at Day 1, and make sure you never miss two consecutive days.
+                </p>
+            </div>
+
+            <!-- Step 10 -->
+            <div class="p-6 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase font-semibold">Step 10</span>
+                <h3 class="font-serif text-xl text-bone font-bold">Hold the Line to the Finish</h3>
+                <p class="text-sm text-ice/75">
+                    Finish your season with pride. Complete your final review on January 1, evaluate your total physical and intellectual growth, and carry that disciplined momentum into the new year.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contextual Conversion CTA -->
+    <div class="my-10 p-8 border border-crimson/40 bg-surface text-center sm:text-left sm:flex items-center justify-between gap-6 shadow-2xl">
+        <div class="space-y-2 mb-6 sm:mb-0">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson-light font-semibold">Begin Step 1</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">Launch Your Season in Winter Arc</h3>
+            <p class="text-sm text-ice/75 max-w-lg">
+                Create your account, configure your custom goals and habits, and begin tracking your 90-day transformation today.
+            </p>
+        </div>
+        <div class="shrink-0">
+            <a href="{% url 'register' %}" class="btn-primary px-6 py-3 text-xs uppercase tracking-widest text-center inline-block shadow-lg">
+                Create Your Winter Arc
+            </a>
+        </div>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">Starting FAQ</h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">What tools do I need to start?</h3>
+                <p class="text-sm text-ice/80">
+                    A notebook for journaling, a water bottle, workout clothing, and a digital habit tracker like Winter Arc. Avoid buying unnecessary gear as a form of procrastination.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Can I use a pre-built template instead of writing my own?</h3>
+                <p class="text-sm text-ice/80">
+                    Yes. We provide pre-configured blueprints for Classic, Student, Fitness, Monk Mode, and Career Arcs. See our <a href="{% url 'winter_arc_templates' %}" class="text-crimson-light hover:underline">Templates Library</a>.
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

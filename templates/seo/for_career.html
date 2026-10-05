@@ -1,0 +1,187 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'winter_arc_pillar' %}" class="hover:text-bone transition-colors">Winter Arc</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">For Career</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Winter Arc",
+          "item": "{{ SITE_URL }}/winter-arc/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "For Career",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "Winter Arc for Career — Deep Work, Upskilling & Professional Momentum",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "inLanguage": "en-US",
+      "mainEntityOfPage": "{{ canonical_url }}",
+      "image": "{{ SITE_URL }}{% static 'images/og-winter-arc.jpg' %}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How can I execute a Career Winter Arc while working a full-time job?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By protecting a single 60 to 90-minute deep work window either before your workday begins (5:30 AM to 7:00 AM) or immediately after work. 90 minutes of daily deliberate coding or writing compounds into over 120 focused hours across a 90-day season."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What kind of projects are best for a Career Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Projects that yield concrete, demonstrable artifacts: a deployed full-stack web application, a published technical case study, an open-source library, or a rigorous professional certification."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Professional Sprint</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        Winter Arc for Career: Deep Work, Skill Acquisition, and Professional Momentum
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>A Career Winter Arc</strong> is a 90-day deliberate professional sprint wherein software engineers, founders, and knowledge workers use the quiet winter months to master difficult technical skills, ship production-grade portfolio assets, and position themselves for promotion or new career opportunities.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-8 text-base leading-relaxed">
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            Why Q4 &amp; Winter Are the Ultimate Career Accelerators
+        </h2>
+        <p>
+            Between late October and early January, the corporate world slows down. Budgets pause, decision-makers take time off, and colleagues coast through the holiday season.
+        </p>
+        <p>
+            This lull creates a massive competitive asymmetry. While the majority of workers are checked out, someone running a Career Winter Arc commits 60 to 90 minutes of daily deliberate practice toward their craft. Over 90 days, that compounds into <strong>over 120 hours of focused skill acquisition</strong>. When January hiring budgets reopen, you enter the market with fresh production code, newly minted certifications, or a fully launched product.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The 5 Pillars of the Career Sprint
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 1</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">The Core Artifact / Project</h3>
+                <p class="text-sm text-ice/75">Choose one tangible deliverable to complete by Day 90: a production SaaS MVP, a complex full-stack open-source tool, or an architectural case study. Focus on completion over perfection.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 2</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Protected Deep Work Blocks</h3>
+                <p class="text-sm text-ice/75">Protect 60 to 90 minutes every day where Slack, email, and social feeds are strictly turned off. Deep cognitive tasks must occur in single-threaded focus.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 3</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Deliberate Skill Practice</h3>
+                <p class="text-sm text-ice/75">Spend 30 minutes daily learning concepts at the edge of your current ability—such as distributed systems, systems programming, algorithmic complexity, or AI integrations.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 4</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Strategic Market Presence</h3>
+                <p class="text-sm text-ice/75">Publicly document your technical decisions, write architecture breakdowns on GitHub or your blog, and reach out to two industry peers weekly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Blueprint Card -->
+    <div class="my-8 p-6 sm:p-8 border border-steel/30 bg-surface/60 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/20 pb-4">
+            <div>
+                <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Recommended Starting Point</span>
+                <h3 class="font-serif text-2xl font-bold text-bone">Career Lock-In Blueprint</h3>
+            </div>
+            <a href="{% url 'arcs:preset_review' key='career' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 shrink-0 text-center">
+                Build a Career Arc
+            </a>
+        </div>
+        <p class="text-sm text-ice/80">
+            Activate our <strong>Career Lock-In</strong> blueprint pre-configured with project shipping milestones, coding sprints, and velocity reflection logs.
+        </p>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">Career FAQ</h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">What should I do if my day job is exhausting?</h3>
+                <p class="text-sm text-ice/80">
+                    Shift your personal project to the morning. If you attempt deep work at 7:00 PM after 8 hours of corporate meetings, you are working on cognitive fumes. Wake up 90 minutes earlier and give your freshest energy to your own future.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">How do I track non-numerical career tasks?</h3>
+                <p class="text-sm text-ice/80">
+                    Use milestones and tasks in Winter Arc. For instance, Milestone: "Complete backend authentication by Day 30", with daily habits tracking 60 minutes of uninterrupted coding.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Links -->
+    <section class="pt-8 border-t border-steel/25">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 font-semibold mb-4">Related Career Guides</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-mono">
+            <a href="{% url 'guide_goals' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Setting Career Goals</a>
+            <a href="{% url 'guide_daily_routine' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Professional Routine</a>
+            <a href="{% url 'winter_arc_templates' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ All Templates</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,235 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'winter_arc_pillar' %}" class="hover:text-bone transition-colors">Winter Arc</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">Challenge</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Winter Arc",
+          "item": "{{ SITE_URL }}/winter-arc/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Challenge",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "The Winter Arc Challenge — 90 Days of Unapologetic Focus",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "inLanguage": "en-US",
+      "mainEntityOfPage": "{{ canonical_url }}",
+      "image": "{{ SITE_URL }}{% static 'images/og-winter-arc.jpg' %}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the Winter Arc Challenge?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Winter Arc Challenge is a personal discipline movement where participants use the 90 days from October to January to isolate priorities, eliminate distractions, and work consistently on self-mastery before the new year arrives."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I have to post about my Winter Arc on social media?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Many practitioners prefer complete privacy—often called 'Monk Mode.' True discipline thrives in quiet consistency rather than performative public announcements."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I participate if I start later in the season?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. While October 1 is the traditional cultural launch date, starting whenever you recognize the need for seasonal focus is valid. The discipline lies in completing your committed timeframe, not calendar dogma."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Seasonal Protocol</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        The Winter Arc Challenge: 90 Days of Unapologetic Focus
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>The Winter Arc Challenge is a 90-day self-improvement sprint</strong> spanning the final quarter of the year (traditionally October 1 to January 1). Rather than letting winter become a season of complacency, participants use cold weather and fewer social events to build physical strength, mental resilience, and career momentum. It is not an officially governed contest, but a personal standard of excellence.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-8 text-base leading-relaxed">
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The Psychology of the 90-Day Frame
+        </h2>
+        <p>
+            Why 90 days? Behavioral psychology indicates that 21 days builds initial neuro-pathways, 66 days automates a new behavior, and 90 days cements an entirely new baseline lifestyle.
+        </p>
+        <p>
+            Most annual resolutions fail because 365 days is too distant to create daily urgency. In contrast, 90 days is long enough to produce profound, visible physical and mental transformations, yet short enough that every single morning matters.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The 4 Stages of the Challenge
+        </h2>
+        <div class="space-y-4 my-6">
+            <div class="p-5 border border-steel/25 bg-surface/40 flex flex-col sm:flex-row gap-4">
+                <div class="sm:w-28 shrink-0 font-mono text-crimson-light text-sm font-semibold uppercase">Stage 1<br><span class="text-xs text-steel">Days 1–14</span></div>
+                <div>
+                    <h3 class="font-serif text-lg text-bone font-semibold mb-1">The Friction &amp; The Oath</h3>
+                    <p class="text-sm text-ice/75">Overcoming existing habits, stripping digital dopamine traps, and feeling the initial resistance of waking early or exercising in the cold.</p>
+                </div>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 flex flex-col sm:flex-row gap-4">
+                <div class="sm:w-28 shrink-0 font-mono text-crimson-light text-sm font-semibold uppercase">Stage 2<br><span class="text-xs text-steel">Days 15–45</span></div>
+                <div>
+                    <h3 class="font-serif text-lg text-bone font-semibold mb-1">The Silent Grind</h3>
+                    <p class="text-sm text-ice/75">The initial social novelty of posting about your Arc fades. This is where discipline replaces motivation. Daily tracking keeps you anchored when enthusiasm is absent.</p>
+                </div>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 flex flex-col sm:flex-row gap-4">
+                <div class="sm:w-28 shrink-0 font-mono text-crimson-light text-sm font-semibold uppercase">Stage 3<br><span class="text-xs text-steel">Days 46–75</span></div>
+                <div>
+                    <h3 class="font-serif text-lg text-bone font-semibold mb-1">Visible Compounding</h3>
+                    <p class="text-sm text-ice/75">Physical conditioning becomes visible; intellectual projects approach completion; habits require near-zero mental willpower to initiate.</p>
+                </div>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 flex flex-col sm:flex-row gap-4">
+                <div class="sm:w-28 shrink-0 font-mono text-crimson-light text-sm font-semibold uppercase">Stage 4<br><span class="text-xs text-steel">Days 76–90</span></div>
+                <div>
+                    <h3 class="font-serif text-lg text-bone font-semibold mb-1">The Winter Crown</h3>
+                    <p class="text-sm text-ice/75">Finalizing milestones, conducting the grand season retrospective, and entering January with momentum that sets you months ahead of the general public.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            Common Misconceptions About Winter Arc
+        </h2>
+        <div class="space-y-4 my-6">
+            <div class="p-4 border-l-2 border-amber-500 bg-surface/30">
+                <h3 class="font-serif text-base text-bone font-semibold mb-1">Misconception 1: "It requires total social isolation."</h3>
+                <p class="text-sm text-ice/75">
+                    Winter Arc is about intentionality, not misanthropy. You eliminate low-value, energy-draining social scrolling and drunken late nights, while preserving meaningful connections with family and mentors.
+                </p>
+            </div>
+            <div class="p-4 border-l-2 border-amber-500 bg-surface/30">
+                <h3 class="font-serif text-base text-bone font-semibold mb-1">Misconception 2: "If you break one habit, you fail the challenge."</h3>
+                <p class="text-sm text-ice/75">
+                    Winter Arc rejects the punitive "Day 1 reset" mentality common in commercial fitness challenges. If you miss a habit, you log it, examine the cause, and enforce the 'never miss twice' rule. Discipline is measured over 90 days, not a single imperfect afternoon.
+                </p>
+            </div>
+            <div class="p-4 border-l-2 border-amber-500 bg-surface/30">
+                <h3 class="font-serif text-base text-bone font-semibold mb-1">Misconception 3: "There is an official certification or leaderboard."</h3>
+                <p class="text-sm text-ice/75">
+                    Winter Arc is a decentralized community ethos. No brand owns the concept of winter self-mastery. The reward is the physical, mental, and professional reality you create.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Challenge CTA -->
+    <div class="my-10 p-8 border border-crimson/40 bg-surface text-center sm:text-left sm:flex items-center justify-between gap-6 shadow-2xl">
+        <div class="space-y-2 mb-6 sm:mb-0">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson-light font-semibold">Take the Oath</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">Step Into the Crucible</h3>
+            <p class="text-sm text-ice/75 max-w-lg">
+                Create your private profile, select your starting blueprint, and hold the line for 90 consecutive days.
+            </p>
+        </div>
+        <div class="shrink-0">
+            <a href="{% url 'register' %}" class="btn-primary px-6 py-3 text-xs uppercase tracking-widest text-center inline-block shadow-lg">
+                Join the Challenge
+            </a>
+        </div>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">Challenge FAQ</h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">What is the Winter Arc Challenge?</h3>
+                <p class="text-sm text-ice/80">
+                    The Winter Arc Challenge is a personal discipline movement where participants use the 90 days from October to January to isolate priorities, eliminate distractions, and work consistently on self-mastery before the new year arrives.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Do I have to post about my Winter Arc on social media?</h3>
+                <p class="text-sm text-ice/80">
+                    No. Many practitioners prefer complete privacy—often called 'Monk Mode.' True discipline thrives in quiet consistency rather than performative public announcements.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Can I participate if I start later in the season?</h3>
+                <p class="text-sm text-ice/80">
+                    Yes. While October 1 is the traditional cultural launch date, starting whenever you recognize the need for seasonal focus is valid. The discipline lies in completing your committed timeframe, not calendar dogma.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Links -->
+    <section class="pt-8 border-t border-steel/25">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 font-semibold mb-4">Explore More</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-mono">
+            <a href="{% url 'winter_arc_rules' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Rules &amp; Standards</a>
+            <a href="{% url 'winter_arc_templates' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Pre-built Templates</a>
+            <a href="{% url 'guide_how_to_start' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ 10-Step Setup Guide</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

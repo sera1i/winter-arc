@@ -1,0 +1,205 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'winter_arc_pillar' %}" class="hover:text-bone transition-colors">Winter Arc</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">For Students</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Winter Arc",
+          "item": "{{ SITE_URL }}/winter-arc/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "For Students",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "Winter Arc for Students — Academic Lock-In, Exam Prep & Focus",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "inLanguage": "en-US",
+      "mainEntityOfPage": "{{ canonical_url }}",
+      "image": "{{ SITE_URL }}{% static 'images/og-winter-arc.jpg' %}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can students do a Winter Arc without burning out?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. A student Winter Arc is about focused efficiency, not exhausting 14-hour study grinds. By structuring two to three deep study blocks of 50 minutes and protecting 7 to 8 hours of sleep, students achieve higher retention in fewer total hours."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How should a student handle exam weeks during a Winter Arc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "During exam weeks, academic goals take highest priority. Non-essential tasks should be paused, while core restorative habits like sleep, hydration, and a 20-minute daily walk should be fiercely protected to maintain cognitive performance."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I have part-time work alongside university?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Adapt the blueprint to your schedule. Choose one morning 50-minute study block before your shift and one evening review session. Discipline is adapting to your real constraints."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Academic Discipline</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        Winter Arc for Students: The Academic Lock-In Protocol
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>A Student Winter Arc</strong> is an academic productivity framework designed for high school, college, and graduate students facing midterms, finals, and skill deadlines between October and January. It replaces stressful cramming and social media doomscrolling with <strong>structured Pomodoro deep study</strong>, active recall flashcards, digital boundaries, and non-negotiable sleep hygiene.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-8 text-base leading-relaxed">
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The Reality of Academic Winter
+        </h2>
+        <p>
+            Fall and winter semesters are notoriously brutal for students. As daylight hours diminish and temperatures drop, motivation naturally flags just as major term papers, midterms, and final exam periods arrive. Most students react by procrastinating on TikTok until 2:00 AM, drinking energy drinks, and panic-cramming the night before an exam.
+        </p>
+        <p>
+            A Student Winter Arc treats the semester systematically. Rather than relying on sporadic bursts of adrenaline, you build a steady, predictable routine that compounds daily knowledge without burning out your nervous system.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The 6 Pillars of the Student Protocol
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 1</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Distraction-Free Deep Study</h3>
+                <p class="text-sm text-ice/75">Study in two 50-minute blocks (Pomodoro) with phone placed physically outside the room. 100 minutes of pure focus outperforms 5 hours of distracted multitasking.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 2</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Active Recall over Passive Highlighting</h3>
+                <p class="text-sm text-ice/75">Re-reading textbooks creates the illusion of mastery. Use Anki, practice tests, and the Feynman technique to force cognitive retrieval every single day.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 3</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Non-Negotiable Sleep Hygiene</h3>
+                <p class="text-sm text-ice/75">Memory consolidation occurs exclusively during slow-wave and REM sleep. Sacrificing sleep for late-night studying destroys exam recall. Protect 7 to 8 hours nightly.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 4</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Stress Decompression &amp; Movement</h3>
+                <p class="text-sm text-ice/75">Sitting at a desk for 10 hours spikes cortisol. Complete 30 to 45 minutes of daily physical movement—lifting weights, running, or walking—to regulate mood and cognitive alertness.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 5</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Digital Lockdown During Study Hours</h3>
+                <p class="text-sm text-ice/75">Set strict screen time limits on Instagram, TikTok, and YouTube. Treat notifications as hostile interruptions to your future grade.</p>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-2">
+                <span class="font-mono text-xs text-crimson-light uppercase">Pillar 6</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Weekly Syllabus Checkpoint</h3>
+                <p class="text-sm text-ice/75">Review upcoming assignment deadlines and exam dates every Sunday. Break heavy term projects into small daily tasks.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Blueprint Card -->
+    <div class="my-8 p-6 sm:p-8 border border-steel/30 bg-surface/60 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/20 pb-4">
+            <div>
+                <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Recommended Starting Point</span>
+                <h3 class="font-serif text-2xl font-bold text-bone">Student Lock-In Blueprint</h3>
+            </div>
+            <a href="{% url 'arcs:preset_review' key='student' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 shrink-0 text-center">
+                Build a Student Winter Arc
+            </a>
+        </div>
+        <p class="text-sm text-ice/80">
+            Our application includes a pre-configured <strong>Student Lock-In</strong> blueprint complete with study milestones, flashcard tracking, and sleep consistency habits ready for immediate customization.
+        </p>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">Student FAQ</h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">How many hours per day should a student study?</h3>
+                <p class="text-sm text-ice/80">
+                    Quality matters far more than volume. 2 to 4 hours of pure, undistracted deep work per day consistently outperforms 8 hours of distracted studying with phones open.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">What if I have part-time work alongside university?</h3>
+                <p class="text-sm text-ice/80">
+                    Adapt the blueprint to your schedule. Choose one morning 50-minute study block before your shift and one evening review session. Discipline is adapting to your real constraints.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Links -->
+    <section class="pt-8 border-t border-steel/25">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 font-semibold mb-4">Related Student Guides</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-mono">
+            <a href="{% url 'guide_daily_routine' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Student Daily Routine</a>
+            <a href="{% url 'winter_arc_habits' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Study Habit Ideas</a>
+            <a href="{% url 'winter_arc_templates' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ All Blueprint Templates</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

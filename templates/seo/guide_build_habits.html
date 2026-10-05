@@ -1,0 +1,214 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'guides_index' %}" class="hover:text-bone transition-colors">Guides</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">Build Habits</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "{{ SITE_URL }}/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How to Build Winter Arc Habits",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "How to Build Winter Arc Habits — The Behavioral Engineering Framework",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "inLanguage": "en-US",
+      "mainEntityOfPage": "{{ canonical_url }}",
+      "image": "{{ SITE_URL }}{% static 'images/og-winter-arc.jpg' %}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do you build habits that last through the winter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By following the closed behavioral loop: Goal → Behavior → Frequency → Measurement → Tracking → Review. When habits have clear, binary definitions and are tracked in a daily ledger, reliance on emotional motivation is replaced by automated system discipline."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do habit streaks help consistency?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Habit streaks leverage loss aversion. Once you accumulate 10, 20, or 30 consecutive days of completed habits, the psychological resistance to breaking that chain makes continuing the habit easier than skipping it."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Behavioral Science</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        How to Build Winter Arc Habits: The Behavioral Engineering Framework
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>Enduring Winter Arc habits are built using a 6-stage engineering loop:</strong> connect a high-level <strong>Goal</strong> to a specific physical <strong>Behavior</strong>, specify the <strong>Frequency</strong>, set an unambiguous binary <strong>Measurement</strong>, record completion in a daily <strong>Tracking</strong> ledger, and evaluate friction in a weekly <strong>Review</strong>.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-10 text-base leading-relaxed">
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            The 6-Stage Behavioral Engineering Loop
+        </h2>
+        <p>
+            Most people treat habit formation as an emotional test of willpower. But willpower is a fleeting biological state governed by blood glucose, sleep quality, and stress. If your habit requires high motivation every morning, it will collapse the first time you wake up tired in a freezing bedroom.
+        </p>
+        <p>
+            Behavioral engineering removes willpower from the equation by designing a closed feedback loop:
+        </p>
+
+        <!-- The 6 Stages Breakdown -->
+        <div class="space-y-4 my-6">
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-1">
+                <span class="font-mono text-xs text-crimson-light uppercase">Stage 1</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">1. Goal (Directional Target)</h3>
+                <p class="text-sm text-ice/75">The overarching outcome you desire. <em>Example: Improve cardiovascular endurance and physical conditioning.</em></p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-1">
+                <span class="font-mono text-xs text-crimson-light uppercase">Stage 2</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">2. Behavior (Physical Action)</h3>
+                <p class="text-sm text-ice/75">The exact physical movement or task performed in real space. <em>Example: Brisk outdoor walking or treadmill incline pacing.</em></p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-1">
+                <span class="font-mono text-xs text-crimson-light uppercase">Stage 3</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">3. Frequency (Cadence)</h3>
+                <p class="text-sm text-ice/75">When and how often the behavior occurs. <em>Example: 7 days a week, immediately upon waking.</em></p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-1">
+                <span class="font-mono text-xs text-crimson-light uppercase">Stage 4</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">4. Measurement (Binary Threshold)</h3>
+                <p class="text-sm text-ice/75">The non-negotiable metric that proves completion. <em>Example: Exactly 30 continuous minutes completed.</em></p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-1">
+                <span class="font-mono text-xs text-crimson-light uppercase">Stage 5</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">5. Tracking (Persistent Ledger)</h3>
+                <p class="text-sm text-ice/75">Recording the completed state in your habit tracker to log streak and XP progress.</p>
+            </div>
+            <div class="p-5 border-l-2 border-crimson bg-surface/40 space-y-1">
+                <span class="font-mono text-xs text-crimson-light uppercase">Stage 6</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">6. Review (Friction Audit)</h3>
+                <p class="text-sm text-ice/75">Examining weekly completion rate to identify and eliminate barriers before they cause failure.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Architecture Example -->
+    <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            Real-World Engineering Examples
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-3">
+                <span class="font-mono text-xs text-crimson-light uppercase">Study Example</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Exam Preparation Habit</h3>
+                <ul class="text-xs font-mono space-y-2 text-ice/80">
+                    <li><strong class="text-bone">Goal:</strong> Achieve 3.8+ GPA this term</li>
+                    <li><strong class="text-bone">Behavior:</strong> Distraction-free Pomodoro study</li>
+                    <li><strong class="text-bone">Frequency:</strong> 5 days a week (Mon–Fri)</li>
+                    <li><strong class="text-bone">Measurement:</strong> Two 50-minute blocks (100m total)</li>
+                    <li><strong class="text-bone">Tracking:</strong> Checkbox in Winter Arc Tasks</li>
+                </ul>
+            </div>
+            <div class="p-5 border border-steel/25 bg-surface/40 space-y-3">
+                <span class="font-mono text-xs text-crimson-light uppercase">Mindset Example</span>
+                <h3 class="font-serif text-lg text-bone font-semibold">Reading &amp; Intellect Habit</h3>
+                <ul class="text-xs font-mono space-y-2 text-ice/80">
+                    <li><strong class="text-bone">Goal:</strong> Read 6 books during the Arc</li>
+                    <li><strong class="text-bone">Behavior:</strong> Reading physical non-fiction</li>
+                    <li><strong class="text-bone">Frequency:</strong> Daily (7 days a week)</li>
+                    <li><strong class="text-bone">Measurement:</strong> Minimum 15 pages read</li>
+                    <li><strong class="text-bone">Tracking:</strong> Evening reflection log entry</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contextual Conversion CTA -->
+    <div class="my-10 p-8 border border-crimson/40 bg-surface text-center sm:text-left sm:flex items-center justify-between gap-6 shadow-2xl">
+        <div class="space-y-2 mb-6 sm:mb-0">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson-light font-semibold">Built-in Habit System</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">Track Habits with Zero Friction</h3>
+            <p class="text-sm text-ice/75 max-w-lg">
+                Winter Arc gives you an automated habit tracker with streak protection, daily checkboxes, and weekly completion rate analytics.
+            </p>
+        </div>
+        <div class="shrink-0">
+            <a href="{% url 'register' %}" class="btn-primary px-6 py-3 text-xs uppercase tracking-widest text-center inline-block shadow-lg">
+                Start Tracking Habits
+            </a>
+        </div>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">Habit Science FAQ</h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">How long does it take for a Winter Arc habit to feel easy?</h3>
+                <p class="text-sm text-ice/80">
+                    Research indicates the median time for automaticity is roughly 66 days. The first 21 days will require deliberate concentration; days 22 to 60 will feel familiar; days 61 to 90 will feel like second nature.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">What is habit stacking?</h3>
+                <p class="text-sm text-ice/80">
+                    Habit stacking connects a new behavior to an already established routine. For example: "After I brew morning coffee (existing cue), I will immediately read 15 pages of my book (new habit)."
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -40,13 +40,15 @@
                 </p>
             </div>
 
-            <!-- Col 2: Product -->
+            <!-- Col 2: Knowledge & Ecosystem -->
             <div class="space-y-4">
-                <span class="font-mono text-[11px] uppercase tracking-[0.25em] text-bone/70 block">Product</span>
-                <ul class="space-y-2.5 text-sm text-ice/70" role="list">
-                    <li><a href="/#how-it-works" class="hover:text-bone transition-colors duration-150">How it works</a></li>
-                    <li><a href="/#features" class="hover:text-bone transition-colors duration-150">Features</a></li>
-                    <li><a href="/#privacy" class="hover:text-bone transition-colors duration-150">Privacy</a></li>
+                <span class="font-mono text-[11px] uppercase tracking-[0.25em] text-bone/70 block">Winter Arc</span>
+                <ul class="space-y-2 text-sm text-ice/70" role="list">
+                    <li><a href="{% url 'winter_arc_pillar' %}" class="hover:text-bone transition-colors duration-150">What is Winter Arc?</a></li>
+                    <li><a href="{% url 'winter_arc_rules' %}" class="hover:text-bone transition-colors duration-150">Rules &amp; Standards</a></li>
+                    <li><a href="{% url 'winter_arc_habits' %}" class="hover:text-bone transition-colors duration-150">Habit Ideas</a></li>
+                    <li><a href="{% url 'winter_arc_templates' %}" class="hover:text-bone transition-colors duration-150">Presets &amp; Blueprints</a></li>
+                    <li><a href="{% url 'guides_index' %}" class="hover:text-bone transition-colors duration-150">Guides Library</a></li>
                 </ul>
             </div>
 

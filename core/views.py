@@ -128,13 +128,22 @@ def sitemap_xml(request):
     """
     site_url = getattr(settings, 'SITE_URL', 'https://arcinwinter.up.railway.app').rstrip('/')
 
-    # Extensible public canonical URL registry for future Phase 3 SEO pages
+    # Authoritative public canonical URL registry for Winter Arc knowledge ecosystem
     public_entries = [
-        {
-            'loc': f"{site_url}/",
-            'changefreq': 'weekly',
-            'priority': '1.0',
-        },
+        {'loc': f"{site_url}/", 'changefreq': 'weekly', 'priority': '1.0'},
+        {'loc': f"{site_url}/winter-arc/", 'changefreq': 'weekly', 'priority': '0.9'},
+        {'loc': f"{site_url}/winter-arc/rules/", 'changefreq': 'weekly', 'priority': '0.8'},
+        {'loc': f"{site_url}/winter-arc/habits/", 'changefreq': 'weekly', 'priority': '0.8'},
+        {'loc': f"{site_url}/winter-arc/challenge/", 'changefreq': 'weekly', 'priority': '0.8'},
+        {'loc': f"{site_url}/winter-arc/templates/", 'changefreq': 'weekly', 'priority': '0.8'},
+        {'loc': f"{site_url}/winter-arc/for-students/", 'changefreq': 'monthly', 'priority': '0.8'},
+        {'loc': f"{site_url}/winter-arc/for-fitness/", 'changefreq': 'monthly', 'priority': '0.8'},
+        {'loc': f"{site_url}/winter-arc/for-career/", 'changefreq': 'monthly', 'priority': '0.8'},
+        {'loc': f"{site_url}/guides/", 'changefreq': 'weekly', 'priority': '0.8'},
+        {'loc': f"{site_url}/guides/how-to-start-a-winter-arc/", 'changefreq': 'monthly', 'priority': '0.7'},
+        {'loc': f"{site_url}/guides/how-to-build-winter-arc-habits/", 'changefreq': 'monthly', 'priority': '0.7'},
+        {'loc': f"{site_url}/guides/winter-arc-daily-routine/", 'changefreq': 'monthly', 'priority': '0.7'},
+        {'loc': f"{site_url}/guides/winter-arc-goals/", 'changefreq': 'monthly', 'priority': '0.7'},
     ]
 
     xml_lines = [

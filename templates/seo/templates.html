@@ -1,0 +1,372 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <a href="{% url 'winter_arc_pillar' %}" class="hover:text-bone transition-colors">Winter Arc</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">Templates</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Winter Arc",
+          "item": "{{ SITE_URL }}/winter-arc/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Templates",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "CollectionPage",
+      "name": "Winter Arc Templates & Starting Blueprints",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are Winter Arc templates mandatory rules?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. These templates are curated starting blueprints, not official rules. When you select a blueprint in Winter Arc, you can customize, rename, add, or delete any goal, milestone, task, or habit before taking the oath."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I edit habit names or targets after selecting a template?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Every blueprint is 100% customizable. You can adjust habit frequency, edit targets, delete irrelevant items, or add new ones during the review stage or at any point during your season."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to pay to use these templates?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The blueprint library in Winter Arc is completely free to customize and activate for all registered users."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Blueprint Library</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        Winter Arc Templates: Structured Blueprints for Every Discipline
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Answer</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>Winter Arc templates are battle-tested starting blueprints</strong> designed to eliminate analysis paralysis when launching your 90-day season. Each blueprint provides pre-structured goals, milestones, tactical tasks, and daily non-negotiable habits. You can adopt them as-is or fully customize them before taking your oath.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-10 text-base leading-relaxed">
+    <section class="space-y-4">
+        <p>
+            Choose a starting blueprint below to preview its goals and habits. Winter Arc provides <strong>6 predefined blueprints plus a custom Arc option</strong> to eliminate analysis paralysis. Clicking <strong>BUILD THIS ARC</strong> loads the complete preset into your private customization workspace.
+        </p>
+    </section>
+
+    <!-- Preset Blueprints Showcase -->
+    <div class="space-y-8 my-8">
+        <!-- Blueprint 1: Classic Winter Arc -->
+        <div class="p-6 sm:p-8 border border-steel/30 bg-surface/40 hover:border-steel/60 transition-colors space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/20 pb-4">
+                <div>
+                    <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Balanced Standard</span>
+                    <h2 class="font-serif text-2xl font-bold text-bone">Classic Winter Arc</h2>
+                </div>
+                <a href="{% url 'arcs:preset_review' key='classic' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5 shrink-0 text-center">
+                    Build This Arc
+                </a>
+            </div>
+            <p class="text-sm text-ice/80">
+                <strong>Ideal for:</strong> Anyone seeking a balanced, high-yield foundation across strength, intellect, and daily productivity without hyper-specializing in a single area.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Goals:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Physical Conditioning (Strength 4x/week)</li>
+                        <li>Intellectual Sharpness (Read 3 non-fiction books)</li>
+                        <li>Digital Discipline &amp; Deep Work (Ship major project)</li>
+                    </ul>
+                </div>
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Habits:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Daily 45-minute movement or workout</li>
+                        <li>Read 15 pages before screens</li>
+                        <li>Morning outdoor walk (15 mins)</li>
+                        <li>Hydration: 3 liters daily</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blueprint 2: Student Lock-In -->
+        <div class="p-6 sm:p-8 border border-steel/30 bg-surface/40 hover:border-steel/60 transition-colors space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/20 pb-4">
+                <div>
+                    <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Academic Excellence</span>
+                    <h2 class="font-serif text-2xl font-bold text-bone">Student Lock-In</h2>
+                </div>
+                <a href="{% url 'arcs:preset_review' key='student' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5 shrink-0 text-center">
+                    Build This Arc
+                </a>
+            </div>
+            <p class="text-sm text-ice/80">
+                <strong>Ideal for:</strong> High school, college, or graduate students preparing for midterms, finals, technical certifications, or competitive admissions.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Goals:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Term Academic Mastery (GPA target)</li>
+                        <li>Coursework &amp; Project Completion</li>
+                        <li>Exam Preparation &amp; Syllabus Coverage</li>
+                    </ul>
+                </div>
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Habits:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Two 50-minute distraction-free study blocks</li>
+                        <li>Daily Anki / Flashcard active recall</li>
+                        <li>Consistent 7+ hours sleep anchor</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blueprint 3: Fitness Arc -->
+        <div class="p-6 sm:p-8 border border-steel/30 bg-surface/40 hover:border-steel/60 transition-colors space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/20 pb-4">
+                <div>
+                    <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Physical Transformation</span>
+                    <h2 class="font-serif text-2xl font-bold text-bone">Fitness Arc</h2>
+                </div>
+                <a href="{% url 'arcs:preset_review' key='fitness' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5 shrink-0 text-center">
+                    Build This Arc
+                </a>
+            </div>
+            <p class="text-sm text-ice/80">
+                <strong>Ideal for:</strong> Athletes, lifters, and individuals seeking progressive overload, muscle preservation, body recomposition, and cold-weather cardiovascular endurance.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Goals:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Strength Progression (Squat/Bench/Deadlift benchmark)</li>
+                        <li>Conditioning (10,000 daily steps)</li>
+                        <li>Nutrition &amp; Protein Adherence</li>
+                    </ul>
+                </div>
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Habits:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Hit daily protein requirement (e.g. 150g)</li>
+                        <li>Lift weights 4–5x weekly with logbook</li>
+                        <li>10 minutes daily mobility &amp; stretching</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blueprint 4: Monk Mode -->
+        <div class="p-6 sm:p-8 border border-steel/30 bg-surface/40 hover:border-steel/60 transition-colors space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/20 pb-4">
+                <div>
+                    <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Dopamine Detox &amp; Isolation</span>
+                    <h2 class="font-serif text-2xl font-bold text-bone">Monk Mode</h2>
+                </div>
+                <a href="{% url 'arcs:preset_review' key='monk_mode' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5 shrink-0 text-center">
+                    Build This Arc
+                </a>
+            </div>
+            <p class="text-sm text-ice/80">
+                <strong>Ideal for:</strong> Creators and thinkers suffering from digital overstimulation who require strict isolation, zero entertainment scrolling, and deep psychological reset.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Goals:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Dopamine Detoxification</li>
+                        <li>Deep Work Output (Ship core project)</li>
+                        <li>Internal Stillness &amp; Mental Fortitude</li>
+                    </ul>
+                </div>
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Habits:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Zero social media consumption</li>
+                        <li>15 minutes silent unguided meditation</li>
+                        <li>No screens 60 minutes before sleep</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blueprint 5: Mind + Body -->
+        <div class="p-6 sm:p-8 border border-steel/30 bg-surface/40 hover:border-steel/60 transition-colors space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/20 pb-4">
+                <div>
+                    <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Balanced Self-Discipline</span>
+                    <h2 class="font-serif text-2xl font-bold text-bone">Mind + Body</h2>
+                </div>
+                <a href="{% url 'arcs:preset_review' key='mind_body' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5 shrink-0 text-center">
+                    Build This Arc
+                </a>
+            </div>
+            <p class="text-sm text-ice/80">
+                <strong>Ideal for:</strong> Individuals seeking to harmonize physical vitality with mental stillness through daily movement, thoughtful reflection, reading, and restorative discipline.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Goals:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Strengthen the Body (Endurance &amp; mobility)</li>
+                        <li>Deep Work &amp; Intellect (Unbroken focus)</li>
+                        <li>Strengthen Daily Discipline (Mindful routines)</li>
+                    </ul>
+                </div>
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Habits:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>30 minutes intentional movement</li>
+                        <li>20 minutes focused reading</li>
+                        <li>Daily written journal reflection</li>
+                        <li>10 minutes mindfulness or quiet contemplation</li>
+                        <li>8-hour restorative sleep schedule</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blueprint 6: Career Lock-In -->
+        <div class="p-6 sm:p-8 border border-steel/30 bg-surface/40 hover:border-steel/60 transition-colors space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-steel/20 pb-4">
+                <div>
+                    <span class="font-mono text-xs text-crimson-light uppercase tracking-wider block">Professional Sprint</span>
+                    <h2 class="font-serif text-2xl font-bold text-bone">Career Lock-In</h2>
+                </div>
+                <a href="{% url 'arcs:preset_review' key='career' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5 shrink-0 text-center">
+                    Build This Arc
+                </a>
+            </div>
+            <p class="text-sm text-ice/80">
+                <strong>Ideal for:</strong> Software engineers, founders, and knowledge workers dedicated to upskilling, shipping portfolio assets, and career acceleration.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Goals:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>Ship Production Portfolio Project</li>
+                        <li>Master Advanced Technical Competency</li>
+                        <li>Strategic Career Positioning</li>
+                    </ul>
+                </div>
+                <div class="p-4 bg-ink/60 border border-steel/20">
+                    <span class="text-bone font-semibold uppercase tracking-wider block mb-2">Predefined Habits:</span>
+                    <ul class="space-y-1.5 text-ice/75 list-disc list-inside">
+                        <li>60–90 min dedicated coding/building sprint</li>
+                        <li>30 minutes technical reading/architecture</li>
+                        <li>Daily journal reflection on work velocity</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blueprint 7: Custom Arc -->
+        <div class="p-6 sm:p-8 border border-dashed border-steel/40 bg-surface/20 hover:border-crimson/60 transition-colors space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span class="font-mono text-xs text-steel uppercase tracking-wider block">Blank Canvas</span>
+                    <h2 class="font-serif text-2xl font-bold text-bone">Custom Arc</h2>
+                    <p class="text-sm text-ice/70 mt-1">Start completely from scratch with your own custom goals, milestones, tasks, and habit rules.</p>
+                </div>
+                <a href="{% url 'arcs:preset_review' key='custom' %}" class="px-5 py-2.5 border border-steel/40 text-bone hover:border-steel text-xs font-mono uppercase tracking-wider text-center shrink-0">
+                    Start Custom Arc
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visible FAQ -->
+    <section class="space-y-6 pt-4 border-t border-steel/25">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">Templates FAQ</h2>
+        <div class="space-y-4">
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Are Winter Arc templates mandatory rules?</h3>
+                <p class="text-sm text-ice/80">
+                    No. These templates are curated starting blueprints, not official rules. When you select a blueprint in Winter Arc, you can customize, rename, add, or delete any goal, milestone, task, or habit before taking the oath.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Can I edit habit names or targets after selecting a template?</h3>
+                <p class="text-sm text-ice/80">
+                    Yes. Every blueprint is 100% customizable. You can adjust habit frequency, edit targets, delete irrelevant items, or add new ones during the review stage or at any point during your season.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">Do I need to pay to use these templates?</h3>
+                <p class="text-sm text-ice/80">
+                    No. The blueprint library in Winter Arc is completely free to customize and activate for all registered users.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cluster Links -->
+    <section class="pt-8 border-t border-steel/25">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 font-semibold mb-4">Explore Specific Audiences</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-mono">
+            <a href="{% url 'winter_arc_for_students' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Student Protocol</a>
+            <a href="{% url 'winter_arc_for_fitness' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Fitness Protocol</a>
+            <a href="{% url 'winter_arc_for_career' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Career Protocol</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

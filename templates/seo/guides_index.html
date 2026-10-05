@@ -1,0 +1,176 @@
+{% extends "seo/base_public.html" %}
+{% load static %}
+
+{% block breadcrumbs %}
+<nav class="flex items-center text-xs font-mono text-ice/60 space-x-2" aria-label="Breadcrumb">
+    <a href="{% url 'home' %}" class="hover:text-bone transition-colors">Home</a>
+    <span class="text-steel/50">/</span>
+    <span class="text-bone font-medium">Guides</span>
+</nav>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ SITE_URL }}/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides Library",
+          "item": "{{ canonical_url }}"
+        }
+      ]
+    },
+    {
+      "@type": "CollectionPage",
+      "name": "Winter Arc Guides — In-Depth Protocols for Discipline & Tracking",
+      "description": "{{ meta_description }}",
+      "url": "{{ canonical_url }}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Winter Arc",
+        "url": "{{ SITE_URL }}/"
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="mb-10">
+    <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-crimson/30 bg-crimson/10 text-crimson-light font-mono text-xs uppercase tracking-widest">
+        <span>Knowledge Base</span>
+    </div>
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-bone mb-6 leading-tight">
+        Winter Arc Guides: Actionable Frameworks for Systematic Self-Improvement
+    </h1>
+
+    <!-- Answer-First Box -->
+    <div class="p-6 bg-surface border border-steel/30 rounded-none mb-8 shadow-lg relative overflow-hidden">
+        <div class="w-1 h-full bg-crimson absolute left-0 top-0"></div>
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 mb-2 font-semibold">Direct Overview</h2>
+        <p class="text-base sm:text-lg text-bone leading-relaxed font-sans">
+            <strong>The Winter Arc Guides library</strong> provides comprehensive, evidence-based protocols covering every phase of your 90-day season. From selecting starting dates and structuring measurable habits to designing sustainable daily schedules and executing goal hierarchies, these guides turn vague seasonal ambition into a predictable, daily reality.
+        </p>
+    </div>
+</header>
+
+<div class="prose max-w-none text-ice/85 space-y-10 text-base leading-relaxed">
+    <section class="space-y-6">
+        <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">
+            Featured In-Depth Protocols
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Guide Card 1 -->
+            <div class="p-6 border border-steel/30 bg-surface/40 hover:border-crimson/50 transition-all flex flex-col justify-between space-y-4">
+                <div class="space-y-2">
+                    <span class="font-mono text-[11px] text-crimson-light uppercase tracking-wider block">Foundational Roadmap</span>
+                    <h3 class="font-serif text-xl font-bold text-bone">
+                        <a href="{% url 'guide_how_to_start' %}" class="hover:text-crimson-light transition-colors">
+                            How to Start a Winter Arc: The 10-Step Roadmap
+                        </a>
+                    </h3>
+                    <p class="text-sm text-ice/75">
+                        A complete step-by-step blueprint from defining your season window and core motivation to establishing your daily tracking system and weekly review rituals.
+                    </p>
+                </div>
+                <a href="{% url 'guide_how_to_start' %}" class="text-xs font-mono uppercase tracking-wider text-crimson-light hover:underline font-semibold flex items-center gap-1.5 pt-2">
+                    Read Guide <span>→</span>
+                </a>
+            </div>
+
+            <!-- Guide Card 2 -->
+            <div class="p-6 border border-steel/30 bg-surface/40 hover:border-crimson/50 transition-all flex flex-col justify-between space-y-4">
+                <div class="space-y-2">
+                    <span class="font-mono text-[11px] text-crimson-light uppercase tracking-wider block">Behavioral Science</span>
+                    <h3 class="font-serif text-xl font-bold text-bone">
+                        <a href="{% url 'guide_build_habits' %}" class="hover:text-crimson-light transition-colors">
+                            How to Build Winter Arc Habits: Behavioral Engineering
+                        </a>
+                    </h3>
+                    <p class="text-sm text-ice/75">
+                        Master the 6-stage habit engineering loop: Goal → Behavior → Frequency → Measurement → Tracking → Review. Learn why binary completion criteria outperform vague targets.
+                    </p>
+                </div>
+                <a href="{% url 'guide_build_habits' %}" class="text-xs font-mono uppercase tracking-wider text-crimson-light hover:underline font-semibold flex items-center gap-1.5 pt-2">
+                    Read Guide <span>→</span>
+                </a>
+            </div>
+
+            <!-- Guide Card 3 -->
+            <div class="p-6 border border-steel/30 bg-surface/40 hover:border-crimson/50 transition-all flex flex-col justify-between space-y-4">
+                <div class="space-y-2">
+                    <span class="font-mono text-[11px] text-crimson-light uppercase tracking-wider block">Time Management &amp; Energy</span>
+                    <h3 class="font-serif text-xl font-bold text-bone">
+                        <a href="{% url 'guide_daily_routine' %}" class="hover:text-crimson-light transition-colors">
+                            The Winter Arc Daily Routine: Schedules That Actually Work
+                        </a>
+                    </h3>
+                    <p class="text-sm text-ice/75">
+                        Realistic schedule templates for 9-to-5 professionals, university students, and athletes. Learn how to structure morning anchors, deep work, and evening recovery windows.
+                    </p>
+                </div>
+                <a href="{% url 'guide_daily_routine' %}" class="text-xs font-mono uppercase tracking-wider text-crimson-light hover:underline font-semibold flex items-center gap-1.5 pt-2">
+                    Read Guide <span>→</span>
+                </a>
+            </div>
+
+            <!-- Guide Card 4 -->
+            <div class="p-6 border border-steel/30 bg-surface/40 hover:border-crimson/50 transition-all flex flex-col justify-between space-y-4">
+                <div class="space-y-2">
+                    <span class="font-mono text-[11px] text-crimson-light uppercase tracking-wider block">Strategic Execution</span>
+                    <h3 class="font-serif text-xl font-bold text-bone">
+                        <a href="{% url 'guide_goals' %}" class="hover:text-crimson-light transition-colors">
+                            Mastering Winter Arc Goals: Vision to Daily Execution
+                        </a>
+                    </h3>
+                    <p class="text-sm text-ice/75">
+                        Translate broad outcome ambitions into the Winter Arc conceptual hierarchy: Arc → Strategic Goals → 30/60/90-Day Milestones → Daily Non-Negotiable Tasks.
+                    </p>
+                </div>
+                <a href="{% url 'guide_goals' %}" class="text-xs font-mono uppercase tracking-wider text-crimson-light hover:underline font-semibold flex items-center gap-1.5 pt-2">
+                    Read Guide <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contextual Conversion CTA -->
+    <div class="my-10 p-8 border border-crimson/40 bg-surface text-center sm:text-left sm:flex items-center justify-between gap-6 shadow-2xl">
+        <div class="space-y-2 mb-6 sm:mb-0">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson-light font-semibold">Turn Knowledge into Action</span>
+            <h3 class="font-serif text-2xl font-bold text-bone">Execute Your Arc</h3>
+            <p class="text-sm text-ice/75 max-w-lg">
+                Knowledge without daily execution is meaningless. Launch your season in Winter Arc with persistent tracking, habit streaks, and weekly analytics.
+            </p>
+        </div>
+        <div class="shrink-0">
+            <a href="{% url 'register' %}" class="btn-primary px-6 py-3 text-xs uppercase tracking-widest text-center inline-block shadow-lg">
+                Create Your Winter Arc
+            </a>
+        </div>
+    </div>
+
+    <!-- Cluster Links -->
+    <section class="pt-8 border-t border-steel/25">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-ice/70 font-semibold mb-4">Core Ecosystem</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm font-mono">
+            <a href="{% url 'winter_arc_pillar' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ What is Winter Arc?</a>
+            <a href="{% url 'winter_arc_rules' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Rules &amp; Standards</a>
+            <a href="{% url 'winter_arc_templates' %}" class="p-3 border border-steel/20 hover:border-crimson/50 text-bone hover:text-crimson-light transition-colors block">→ Starting Blueprints</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

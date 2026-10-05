@@ -21,6 +21,7 @@ urlpatterns = [
     path('analytics/', include('analytics.urls')),
     path('notifications/', include('notifications.urls')),
     path('api/v1/', include('api.urls')),
+    path('', include('core.urls_seo')),
     path('', landing_view, name='home'),
 ]
 

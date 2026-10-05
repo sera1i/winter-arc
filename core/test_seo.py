@@ -88,9 +88,14 @@ class TechnicalSEOFoundationTests(TestCase):
         """sitemap.xml never includes private, authenticated, or API URLs."""
         response = self.client.get('/sitemap.xml')
         content = response.content.decode('utf-8')
+        root = ET.fromstring(content)
+        locs = [elem.text for elem in root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
 
-        for forbidden in ['/dashboard', '/arcs', '/goals', '/tasks', '/habits', '/journal', '/analytics', '/notifications', '/api', '/admin', '/health', '/accounts']:
-            self.assertNotIn(forbidden, content)
+        forbidden_prefixes = ['/dashboard', '/arcs/', '/goals/', '/tasks/', '/habits/', '/journal/', '/analytics/', '/notifications/', '/api/', '/admin/', '/health/', '/accounts/']
+        for loc in locs:
+            path = loc.replace(settings.SITE_URL, '')
+            for forbidden in forbidden_prefixes:
+                self.assertFalse(path.startswith(forbidden), f"Private route {path} unexpectedly found in sitemap.xml")
 
     # =========================================================================
     # 3. HOMEPAGE METADATA & CANONICAL URL TESTS
