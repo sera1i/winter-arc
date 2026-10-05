@@ -68,7 +68,7 @@ cp .env.example .env
 ```
 Fill in the basic development variables:
 ```env
-DJANGO_SECRET_KEY=local-dev-secret-key-12345
+DJANGO_SECRET_KEY=replace-with-a-local-development-secret
 DJANGO_DEBUG=True
 DJANGO_TIME_ZONE=Asia/Kolkata
 DATABASE_URL=sqlite:///db.sqlite3
