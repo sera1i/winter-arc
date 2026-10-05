@@ -46,6 +46,12 @@ for default_host in ['testserver', 'healthcheck.railway.app', 'arcinwinter.up.ra
     if default_host not in ALLOWED_HOSTS:
         ALLOWED_HOSTS.append(default_host)
 
+# Canonical Site URL Configuration (Source of truth for SEO, canonical URLs, sitemaps, OG, JSON-LD)
+_default_site_url = 'https://arcinwinter.up.railway.app' if not DEBUG else 'http://127.0.0.1:8000'
+SITE_URL = env('DJANGO_SITE_URL', default=_default_site_url).strip().rstrip('/')
+if not DEBUG and SITE_URL.startswith('http://'):
+    SITE_URL = 'https://' + SITE_URL[7:]
+
 
 # Application definition
 
@@ -101,6 +107,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'notifications.context_processors.notification_context',
+                'core.context_processors.seo_context',
             ],
         },
     },

@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>404 — Lost in the Frost | Winter Arc</title>
+    <link href="{% static 'css/output.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔</text></svg>">
+</head>
+<body class="bg-ink text-bone font-sans antialiased min-h-screen flex flex-col justify-center items-center px-4 relative overflow-hidden select-none selection:bg-crimson selection:text-bone">
+
+    <!-- Atmospheric background overlay -->
+    <div class="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 40%, rgba(179,21,27,0.12) 0%, rgba(11,13,18,0.95) 75%);"></div>
+    </div>
+
+    <div class="relative z-10 max-w-lg w-full text-center space-y-6">
+        <!-- Brand Mark -->
+        <div class="inline-flex items-center gap-3">
+            <span class="w-0.5 h-6 bg-crimson"></span>
+            <span class="font-serif text-xl sm:text-2xl font-bold tracking-[0.2em] text-bone uppercase">
+                Winter Arc
+            </span>
+        </div>
+
+        <!-- 404 Hero Number -->
+        <div class="space-y-2">
+            <p class="font-mono text-xs uppercase tracking-[0.35em] text-crimson font-medium">
+                Error 404 · Unknown Path
+            </p>
+            <h1 class="font-serif text-5xl sm:text-6xl text-bone tracking-tight">
+                Lost in the Frost
+            </h1>
+        </div>
+
+        <!-- Narrative Description -->
+        <p class="font-sans text-base sm:text-lg text-ice/80 leading-relaxed max-w-md mx-auto">
+            The passage you seek has been buried beneath the snow. Reclaim your focus and return to familiar ground.
+        </p>
+
+        <!-- Sanctuary Link -->
+        <div class="pt-4">
+            <a href="/" class="btn-primary inline-block text-xs uppercase tracking-widest px-8 py-3.5" style="box-shadow: 0 0 20px rgba(179,21,27,0.35);">
+                Return to Sanctuary
+            </a>
+        </div>
+    </div>
+
+    <!-- Minimal footer note -->
+    <div class="absolute bottom-6 left-0 right-0 text-center font-mono text-[11px] text-steel/60 uppercase tracking-widest pointer-events-none z-10">
+        Hold the Line · Winter Arc
+    </div>
+
+</body>
+</html>
