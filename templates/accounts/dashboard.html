@@ -64,9 +64,14 @@
                         </a>
                     </div>
                 {% else %}
-                    <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
-                        Forge an Arc
-                    </a>
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
+                            Forge an Arc
+                        </a>
+                        <a href="{% url 'arcs:create' %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-3 flex-shrink-0 text-center">
+                            Create your first Arc
+                        </a>
+                    </div>
                 {% endif %}
             {% endif %}
         </div>

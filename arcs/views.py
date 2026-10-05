@@ -164,6 +164,13 @@ def preset_review(request, key):
     if not preset:
         messages.error(request, f'Blueprint preset "{key}" not found.')
         return redirect('arcs:presets')
+
+    session_key = f'preset_draft_{key}'
+    existing_draft = request.session.get(session_key)
+    if not existing_draft or (preset.key != 'custom' and preset.goal_count > 0 and len(existing_draft.get('goals', [])) == 0 and not existing_draft.get('is_user_customized')):
+        request.session[session_key] = initialize_blueprint_draft(preset, request.user)
+        request.session.modified = True
+
     return render(request, 'arcs/preset_review.html', {
         'preset': preset,
     })
@@ -182,21 +189,33 @@ def preset_customize(request, key):
 
     if request.method == 'POST':
         raw_payload = request.POST.get('customized_payload')
+        draft_data = None
         if raw_payload:
             try:
-                draft_data = json.loads(raw_payload)
+                parsed = json.loads(raw_payload)
+                if isinstance(parsed, str):
+                    parsed = json.loads(parsed)
+                if isinstance(parsed, dict):
+                    draft_data = parsed
             except Exception:
-                draft_data = {}
-        else:
+                draft_data = None
+
+        if not draft_data:
+            # Fallback if raw_payload was missing or empty:
+            # Preserve existing draft from session or preset defaults instead of wiping out goals/habits
+            existing = request.session.get(session_key)
+            if not existing or (preset.key != 'custom' and preset.goal_count > 0 and not existing.get('goals')):
+                existing = initialize_blueprint_draft(preset, request.user)
+
             draft_data = {
-                'name': request.POST.get('name'),
-                'objective': request.POST.get('objective'),
-                'start_date': request.POST.get('start_date'),
-                'end_date': request.POST.get('end_date'),
-                'timezone': request.POST.get('timezone'),
+                'name': request.POST.get('name') or existing.get('name', preset.name),
+                'objective': request.POST.get('objective') or existing.get('objective', preset.objective),
+                'start_date': request.POST.get('start_date') or existing.get('start_date'),
+                'end_date': request.POST.get('end_date') or existing.get('end_date'),
+                'timezone': request.POST.get('timezone') or existing.get('timezone', 'Asia/Kolkata'),
                 'is_primary': request.POST.get('is_primary') in ('on', 'true', True),
-                'goals': [],
-                'habits': [],
+                'goals': existing.get('goals', []),
+                'habits': existing.get('habits', []),
             }
 
         draft_data['preset_key'] = key
@@ -207,18 +226,28 @@ def preset_customize(request, key):
             cleaned_serializable = dict(cleaned_data)
             cleaned_serializable['start_date'] = cleaned_data['start_date'].isoformat()
             cleaned_serializable['end_date'] = cleaned_data['end_date'].isoformat()
+            cleaned_serializable['is_user_customized'] = True
             request.session[session_key] = cleaned_serializable
             request.session.modified = True
             return redirect('arcs:preset_oath', key=key)
         else:
             draft = draft_data
     else:
-        if request.GET.get('reset') == '1' or session_key not in request.session:
+        is_reset = request.GET.get('reset') == '1'
+        existing_draft = request.session.get(session_key)
+
+        needs_init = (
+            is_reset or
+            not existing_draft or
+            (preset.key != 'custom' and preset.goal_count > 0 and len(existing_draft.get('goals', [])) == 0 and not existing_draft.get('is_user_customized'))
+        )
+
+        if needs_init:
             draft = initialize_blueprint_draft(preset, request.user)
             request.session[session_key] = draft
             request.session.modified = True
         else:
-            draft = request.session[session_key]
+            draft = existing_draft
 
     return render(request, 'arcs/preset_customize.html', {
         'preset': preset,
@@ -237,12 +266,13 @@ def preset_oath(request, key):
         return redirect('arcs:presets')
 
     session_key = f'preset_draft_{key}'
-    if session_key not in request.session:
+    existing_draft = request.session.get(session_key)
+    if not existing_draft or (preset.key != 'custom' and preset.goal_count > 0 and len(existing_draft.get('goals', [])) == 0 and not existing_draft.get('is_user_customized')):
         draft = initialize_blueprint_draft(preset, request.user)
         request.session[session_key] = draft
         request.session.modified = True
     else:
-        draft = request.session[session_key]
+        draft = existing_draft
 
     start_d = parse_date_str(draft.get('start_date'))
     end_d = parse_date_str(draft.get('end_date'))

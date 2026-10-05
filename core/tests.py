@@ -401,5 +401,17 @@ class BackNavigationAndContrastTests(TestCase):
         # progress-bar-track light mode color
         self.assertIn('.progress-bar-track', css_content)
 
+    def test_popup_alert_auto_hide_script_present_with_messages(self):
+        """When flash messages exist, the popup container and 5-second auto-hide timer are rendered."""
+        self.client.force_login(self.user)
+        response = self.client.post('/accounts/profile/', {'timezone': 'UTC'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode('utf-8')
+        self.assertIn('id="flash-messages-container"', html)
+        self.assertIn('Your profile has been updated.', html)
+        self.assertIn('setTimeout(function() {', html)
+        self.assertIn('5000', html)
+        self.assertIn("var container = document.getElementById('flash-messages-container');", html)
+
 
 

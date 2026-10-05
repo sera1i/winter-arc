@@ -42,7 +42,7 @@
         <main class="flex-grow flex flex-col w-full overflow-x-hidden">
             {% block flash_messages %}
                 {% if messages %}
-                    <div class="fixed top-24 right-4 z-50 flex flex-col gap-2 w-full max-w-[340px]" role="alert">
+                    <div id="flash-messages-container" class="fixed top-24 right-4 z-50 flex flex-col gap-2 w-full max-w-[340px]" role="alert">
                         {% for message in messages %}
                             <div class="px-4 py-3 border shadow-xl text-sm font-sans
                                 {% if message.tags == 'error' %}bg-crimson/15 border-crimson/50 text-crimson-light
@@ -52,6 +52,24 @@
                             </div>
                         {% endfor %}
                     </div>
+                    <script>
+                        (function() {
+                            setTimeout(function() {
+                                var container = document.getElementById('flash-messages-container');
+                                if (container) {
+                                    container.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                                    container.style.opacity = '0';
+                                    container.style.transform = 'translateY(-8px)';
+                                    container.style.pointerEvents = 'none';
+                                    setTimeout(function() {
+                                        if (container && container.parentNode) {
+                                            container.parentNode.removeChild(container);
+                                        }
+                                    }, 500);
+                                }
+                            }, 5000);
+                        })();
+                    </script>
                 {% endif %}
             {% endblock %}
 
