@@ -1,10 +1,22 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Winter Arc{% endblock %}</title>
+    <!-- Early theme detection to prevent flash of wrong theme (FOWT) -->
+    <script>
+        (function() {
+            try {
+                var theme = localStorage.getItem('winter_arc_theme') || 'light';
+                if (theme !== 'dark' && theme !== 'light') theme = 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔</text></svg>">
     {% block extra_head %}{% endblock %}
@@ -13,12 +25,12 @@
 
     {% if user.is_authenticated and request.resolver_match.url_name != 'home' %}
     <!-- Authenticated Environmental Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none select-none" aria-hidden="true">
+    <div class="fixed inset-0 z-0 pointer-events-none select-none authenticated-env-bg" aria-hidden="true">
         <img src="{% static 'images/useful/11.jpg' %}" 
              alt="" 
-             class="absolute inset-0 w-full h-full object-cover object-center"
+             class="absolute inset-0 w-full h-full object-cover object-center env-bg-img"
              style="opacity: 0.12; mix-blend-mode: luminosity;">
-        <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,13,18,0.80) 0%, rgba(11,13,18,0.92) 40%, rgba(11,13,18,0.98) 100%);"></div>
+        <div class="absolute inset-0 env-bg-overlay" style="background: linear-gradient(to bottom, rgba(11,13,18,0.80) 0%, rgba(11,13,18,0.92) 40%, rgba(11,13,18,0.98) 100%);"></div>
     </div>
     {% endif %}
 
@@ -52,6 +64,7 @@
     </div>
 
     {% block extra_scripts %}{% endblock %}
+    <script src="{% static 'js/theme.js' %}"></script>
     <script>
         (function() {
             try {

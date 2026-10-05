@@ -13,9 +13,14 @@
                 Define the season. Commit the dates. Hold the line.
             </p>
         </div>
-        <a href="{% url 'arcs:create' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 self-start sm:self-auto">
-            Create Arc
-        </a>
+        <div class="flex items-center gap-3 self-start sm:self-auto flex-wrap">
+            <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3">
+                Forge an Arc
+            </a>
+            <a href="{% url 'arcs:create' %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-3">
+                Manual Arc
+            </a>
+        </div>
     </div>
 
     {% if arcs %}
@@ -84,9 +89,12 @@
             <p class="wa-empty-body">
                 Transformation begins with a decision. Define your season and its non-negotiable objective.
             </p>
-            <div class="pt-2">
-                <a href="{% url 'arcs:create' %}" class="btn-primary text-xs uppercase tracking-widest px-8 py-3 inline-flex">
-                    Create Arc
+            <div class="pt-2 flex items-center justify-center gap-3 flex-wrap">
+                <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-8 py-3 inline-flex">
+                    Forge an Arc
+                </a>
+                <a href="{% url 'arcs:create' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-3 inline-flex">
+                    Manual Arc
                 </a>
             </div>
         </div>

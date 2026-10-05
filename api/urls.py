@@ -16,6 +16,8 @@ from .views import (
     NotificationPreferenceView,
     AnalyticsView,
     GamificationView,
+    PresetListView,
+    PresetDetailView,
 )
 
 router = DefaultRouter()
@@ -36,6 +38,8 @@ urlpatterns = [
     path('notifications/preferences/', NotificationPreferenceView.as_view(), name='api_notification_preferences'),
     path('analytics/', AnalyticsView.as_view(), name='api_analytics'),
     path('gamification/', GamificationView.as_view(), name='api_gamification'),
+    path('presets/', PresetListView.as_view(), name='api_presets'),
+    path('presets/<str:key>/', PresetDetailView.as_view(), name='api_preset_detail'),
 
     # OpenAPI Schema (JSON format)
     path(

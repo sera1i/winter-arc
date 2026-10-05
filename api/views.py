@@ -33,7 +33,9 @@ from .serializers import (
     NotificationPreferenceSerializer,
     AnalyticsSummarySerializer,
     GamificationSummarySerializer,
+    PresetDefinitionSerializer,
 )
+from core.presets import get_all_presets, get_preset_by_key
 
 
 # ---------------------------------------------------------------------------
@@ -531,3 +533,39 @@ class GamificationView(APIView):
             'achievements': achievements_data,
             'recent_xp_events': xp_events_data,
         })
+
+
+# ---------------------------------------------------------------------------
+# Presets (Read-Only Blueprints)
+# ---------------------------------------------------------------------------
+
+class PresetListView(APIView):
+    """
+    Expose available Winter Arc starting presets/blueprints.
+    Read-only endpoint. Presets are customizable templates, not official rules.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        presets = get_all_presets()
+        serializer = PresetDefinitionSerializer([p.to_dict() for p in presets], many=True)
+        return Response(serializer.data)
+
+
+class PresetDetailView(APIView):
+    """
+    Expose a single Winter Arc preset/blueprint by its slug key.
+    Read-only endpoint.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, key):
+        preset = get_preset_by_key(key)
+        if not preset:
+            return Response(
+                {'detail': f'Preset "{key}" not found.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = PresetDefinitionSerializer(preset.to_dict())
+        return Response(serializer.data)
+

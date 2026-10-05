@@ -1,0 +1,479 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Customize Blueprint · {{ preset.name }} | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container pt-8 sm:pt-10">
+
+    <!-- Back Navigation -->
+    <div class="mb-6 flex items-center justify-between">
+        <a href="{% url 'arcs:preset_review' preset.key %}" class="wa-back-link" aria-label="Back to Blueprint Review">
+            <span aria-hidden="true">←</span>
+            <span>Review Blueprint</span>
+        </a>
+        <a href="{% url 'arcs:preset_customize' preset.key %}?reset=1" 
+           class="font-mono text-xs text-ice/50 hover:text-crimson transition-colors"
+           onclick="return confirm('Reset all modifications back to preset defaults?');">
+            Reset to Defaults
+        </a>
+    </div>
+
+    <!-- Header -->
+    <div class="page-header border-b border-steel/20 pb-8 mb-8">
+        <div>
+            <span class="page-eyebrow">Customize Blueprint</span>
+            <h1 class="page-title mt-1">Shape Your Season</h1>
+            <p class="page-subtitle mt-2 max-w-2xl">
+                Refine the Arc parameters, dates, strategic goals, and daily habits. Tailor every detail to your situation before swearing The Oath.
+            </p>
+        </div>
+    </div>
+
+    {% if errors %}
+        <div class="p-4 bg-crimson/10 border border-crimson/30 text-crimson-light text-sm mb-8 space-y-1" role="alert">
+            <div class="font-medium">Please correct the following errors before proceeding:</div>
+            <ul class="list-disc list-inside space-y-0.5 text-xs text-bone/90 pt-1">
+                {% for field, err in errors.items %}
+                    <li><span class="font-mono uppercase">{{ field }}:</span> {{ err }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- Customization Form -->
+    <form method="post" id="customizeForm" class="space-y-10" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="customized_payload" id="customizedPayloadInput">
+
+        <!-- Section 1: Arc Parameters -->
+        <div class="wa-form-card space-y-6">
+            <div class="border-b border-steel/20 pb-4">
+                <span class="section-eyebrow">Season Parameters</span>
+                <h2 class="font-serif text-xl text-bone mt-1">Arc Identification & Timeline</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Arc Name -->
+                <div class="space-y-1.5 md:col-span-2">
+                    <label for="arcName" class="wa-label">Arc Name *</label>
+                    <input type="text" id="arcName" name="name" value="{{ draft.name }}" 
+                           class="wa-input" placeholder="e.g. Winter Arc Protocol 2026" required>
+                    <span class="font-mono text-[10px] text-ice/40">The title of your transformation season.</span>
+                </div>
+
+                <!-- Objective -->
+                <div class="space-y-1.5 md:col-span-2">
+                    <label for="arcObjective" class="wa-label">Non-Negotiable Objective *</label>
+                    <textarea id="arcObjective" name="objective" rows="3" 
+                              class="wa-input" placeholder="Define the singular purpose of this season..." required>{{ draft.objective }}</textarea>
+                    <span class="font-mono text-[10px] text-ice/40">The core standard you commit to maintaining every day.</span>
+                </div>
+
+                <!-- Start Date -->
+                <div class="space-y-1.5">
+                    <label for="startDate" class="wa-label">Start Date *</label>
+                    <input type="date" id="startDate" name="start_date" value="{{ draft.start_date }}" 
+                           class="wa-input cursor-pointer" required>
+                </div>
+
+                <!-- End Date -->
+                <div class="space-y-1.5">
+                    <label for="endDate" class="wa-label">End Date * (Recommended: 90 Days)</label>
+                    <input type="date" id="endDate" name="end_date" value="{{ draft.end_date }}" 
+                           class="wa-input cursor-pointer" required>
+                </div>
+
+                <!-- Timezone -->
+                <div class="space-y-1.5">
+                    <label for="arcTimezone" class="wa-label">Timezone</label>
+                    <input type="text" id="arcTimezone" name="timezone" value="{{ draft.timezone|default:'Asia/Kolkata' }}" 
+                           class="wa-input" placeholder="e.g. Asia/Kolkata or UTC">
+                </div>
+
+                <!-- Primary Arc Checkbox -->
+                <div class="space-y-1.5 flex flex-col justify-end">
+                    <label class="flex items-center gap-3 cursor-pointer pt-3">
+                        <input type="checkbox" id="isPrimary" name="is_primary" 
+                               {% if draft.is_primary %}checked{% endif %}
+                               class="w-4 h-4 border border-steel/50 bg-ink accent-crimson cursor-pointer">
+                        <span class="text-sm text-bone">Set as Primary Active Arc on Dashboard</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Strategic Goals & Milestones -->
+        <div class="space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b border-steel/20">
+                <div>
+                    <span class="section-eyebrow">Strategic Objectives</span>
+                    <h2 class="font-serif text-2xl text-bone mt-0.5">Goals & Milestones</h2>
+                    <p class="text-xs text-ice/60 mt-1">Define the tangible targets you will execute against.</p>
+                </div>
+                <button type="button" id="addGoalBtn" class="btn-secondary text-xs uppercase tracking-wider px-3 py-2">
+                    + Add Goal
+                </button>
+            </div>
+
+            <!-- Dynamic Goals Container -->
+            <div id="goalsContainer" class="space-y-6">
+                <!-- Rendered dynamically by JS from state -->
+            </div>
+        </div>
+
+        <!-- Section 3: Daily Habits (Non-Negotiables) -->
+        <div class="space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b border-steel/20">
+                <div>
+                    <span class="section-eyebrow">Daily Discipline</span>
+                    <h2 class="font-serif text-2xl text-bone mt-0.5">Habits & Beacons</h2>
+                    <p class="text-xs text-ice/60 mt-1">Non-negotiable daily routines that build consistency.</p>
+                </div>
+                <button type="button" id="addHabitBtn" class="btn-secondary text-xs uppercase tracking-wider px-3 py-2">
+                    + Add Habit
+                </button>
+            </div>
+
+            <!-- Dynamic Habits Container -->
+            <div id="habitsContainer" class="space-y-4">
+                <!-- Rendered dynamically by JS from state -->
+            </div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="border-t border-steel/20 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="{% url 'arcs:preset_review' preset.key %}" class="wa-back-link">
+                ← Review Blueprint
+            </a>
+            <div class="flex items-center gap-4 w-full sm:w-auto">
+                <button type="submit" id="submitCustomizeBtn" 
+                        class="btn-primary text-xs uppercase tracking-widest px-8 py-3.5 text-center w-full sm:w-auto">
+                    Proceed to The Oath →
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<!-- State Initialization and Client Sync Script -->
+{{ draft_json|json_script:"initialDraftData" }}
+
+<script>
+(function() {
+    const rawData = JSON.parse(document.getElementById('initialDraftData').textContent);
+    let state = {
+        name: rawData.name || '',
+        objective: rawData.objective || '',
+        start_date: rawData.start_date || '',
+        end_date: rawData.end_date || '',
+        timezone: rawData.timezone || 'UTC',
+        is_primary: !!rawData.is_primary,
+        preset_key: rawData.preset_key || '{{ preset.key }}',
+        preset_name: rawData.preset_name || '{{ preset.name }}',
+        goals: Array.isArray(rawData.goals) ? JSON.parse(JSON.stringify(rawData.goals)) : [],
+        habits: Array.isArray(rawData.habits) ? JSON.parse(JSON.stringify(rawData.habits)) : []
+    };
+
+    const goalsContainer = document.getElementById('goalsContainer');
+    const habitsContainer = document.getElementById('habitsContainer');
+    const form = document.getElementById('customizeForm');
+    const payloadInput = document.getElementById('customizedPayloadInput');
+
+    function syncStateFromInputs() {
+        state.name = document.getElementById('arcName').value.trim();
+        state.objective = document.getElementById('arcObjective').value.trim();
+        state.start_date = document.getElementById('startDate').value;
+        state.end_date = document.getElementById('endDate').value;
+        state.timezone = document.getElementById('arcTimezone').value.trim();
+        state.is_primary = document.getElementById('isPrimary').checked;
+    }
+
+    function renderGoals() {
+        goalsContainer.innerHTML = '';
+        if (state.goals.length === 0) {
+            goalsContainer.innerHTML = `
+                <div class="wa-card text-center py-8">
+                    <p class="text-xs text-ice/60">No goals added yet. Click "+ Add Goal" above to create your first objective.</p>
+                </div>
+            `;
+            return;
+        }
+
+        state.goals.forEach((goal, gIndex) => {
+            const card = document.createElement('div');
+            card.className = 'wa-card space-y-4';
+            card.dataset.index = gIndex;
+
+            card.innerHTML = `
+                <div class="flex items-center justify-between pb-3 border-b border-steel/20">
+                    <span class="font-mono text-xs uppercase tracking-wider text-ice/50">Goal ${gIndex + 1}</span>
+                    <button type="button" class="remove-goal-btn text-xs font-mono text-crimson-light/80 hover:text-crimson" data-index="${gIndex}">
+                        Remove Goal ✕
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="sm:col-span-2 space-y-1">
+                        <label class="wa-label text-xs">Title *</label>
+                        <input type="text" class="wa-input goal-title" data-index="${gIndex}" value="${escapeHtml(goal.title || '')}" placeholder="Goal title" required>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="wa-label text-xs">Category</label>
+                        <select class="wa-input cursor-pointer goal-category" data-index="${gIndex}">
+                            <option value="HEALTH" ${goal.category === 'HEALTH' ? 'selected' : ''}>Health & Fitness</option>
+                            <option value="PRODUCTIVITY" ${goal.category === 'PRODUCTIVITY' ? 'selected' : ''}>Productivity</option>
+                            <option value="LEARNING" ${goal.category === 'LEARNING' ? 'selected' : ''}>Learning</option>
+                            <option value="FINANCE" ${goal.category === 'FINANCE' ? 'selected' : ''}>Finance</option>
+                            <option value="OTHER" ${goal.category === 'OTHER' ? 'selected' : ''}>Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="wa-label text-xs">Description</label>
+                    <textarea rows="2" class="wa-input goal-desc" data-index="${gIndex}" placeholder="Strategic context or description">${escapeHtml(goal.description || '')}</textarea>
+                </div>
+
+                <!-- Milestones in Goal -->
+                <div class="border-t border-steel/15 pt-3 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-ice/40">Milestones</span>
+                        <button type="button" class="add-milestone-btn font-mono text-[11px] text-ice/70 hover:text-bone" data-goal-index="${gIndex}">
+                            + Add Milestone
+                        </button>
+                    </div>
+                    <div class="milestones-list space-y-2" data-goal-index="${gIndex}">
+                        ${(goal.milestones || []).map((m, mIndex) => `
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-crimson rounded-full flex-shrink-0"></span>
+                                <input type="text" class="wa-input text-xs py-1.5 flex-1 milestone-title" data-goal-index="${gIndex}" data-m-index="${mIndex}" value="${escapeHtml(m.title || '')}" placeholder="Milestone title">
+                                <span class="font-mono text-[10px] text-ice/40 whitespace-nowrap">+days:</span>
+                                <input type="number" class="wa-input text-xs py-1.5 w-16 text-center milestone-days" data-goal-index="${gIndex}" data-m-index="${mIndex}" value="${m.days_offset || 30}" min="1" max="365">
+                                <button type="button" class="remove-milestone-btn text-xs text-steel/60 hover:text-crimson px-1.5" data-goal-index="${gIndex}" data-m-index="${mIndex}">✕</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            goalsContainer.appendChild(card);
+        });
+
+        attachGoalListeners();
+    }
+
+    function renderHabits() {
+        habitsContainer.innerHTML = '';
+        if (state.habits.length === 0) {
+            habitsContainer.innerHTML = `
+                <div class="wa-card text-center py-8">
+                    <p class="text-xs text-ice/60">No daily habits added yet. Click "+ Add Habit" above to configure your non-negotiables.</p>
+                </div>
+            `;
+            return;
+        }
+
+        state.habits.forEach((habit, hIndex) => {
+            const card = document.createElement('div');
+            card.className = 'wa-card space-y-3';
+            card.dataset.index = hIndex;
+
+            card.innerHTML = `
+                <div class="flex items-center justify-between pb-2 border-b border-steel/20">
+                    <span class="font-mono text-xs uppercase tracking-wider text-ice/50">Habit ${hIndex + 1}</span>
+                    <button type="button" class="remove-habit-btn text-xs font-mono text-crimson-light/80 hover:text-crimson" data-index="${hIndex}">
+                        Remove Habit ✕
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="sm:col-span-2 space-y-1">
+                        <label class="wa-label text-xs">Habit Name *</label>
+                        <input type="text" class="wa-input habit-name" data-index="${hIndex}" value="${escapeHtml(habit.name || '')}" placeholder="e.g. Deep Study" required>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="wa-label text-xs">Frequency</label>
+                        <select class="wa-input cursor-pointer habit-freq" data-index="${hIndex}">
+                            <option value="DAILY" ${habit.frequency === 'DAILY' ? 'selected' : ''}>Daily</option>
+                            <option value="WEEKLY" ${habit.frequency === 'WEEKLY' ? 'selected' : ''}>Weekly</option>
+                            <option value="TARGET_COUNT" ${habit.frequency === 'TARGET_COUNT' ? 'selected' : ''}>Target Count</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="wa-label text-xs">Target Label / Goal</label>
+                        <input type="text" class="wa-input text-xs habit-label" data-index="${hIndex}" value="${escapeHtml(habit.target_label || '1 session')}" placeholder="e.g. 60 minutes or 1 reflection">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="wa-label text-xs">Target Count</label>
+                        <input type="number" class="wa-input text-xs habit-count" data-index="${hIndex}" value="${habit.target_count || 1}" min="1">
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="wa-label text-xs">Description</label>
+                    <input type="text" class="wa-input text-xs habit-desc" data-index="${hIndex}" value="${escapeHtml(habit.description || '')}" placeholder="Purpose or parameters">
+                </div>
+            `;
+
+            habitsContainer.appendChild(card);
+        });
+
+        attachHabitListeners();
+    }
+
+    function attachGoalListeners() {
+        // Goal Title Change
+        document.querySelectorAll('.goal-title').forEach(input => {
+            input.addEventListener('input', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.goals[idx].title = e.target.value;
+            });
+        });
+        // Goal Category Change
+        document.querySelectorAll('.goal-category').forEach(select => {
+            select.addEventListener('change', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.goals[idx].category = e.target.value;
+            });
+        });
+        // Goal Desc Change
+        document.querySelectorAll('.goal-desc').forEach(textarea => {
+            textarea.addEventListener('input', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.goals[idx].description = e.target.value;
+            });
+        });
+        // Remove Goal
+        document.querySelectorAll('.remove-goal-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.goals.splice(idx, 1);
+                renderGoals();
+            });
+        });
+        // Add Milestone
+        document.querySelectorAll('.add-milestone-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const gIdx = parseInt(e.target.dataset.goalIndex);
+                if (!state.goals[gIdx].milestones) state.goals[gIdx].milestones = [];
+                state.goals[gIdx].milestones.push({
+                    title: '',
+                    days_offset: 30
+                });
+                renderGoals();
+            });
+        });
+        // Milestone inputs
+        document.querySelectorAll('.milestone-title').forEach(input => {
+            input.addEventListener('input', e => {
+                const gIdx = parseInt(e.target.dataset.goalIndex);
+                const mIdx = parseInt(e.target.dataset.mIndex);
+                state.goals[gIdx].milestones[mIdx].title = e.target.value;
+            });
+        });
+        document.querySelectorAll('.milestone-days').forEach(input => {
+            input.addEventListener('input', e => {
+                const gIdx = parseInt(e.target.dataset.goalIndex);
+                const mIdx = parseInt(e.target.dataset.mIndex);
+                state.goals[gIdx].milestones[mIdx].days_offset = parseInt(e.target.value) || 30;
+            });
+        });
+        document.querySelectorAll('.remove-milestone-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const gIdx = parseInt(e.target.dataset.goalIndex);
+                const mIdx = parseInt(e.target.dataset.mIndex);
+                state.goals[gIdx].milestones.splice(mIdx, 1);
+                renderGoals();
+            });
+        });
+    }
+
+    function attachHabitListeners() {
+        document.querySelectorAll('.habit-name').forEach(input => {
+            input.addEventListener('input', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.habits[idx].name = e.target.value;
+            });
+        });
+        document.querySelectorAll('.habit-freq').forEach(select => {
+            select.addEventListener('change', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.habits[idx].frequency = e.target.value;
+            });
+        });
+        document.querySelectorAll('.habit-label').forEach(input => {
+            input.addEventListener('input', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.habits[idx].target_label = e.target.value;
+            });
+        });
+        document.querySelectorAll('.habit-count').forEach(input => {
+            input.addEventListener('input', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.habits[idx].target_count = parseInt(e.target.value) || 1;
+            });
+        });
+        document.querySelectorAll('.habit-desc').forEach(input => {
+            input.addEventListener('input', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.habits[idx].description = e.target.value;
+            });
+        });
+        document.querySelectorAll('.remove-habit-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const idx = parseInt(e.target.dataset.index);
+                state.habits.splice(idx, 1);
+                renderHabits();
+            });
+        });
+    }
+
+    // Add Goal Button
+    document.getElementById('addGoalBtn').addEventListener('click', () => {
+        state.goals.push({
+            title: '',
+            category: 'OTHER',
+            priority: 1,
+            description: '',
+            milestones: [
+                { title: '', days_offset: 30 }
+            ],
+            tasks: []
+        });
+        renderGoals();
+    });
+
+    // Add Habit Button
+    document.getElementById('addHabitBtn').addEventListener('click', () => {
+        state.habits.push({
+            name: '',
+            description: '',
+            frequency: 'DAILY',
+            target_count: 1,
+            target_label: '1 session'
+        });
+        renderHabits();
+    });
+
+    // Before submit: serialize full state to hidden payload
+    form.addEventListener('submit', (e) => {
+        syncStateFromInputs();
+        payloadInput.value = JSON.stringify(state);
+    });
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return String(text).replace(/[&<>"']/g, m => map[m]);
+    }
+
+    // Initial render
+    renderGoals();
+    renderHabits();
+})();
+</script>
+{% endblock %}

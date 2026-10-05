@@ -46,6 +46,9 @@
                             <span class="badge-active text-[10px]">{{ primary_arc.status }}</span>
                         </div>
                     </a>
+                    <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-4 py-3 text-center">
+                        Forge an Arc
+                    </a>
                     <a href="{% url 'arcs:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-3 text-center">
                         All Arcs
                     </a>
@@ -53,13 +56,16 @@
             {% else %}
                 {% if active_arcs > 0 %}
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                        <a href="{% url 'arcs:list' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
+                        <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
+                            Forge an Arc
+                        </a>
+                        <a href="{% url 'arcs:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
                             Select Primary Arc
                         </a>
                     </div>
                 {% else %}
-                    <a href="{% url 'arcs:create' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
-                        Create your first Arc
+                    <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
+                        Forge an Arc
                     </a>
                 {% endif %}
             {% endif %}

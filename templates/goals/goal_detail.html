@@ -5,6 +5,21 @@
 {% block content %}
 <div class="page-container-narrow pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-4">
+        {% if goal.arc %}
+            <a href="{% url 'arcs:detail' goal.arc.pk %}" class="wa-back-link" aria-label="Back to {{ goal.arc.name }}">
+                <span aria-hidden="true">←</span>
+                <span>Back to {{ goal.arc.name }}</span>
+            </a>
+        {% else %}
+            <a href="{% url 'arcs:list' %}" class="wa-back-link" aria-label="Back to Arcs">
+                <span aria-hidden="true">←</span>
+                <span>Back to Arcs</span>
+            </a>
+        {% endif %}
+    </div>
+
     <!-- Header -->
     <div class="page-header">
         <div class="space-y-2 max-w-xl">
@@ -19,13 +34,6 @@
                 <p class="page-subtitle">
                     {{ goal.description }}
                 </p>
-            {% endif %}
-            {% if goal.arc %}
-                <div class="pt-1">
-                    <a href="{% url 'arcs:detail' goal.arc.pk %}" class="btn-ghost text-xs">
-                        ← Back to {{ goal.arc.name }}
-                    </a>
-                </div>
             {% endif %}
         </div>
 

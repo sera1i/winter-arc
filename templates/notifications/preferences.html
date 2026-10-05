@@ -5,6 +5,14 @@
 {% block content %}
 <div class="page-container pt-8 sm:pt-10 max-w-3xl">
 
+    <!-- Back Navigation -->
+    <div class="mb-4">
+        <a href="{% url 'notifications:list' %}" class="wa-back-link" aria-label="Back to Notifications">
+            <span aria-hidden="true">←</span>
+            <span>Back to Notifications</span>
+        </a>
+    </div>
+
     <div class="page-header">
         <div>
             <span class="page-eyebrow">Settings</span>
@@ -13,9 +21,6 @@
                 Configure which reminders and automated dispatches reach your feed.
             </p>
         </div>
-        <a href="{% url 'notifications:list' %}" class="btn-ghost text-xs uppercase tracking-widest px-4 py-2.5">
-            Back to Feed
-        </a>
     </div>
 
     <form method="post" class="wa-card space-y-6">

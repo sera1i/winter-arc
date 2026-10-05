@@ -5,6 +5,14 @@
 {% block content %}
 <div class="page-container-narrow pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-4">
+        <a href="{% url 'journal:list' %}" class="wa-back-link" aria-label="Back to Journal">
+            <span aria-hidden="true">←</span>
+            <span>Back to Journal</span>
+        </a>
+    </div>
+
     <!-- Header -->
     <div class="page-header">
         <div class="space-y-2">

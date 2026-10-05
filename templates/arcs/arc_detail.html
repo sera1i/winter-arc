@@ -5,6 +5,14 @@
 {% block content %}
 <div class="page-container pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-4">
+        <a href="{% url 'arcs:list' %}" class="wa-back-link" aria-label="Back to Arcs">
+            <span aria-hidden="true">←</span>
+            <span>Back to Arcs</span>
+        </a>
+    </div>
+
     <!-- Arc Header -->
     <div class="page-header">
         <div class="space-y-2 max-w-3xl">

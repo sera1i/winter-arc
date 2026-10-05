@@ -1,0 +1,201 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ preset.name }} Blueprint Review | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container pt-8 sm:pt-10">
+
+    <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'arcs:presets' %}" class="wa-back-link" aria-label="Choose another Starting Point">
+            <span aria-hidden="true">←</span>
+            <span>Choose another Starting Point</span>
+        </a>
+    </div>
+
+    <!-- Header -->
+    <div class="page-header border-b border-steel/20 pb-8 mb-8">
+        <div>
+            <span class="page-eyebrow">Blueprint Review · {{ preset.tagline|upper }}</span>
+            <h1 class="page-title mt-1">{{ preset.name }}</h1>
+            <p class="page-subtitle mt-2 max-w-2xl">
+                {{ preset.description }}
+            </p>
+        </div>
+        <div class="flex items-center gap-3 pt-4 sm:pt-0">
+            <a href="{% url 'arcs:preset_customize' preset.key %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3">
+                Customize Blueprint →
+            </a>
+        </div>
+    </div>
+
+    <!-- Objective Card -->
+    {% if preset.objective %}
+        <div class="wa-card-primary mb-8 p-6">
+            <span class="section-eyebrow">Suggested Seasonal Objective</span>
+            <p class="font-serif text-xl sm:text-2xl text-bone mt-2 leading-relaxed">
+                “{{ preset.objective }}”
+            </p>
+            <p class="font-mono text-[11px] text-ice/50 mt-3">
+                Can be edited freely during the customization step.
+            </p>
+        </div>
+    {% endif %}
+
+    <!-- Blueprint Metrics Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Recommended Duration</span>
+            <div class="font-serif text-3xl text-bone mt-1">{{ preset.recommended_duration_days }} Days</div>
+            <div class="font-mono text-[11px] text-ice/50 mt-0.5">Flexible start and end dates</div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Suggested Goals</span>
+            <div class="font-serif text-3xl text-crimson-light font-medium mt-1">{{ preset.goal_count }}</div>
+            <div class="font-mono text-[11px] text-ice/50 mt-0.5">Strategic milestones included</div>
+        </div>
+        <div class="wa-card-inset">
+            <span class="section-eyebrow">Suggested Daily Habits</span>
+            <div class="font-serif text-3xl text-bone mt-1">{{ preset.habit_count }}</div>
+            <div class="font-mono text-[11px] text-ice/50 mt-0.5">Daily execution beacons</div>
+        </div>
+    </div>
+
+    <!-- Assurance Banner -->
+    <div class="wa-card-inset border-l-2 border-l-crimson p-4 mb-10 flex items-start gap-3">
+        <span class="text-crimson font-serif text-xl leading-none">✦</span>
+        <div class="text-xs text-ice/80 leading-relaxed">
+            <strong class="text-bone">Blueprints, not commandments.</strong>
+            Missing a habit or task does not automatically reset or restart an Arc. You can customize, rename, remove, or add any goals and habits in the next step before sealing The Oath.
+        </div>
+    </div>
+
+    <!-- Two-column Blueprint breakdown: Goals & Habits -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+
+        <!-- Goals Column -->
+        <div class="space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b border-steel/20">
+                <div>
+                    <span class="section-eyebrow">Strategic Objectives</span>
+                    <h2 class="font-serif text-2xl text-bone mt-0.5">Suggested Goals</h2>
+                </div>
+                <span class="badge-pending text-xs">{{ preset.goal_count }} Goals</span>
+            </div>
+
+            {% if preset.goals %}
+                <div class="space-y-4">
+                    {% for goal in preset.goals %}
+                        <div class="wa-card space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="badge-active text-[10px] uppercase">
+                                    {{ goal.category }}
+                                </span>
+                                <span class="font-mono text-[10px] text-ice/40">
+                                    Priority {{ goal.priority }}
+                                </span>
+                            </div>
+
+                            <h3 class="font-serif text-lg text-bone">{{ goal.title }}</h3>
+
+                            {% if goal.description %}
+                                <p class="text-xs text-ice/70 leading-relaxed">
+                                    {{ goal.description }}
+                                </p>
+                            {% endif %}
+
+                            {% if goal.milestones %}
+                                <div class="border-t border-steel/15 pt-3 mt-3">
+                                    <span class="font-mono text-[10px] uppercase tracking-wider text-ice/40 block mb-2">Milestones</span>
+                                    <ul class="space-y-1.5">
+                                        {% for m in goal.milestones %}
+                                            <li class="flex items-center gap-2 text-xs text-ice/80 font-sans">
+                                                <span class="w-1.5 h-1.5 bg-crimson rounded-full flex-shrink-0"></span>
+                                                <span class="font-mono text-[10px] text-ice/40">Day +{{ m.days_offset }}:</span>
+                                                <span>{{ m.title }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            {% if goal.tasks %}
+                                <div class="border-t border-steel/15 pt-3 mt-3">
+                                    <span class="font-mono text-[10px] uppercase tracking-wider text-ice/40 block mb-2">Initial Setup Tasks</span>
+                                    <ul class="space-y-1.5">
+                                        {% for t in goal.tasks %}
+                                            <li class="flex items-center gap-2 text-xs text-ice/80 font-sans">
+                                                <span class="w-1.5 h-1.5 border border-steel/50 rounded flex-shrink-0"></span>
+                                                <span>{{ t.title }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="wa-card text-center py-10">
+                    <p class="text-sm text-ice/60">No pre-filled goals. You will define your own goals in customization.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Habits Column -->
+        <div class="space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b border-steel/20">
+                <div>
+                    <span class="section-eyebrow">Daily Discipline</span>
+                    <h2 class="font-serif text-2xl text-bone mt-0.5">Suggested Habits</h2>
+                </div>
+                <span class="badge-pending text-xs">{{ preset.habit_count }} Habits</span>
+            </div>
+
+            {% if preset.habits %}
+                <div class="space-y-4">
+                    {% for habit in preset.habits %}
+                        <div class="wa-card space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="badge-active text-[10px]">
+                                    {{ habit.frequency }}
+                                </span>
+                                <span class="font-mono text-[11px] text-crimson-light font-medium">
+                                    {{ habit.target_label }}
+                                </span>
+                            </div>
+
+                            <h3 class="font-serif text-lg text-bone">{{ habit.name }}</h3>
+
+                            {% if habit.description %}
+                                <p class="text-xs text-ice/70 leading-relaxed">
+                                    {{ habit.description }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="wa-card text-center py-10">
+                    <p class="text-sm text-ice/60">No pre-filled habits. You will configure your daily non-negotiables in customization.</p>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Action Bar -->
+    <div class="border-t border-steel/20 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <a href="{% url 'arcs:presets' %}" class="wa-back-link">
+            ← Choose another Starting Point
+        </a>
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+            <a href="{% url 'arcs:preset_customize' preset.key %}" 
+               class="btn-primary text-xs uppercase tracking-widest px-8 py-3 text-center w-full sm:w-auto">
+                Customize Blueprint & Set Dates →
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

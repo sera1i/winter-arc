@@ -6,6 +6,21 @@
 {% block content %}
 <div class="page-container-narrow pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-4">
+        {% if form.instance.pk %}
+            <a href="{% url 'arcs:detail' form.instance.pk %}" class="wa-back-link" aria-label="Back to Arc">
+                <span aria-hidden="true">←</span>
+                <span>Back to {{ form.instance.name|default:"Arc" }}</span>
+            </a>
+        {% else %}
+            <a href="{% url 'arcs:list' %}" class="wa-back-link" aria-label="Back to Arcs">
+                <span aria-hidden="true">←</span>
+                <span>Back to Arcs</span>
+            </a>
+        {% endif %}
+    </div>
+
     <div class="page-header">
         <div>
             <span class="page-eyebrow">Season</span>

@@ -6,6 +6,26 @@
 {% block content %}
 <div class="page-container-narrow pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-4">
+        {% if arc %}
+            <a href="{% url 'arcs:detail' arc.pk %}" class="wa-back-link" aria-label="Back to {{ arc.name }}">
+                <span aria-hidden="true">←</span>
+                <span>Back to {{ arc.name }}</span>
+            </a>
+        {% elif form.instance.pk and form.instance.arc %}
+            <a href="{% url 'goals:detail' form.instance.pk %}" class="wa-back-link" aria-label="Back to Goal">
+                <span aria-hidden="true">←</span>
+                <span>Back to {{ form.instance.title }}</span>
+            </a>
+        {% else %}
+            <a href="{% url 'arcs:list' %}" class="wa-back-link" aria-label="Back to Arcs">
+                <span aria-hidden="true">←</span>
+                <span>Back to Arcs</span>
+            </a>
+        {% endif %}
+    </div>
+
     <div class="page-header">
         <div>
             <span class="page-eyebrow">Goal</span>
@@ -50,9 +70,19 @@
             {% endfor %}
 
             <div class="flex items-center justify-end gap-4 pt-6 border-t border-steel/20">
-                <a href="javascript:history.back()" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
-                    Cancel
-                </a>
+                {% if arc %}
+                    <a href="{% url 'arcs:detail' arc.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                        Cancel
+                    </a>
+                {% elif form.instance.pk and form.instance.arc %}
+                    <a href="{% url 'goals:detail' form.instance.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                        Cancel
+                    </a>
+                {% else %}
+                    <a href="{% url 'arcs:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                        Cancel
+                    </a>
+                {% endif %}
                 <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-8 py-2.5">
                     Save Goal
                 </button>

@@ -221,3 +221,51 @@ class AnalyticsSummarySerializer(serializers.Serializer):
     activity_7d = serializers.DictField()
     activity_30d = serializers.DictField()
     recent_events = serializers.ListField()
+
+
+# ---------------------------------------------------------------------------
+# Presets (Read-Only Blueprints)
+# ---------------------------------------------------------------------------
+
+class MilestoneBlueprintSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    target_value = serializers.FloatField(required=False, allow_null=True)
+    days_offset = serializers.IntegerField(required=False, allow_null=True)
+
+
+class TaskBlueprintSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    description = serializers.CharField(required=False, allow_blank=True)
+    priority = serializers.IntegerField(default=2)
+    days_offset = serializers.IntegerField(required=False, allow_null=True)
+
+
+class GoalBlueprintSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    description = serializers.CharField(required=False, allow_blank=True)
+    category = serializers.CharField()
+    priority = serializers.IntegerField()
+    milestones = MilestoneBlueprintSerializer(many=True)
+    tasks = TaskBlueprintSerializer(many=True)
+
+
+class HabitBlueprintSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    description = serializers.CharField(required=False, allow_blank=True)
+    frequency = serializers.CharField()
+    target_count = serializers.IntegerField()
+    target_label = serializers.CharField()
+
+
+class PresetDefinitionSerializer(serializers.Serializer):
+    key = serializers.CharField()
+    name = serializers.CharField()
+    tagline = serializers.CharField()
+    description = serializers.CharField()
+    objective = serializers.CharField()
+    recommended_duration_days = serializers.IntegerField()
+    goal_count = serializers.IntegerField()
+    habit_count = serializers.IntegerField()
+    goals = GoalBlueprintSerializer(many=True)
+    habits = HabitBlueprintSerializer(many=True)
+

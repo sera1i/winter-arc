@@ -1,0 +1,105 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Forge an Arc — Starting Points | Winter Arc{% endblock %}
+
+{% block content %}
+<div class="page-container pt-8 sm:pt-10">
+
+    <!-- Deterministic Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'accounts:dashboard' %}" class="wa-back-link" aria-label="Return to Dashboard">
+            <span aria-hidden="true">←</span>
+            <span>Return to Dashboard</span>
+        </a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header border-b border-steel/20 pb-8 mb-8">
+        <div>
+            <span class="page-eyebrow">Starting Points</span>
+            <h1 class="page-title mt-1">Forge an Arc</h1>
+            <p class="page-subtitle mt-2 max-w-2xl">
+                Choose the discipline you want to enter the season with. These blueprints provide structured starting habits, goals, and milestones you can customize, refine, or rebuild before making the commitment.
+            </p>
+        </div>
+        <div class="pt-2 sm:pt-0">
+            <a href="{% url 'arcs:create' %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-3 inline-flex items-center gap-2">
+                <span>Manual Arc</span>
+                <span class="text-steel/50">· Blank</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Presets Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {% for preset in presets %}
+            <div class="{% if preset.key == 'classic' %}wa-card-primary{% else %}wa-card{% endif %} flex flex-col justify-between group">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="font-mono text-[10px] uppercase tracking-widest text-ice/50">
+                            {{ preset.tagline }}
+                        </span>
+                        {% if preset.key == 'classic' %}
+                            <span class="badge-primary font-bold text-[10px]">
+                                Recommended
+                            </span>
+                        {% elif preset.key == 'custom' %}
+                            <span class="badge-pending text-[10px]">
+                                Blank Slate
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <h2 class="font-serif text-2xl text-bone group-hover:text-crimson-light transition-colors">
+                            {{ preset.name }}
+                        </h2>
+                        <p class="text-xs text-ice/70 leading-relaxed mt-2 line-clamp-3">
+                            {{ preset.description }}
+                        </p>
+                    </div>
+
+                    <!-- Blueprint Metrics Summary -->
+                    <div class="wa-card-inset grid grid-cols-3 gap-2 text-center py-2.5 px-3">
+                        <div>
+                            <span class="font-mono text-[10px] uppercase tracking-wider text-ice/40 block">Habits</span>
+                            <span class="font-serif text-base text-bone font-medium">{{ preset.habit_count }}</span>
+                        </div>
+                        <div class="border-x border-steel/20">
+                            <span class="font-mono text-[10px] uppercase tracking-wider text-ice/40 block">Goals</span>
+                            <span class="font-serif text-base text-bone font-medium">{{ preset.goal_count }}</span>
+                        </div>
+                        <div>
+                            <span class="font-mono text-[10px] uppercase tracking-wider text-ice/40 block">Duration</span>
+                            <span class="font-serif text-base text-bone font-medium">{{ preset.recommended_duration_days }}d</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="pt-5 border-t border-steel/20 mt-5">
+                    <a href="{% url 'arcs:preset_review' preset.key %}" 
+                       class="btn-primary text-xs uppercase tracking-widest w-full text-center py-3 block"
+                       aria-label="Select {{ preset.name }} Blueprint">
+                        Select Blueprint →
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Assurance banner -->
+    <div class="wa-card-inset flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 border border-steel/25">
+        <div>
+            <h3 class="font-serif text-lg text-bone">These are blueprints, not commandments.</h3>
+            <p class="text-xs text-ice/60 mt-1">
+                There is no single official Winter Arc rulebook. You can edit, remove, or add any goal, task, or habit in the customization step before swearing The Oath.
+            </p>
+        </div>
+        <a href="{% url 'arcs:list' %}" class="btn-ghost text-xs uppercase tracking-wider whitespace-nowrap">
+            View existing Arcs →
+        </a>
+    </div>
+
+</div>
+{% endblock %}

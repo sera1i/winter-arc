@@ -1,9 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+import json
+
 from .models import Arc
 from .forms import ArcForm
+from core.presets import get_all_presets, get_preset_by_key
+from .preset_services import (
+    initialize_blueprint_draft,
+    validate_blueprint_draft,
+    activate_blueprint_arc,
+    parse_date_str,
+)
 
 @login_required
 def arc_list(request):
@@ -132,4 +142,147 @@ def arc_complete(request, pk):
         check_and_unlock_achievements(request.user)
         messages.success(request, f'Winter Arc "{arc.name}" marked as completed. Well done.')
     return redirect(request.META.get('HTTP_REFERER') or 'arcs:detail', pk=arc.pk)
+
+
+# ==============================================================================
+# PRESET BLUEPRINT VIEWS
+# ==============================================================================
+
+@login_required
+def preset_library(request):
+    """Preset library starting point selection."""
+    presets = get_all_presets()
+    return render(request, 'arcs/preset_library.html', {
+        'presets': presets,
+    })
+
+
+@login_required
+def preset_review(request, key):
+    """Review blueprint before entering customization."""
+    preset = get_preset_by_key(key)
+    if not preset:
+        messages.error(request, f'Blueprint preset "{key}" not found.')
+        return redirect('arcs:presets')
+    return render(request, 'arcs/preset_review.html', {
+        'preset': preset,
+    })
+
+
+@login_required
+def preset_customize(request, key):
+    """Customize blueprint parameters, goals, milestones, tasks, and habits."""
+    preset = get_preset_by_key(key)
+    if not preset:
+        messages.error(request, f'Blueprint preset "{key}" not found.')
+        return redirect('arcs:presets')
+
+    session_key = f'preset_draft_{key}'
+    errors = {}
+
+    if request.method == 'POST':
+        raw_payload = request.POST.get('customized_payload')
+        if raw_payload:
+            try:
+                draft_data = json.loads(raw_payload)
+            except Exception:
+                draft_data = {}
+        else:
+            draft_data = {
+                'name': request.POST.get('name'),
+                'objective': request.POST.get('objective'),
+                'start_date': request.POST.get('start_date'),
+                'end_date': request.POST.get('end_date'),
+                'timezone': request.POST.get('timezone'),
+                'is_primary': request.POST.get('is_primary') in ('on', 'true', True),
+                'goals': [],
+                'habits': [],
+            }
+
+        draft_data['preset_key'] = key
+        draft_data['preset_name'] = preset.name
+
+        is_valid, cleaned_data, errors = validate_blueprint_draft(draft_data)
+        if is_valid:
+            cleaned_serializable = dict(cleaned_data)
+            cleaned_serializable['start_date'] = cleaned_data['start_date'].isoformat()
+            cleaned_serializable['end_date'] = cleaned_data['end_date'].isoformat()
+            request.session[session_key] = cleaned_serializable
+            request.session.modified = True
+            return redirect('arcs:preset_oath', key=key)
+        else:
+            draft = draft_data
+    else:
+        if request.GET.get('reset') == '1' or session_key not in request.session:
+            draft = initialize_blueprint_draft(preset, request.user)
+            request.session[session_key] = draft
+            request.session.modified = True
+        else:
+            draft = request.session[session_key]
+
+    return render(request, 'arcs/preset_customize.html', {
+        'preset': preset,
+        'draft': draft,
+        'draft_json': json.dumps(draft),
+        'errors': errors,
+    })
+
+
+@login_required
+def preset_oath(request, key):
+    """The Oath confirmation screen before activation."""
+    preset = get_preset_by_key(key)
+    if not preset:
+        messages.error(request, f'Blueprint preset "{key}" not found.')
+        return redirect('arcs:presets')
+
+    session_key = f'preset_draft_{key}'
+    if session_key not in request.session:
+        draft = initialize_blueprint_draft(preset, request.user)
+        request.session[session_key] = draft
+        request.session.modified = True
+    else:
+        draft = request.session[session_key]
+
+    start_d = parse_date_str(draft.get('start_date'))
+    end_d = parse_date_str(draft.get('end_date'))
+    duration_days = (end_d - start_d).days if (start_d and end_d) else 90
+
+    return render(request, 'arcs/preset_oath.html', {
+        'preset': preset,
+        'draft': draft,
+        'start_date_obj': start_d,
+        'end_date_obj': end_d,
+        'duration_days': duration_days,
+    })
+
+
+@login_required
+@require_POST
+def preset_activate(request, key):
+    """Atomically activate Arc and all child entities from session draft."""
+    preset = get_preset_by_key(key)
+    if not preset:
+        messages.error(request, f'Blueprint preset "{key}" not found.')
+        return redirect('arcs:presets')
+
+    session_key = f'preset_draft_{key}'
+    if session_key not in request.session:
+        messages.error(request, 'No active blueprint draft found. Please review and customize your Arc.')
+        return redirect('arcs:preset_customize', key=key)
+
+    draft = request.session[session_key]
+    is_valid, cleaned_data, errors = validate_blueprint_draft(draft)
+    if not is_valid:
+        messages.error(request, 'Blueprint configuration is incomplete or contains errors.')
+        return redirect('arcs:preset_customize', key=key)
+
+    arc = activate_blueprint_arc(request.user, cleaned_data)
+
+    request.session.pop(session_key, None)
+    request.session.modified = True
+
+    messages.success(request, f'Winter Arc "{arc.name}" sworn and activated. Your watch begins now.')
+    return redirect('arcs:detail', pk=arc.pk)
+
 

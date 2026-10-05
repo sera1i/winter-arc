@@ -6,6 +6,21 @@
 {% block content %}
 <div class="page-container-narrow pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-4">
+        {% if is_edit %}
+            <a href="{% url 'journal:detail' form.instance.pk %}" class="wa-back-link" aria-label="Back to Entry">
+                <span aria-hidden="true">←</span>
+                <span>Back to Entry</span>
+            </a>
+        {% else %}
+            <a href="{% url 'journal:list' %}" class="wa-back-link" aria-label="Back to Journal">
+                <span aria-hidden="true">←</span>
+                <span>Back to Journal</span>
+            </a>
+        {% endif %}
+    </div>
+
     <!-- Header -->
     <div class="page-header">
         <div>

@@ -6,6 +6,21 @@
 {% block content %}
 <div class="page-container-narrow pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-4">
+        {% if form.instance.pk %}
+            <a href="{% url 'tasks:detail' form.instance.pk %}" class="wa-back-link" aria-label="Back to Task">
+                <span aria-hidden="true">←</span>
+                <span>Back to Task</span>
+            </a>
+        {% else %}
+            <a href="{% url 'tasks:list' %}" class="wa-back-link" aria-label="Back to Tasks">
+                <span aria-hidden="true">←</span>
+                <span>Back to Tasks</span>
+            </a>
+        {% endif %}
+    </div>
+
     <div class="page-header">
         <div>
             <span class="page-eyebrow">Action</span>

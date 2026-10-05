@@ -6,6 +6,13 @@
 <div class="min-h-[70vh] flex items-center justify-center px-4 py-20">
     <div class="w-full max-w-lg wa-form-card text-center space-y-6">
         
+        <div class="text-left">
+            <a href="{% url 'arcs:detail' arc.pk %}" class="wa-back-link" aria-label="Back to Arc">
+                <span aria-hidden="true">←</span>
+                <span>Back to Arc</span>
+            </a>
+        </div>
+        
         <div class="w-12 h-12 mx-auto rounded-full bg-crimson/10 border border-crimson/40 flex items-center justify-center text-crimson text-xl font-mono">
             !
         </div>

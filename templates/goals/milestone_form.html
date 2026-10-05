@@ -6,6 +6,14 @@
 {% block content %}
 <div class="page-container-narrow pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-4">
+        <a href="{% url 'goals:detail' goal.pk %}" class="wa-back-link" aria-label="Back to {{ goal.title }}">
+            <span aria-hidden="true">←</span>
+            <span>Back to {{ goal.title }}</span>
+        </a>
+    </div>
+
     <div class="page-header">
         <div>
             <span class="page-eyebrow">Checkpoint · {{ goal.title }}</span>
