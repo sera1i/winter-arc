@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
 from django.utils import timezone
 from .models import Task
 from .forms import TaskForm
@@ -104,9 +105,18 @@ def task_complete(request, pk):
             check_and_unlock_achievements(request.user)
 
         messages.success(request, 'Done. The frost gives way.')
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
+            return JsonResponse({
+                'success': True,
+                'task_id': task.pk,
+                'status': task.status,
+                'is_completed': task.is_completed,
+                'message': 'Done. The frost gives way.',
+            })
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
         if next_url:
             return redirect(next_url)
+        return redirect('tasks:detail', pk=pk)
     return redirect('tasks:detail', pk=pk)
 
 
@@ -116,9 +126,18 @@ def task_uncomplete(request, pk):
         task = get_object_or_404(Task, pk=pk, user=request.user)
         task.uncomplete()
         messages.success(request, f'"{task.title}" marked incomplete.')
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
+            return JsonResponse({
+                'success': True,
+                'task_id': task.pk,
+                'status': task.status,
+                'is_completed': task.is_completed,
+                'message': f'"{task.title}" marked incomplete.',
+            })
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
         if next_url:
             return redirect(next_url)
+        return redirect('tasks:detail', pk=pk)
     return redirect('tasks:detail', pk=pk)
 
 

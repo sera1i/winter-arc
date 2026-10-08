@@ -1,0 +1,519 @@
+/**
+ * Winter Arc — Interaction Performance & Action Navigation Engine
+ * 
+ * Provides:
+ * 1. Immediate visual click feedback (optimistic / loading states)
+ * 2. In-place completion for Tasks, Habits, Milestones, Goals, Notifications
+ * 3. Prevention of duplicate requests / double submission
+ * 4. Isolation of action controls (stopping event propagation to parent cards)
+ * 5. Accessible loading & error states
+ * 6. Single-submission login protection with instant feedback
+ */
+
+(function () {
+    'use strict';
+
+    // -------------------------------------------------------------------------
+    // CSRF Utility
+    // -------------------------------------------------------------------------
+    function getCsrfToken() {
+        const input = document.querySelector('input[name="csrfmiddlewaretoken"]');
+        if (input && input.value) return input.value;
+        const cookieMatch = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+        return cookieMatch ? decodeURIComponent(cookieMatch[1]) : '';
+    }
+
+    // -------------------------------------------------------------------------
+    // Toast Notification System (Non-disruptive Error & Status Alerts)
+    // -------------------------------------------------------------------------
+    function showToast(message, type) {
+        type = type || 'error';
+        let container = document.getElementById('wa-toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'wa-toast-container';
+            container.className = 'wa-toast-container';
+            container.setAttribute('aria-live', 'polite');
+            document.body.appendChild(container);
+        }
+
+        const toast = document.createElement('div');
+        toast.className = 'wa-toast ' + (type === 'error' ? 'wa-toast-error' : 'bg-steel/20 border border-steel/60 text-bone');
+        toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+        toast.textContent = message;
+
+        container.appendChild(toast);
+
+        setTimeout(function () {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(6px)';
+            setTimeout(function () {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 4000);
+    }
+
+    // -------------------------------------------------------------------------
+    // Task Complete / Uncomplete Handler
+    // -------------------------------------------------------------------------
+    function handleTaskForm(form, button) {
+        if (button.hasAttribute('disabled') || button.dataset.loading === 'true') {
+            return;
+        }
+
+        const actionUrl = form.getAttribute('action');
+        if (!actionUrl) return;
+
+        // Visual loading state
+        button.dataset.loading = 'true';
+        button.setAttribute('aria-busy', 'true');
+        button.disabled = true;
+
+        const indicator = button.querySelector('.wa-checkbox-indicator') || button;
+        const wasCompleted = indicator.classList.contains('is-completed') || actionUrl.includes('/uncomplete/');
+        const csrfToken = getCsrfToken();
+
+        // Immediate visual acknowledgement (subtle opacity change)
+        indicator.style.opacity = '0.5';
+
+        fetch(actionUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams(new FormData(form))
+        })
+        .then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(function (data) {
+            indicator.style.opacity = '';
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
+
+            const isNowCompleted = (typeof data.is_completed !== 'undefined') 
+                ? data.is_completed 
+                : (data.status === 'COMPLETED');
+
+            // Find parent row to update text style
+            const taskRow = form.closest('.task-row') || form.closest('li') || form.closest('[data-task-id]');
+            const titleLink = taskRow ? taskRow.querySelector('a[href*="/tasks/"]') : null;
+
+            if (isNowCompleted) {
+                indicator.classList.add('is-completed');
+                indicator.textContent = '✓';
+                indicator.classList.remove('text-transparent');
+                indicator.classList.add('text-bone');
+                button.setAttribute('title', 'Mark task pending');
+                button.setAttribute('aria-label', 'Undo completion');
+                if (titleLink) {
+                    titleLink.classList.add('line-through', 'text-ice/50');
+                    titleLink.classList.remove('text-bone');
+                }
+                // Switch action endpoint for next toggle
+                if (actionUrl.includes('/complete/')) {
+                    form.setAttribute('action', actionUrl.replace('/complete/', '/uncomplete/'));
+                }
+            } else {
+                indicator.classList.remove('is-completed');
+                indicator.textContent = '✓';
+                indicator.classList.add('text-transparent');
+                indicator.classList.remove('text-bone');
+                button.setAttribute('title', 'Mark task complete');
+                button.setAttribute('aria-label', 'Complete task');
+                if (titleLink) {
+                    titleLink.classList.remove('line-through', 'text-ice/50');
+                    titleLink.classList.add('text-bone');
+                }
+                // Switch action endpoint for next toggle
+                if (actionUrl.includes('/uncomplete/')) {
+                    form.setAttribute('action', actionUrl.replace('/uncomplete/', '/complete/'));
+                }
+            }
+        })
+        .catch(function (err) {
+            indicator.style.opacity = '';
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
+            showToast('Could not update task. Please try again.');
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // Habit Complete / Undo Handler
+    // -------------------------------------------------------------------------
+    function handleHabitForm(form, button) {
+        if (button.hasAttribute('disabled') || button.dataset.loading === 'true') {
+            return;
+        }
+
+        const actionUrl = form.getAttribute('action');
+        if (!actionUrl) return;
+
+        button.dataset.loading = 'true';
+        button.setAttribute('aria-busy', 'true');
+        button.disabled = true;
+
+        const origHtml = button.innerHTML;
+        button.style.opacity = '0.6';
+        const csrfToken = getCsrfToken();
+
+        fetch(actionUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams(new FormData(form))
+        })
+        .then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(function (data) {
+            button.style.opacity = '';
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
+
+            const isCompleted = data.completed_today;
+            const habitContainer = form.closest('li') || form.closest('.wa-card') || form.closest('[data-habit-id]');
+
+            if (isCompleted) {
+                button.textContent = 'Done ✓';
+                button.setAttribute('title', 'Click to undo completion');
+                button.setAttribute('aria-label', 'Undo habit completion');
+                button.className = button.className
+                    .replace('text-ice/60 border-steel/30', 'text-crimson-light border-crimson/50 bg-crimson/10')
+                    .replace('btn-primary', 'font-mono text-[10px] uppercase text-crimson-light border border-crimson/50 bg-crimson/10');
+                button.classList.add('wa-habit-btn-completed');
+                button.classList.remove('wa-habit-btn-pending');
+            } else {
+                button.textContent = 'Mark done';
+                button.setAttribute('title', 'Mark done');
+                button.setAttribute('aria-label', 'Complete habit');
+                button.className = button.className
+                    .replace('text-crimson-light border-crimson/50 bg-crimson/10', 'text-ice/60 border-steel/30')
+                    .replace('text-crimson-light border border-crimson/50 bg-crimson/10', 'btn-primary');
+                button.classList.add('wa-habit-btn-pending');
+                button.classList.remove('wa-habit-btn-completed');
+            }
+
+            // Update streak counter if present
+            if (habitContainer && typeof data.streak !== 'undefined') {
+                const streakEl = habitContainer.querySelector('strong');
+                if (streakEl && streakEl.textContent.includes('d')) {
+                    streakEl.textContent = data.streak + 'd';
+                }
+            }
+        })
+        .catch(function (err) {
+            button.style.opacity = '';
+            button.innerHTML = origHtml;
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
+            showToast('Could not update habit. Please try again.');
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // Milestone Toggle Handler
+    // -------------------------------------------------------------------------
+    function handleMilestoneForm(form, button) {
+        if (button.hasAttribute('disabled') || button.dataset.loading === 'true') {
+            return;
+        }
+
+        const actionUrl = form.getAttribute('action');
+        if (!actionUrl) return;
+
+        button.dataset.loading = 'true';
+        button.setAttribute('aria-busy', 'true');
+        button.disabled = true;
+
+        const indicator = button.querySelector('.wa-checkbox-indicator') || button;
+        indicator.style.opacity = '0.5';
+        const csrfToken = getCsrfToken();
+
+        fetch(actionUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams(new FormData(form))
+        })
+        .then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(function (data) {
+            indicator.style.opacity = '';
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
+
+            const isCompleted = data.is_completed;
+            const milestoneRow = form.closest('.task-row') || form.closest('li') || form.closest('div');
+            const titleSpan = milestoneRow ? milestoneRow.querySelector('span.text-sm') : null;
+
+            if (isCompleted) {
+                indicator.classList.add('is-completed');
+                indicator.textContent = '✓';
+                indicator.classList.remove('text-transparent');
+                indicator.classList.add('text-bone');
+                if (titleSpan) {
+                    titleSpan.classList.add('line-through', 'text-ice/50');
+                    titleSpan.classList.remove('text-bone');
+                }
+            } else {
+                indicator.classList.remove('is-completed');
+                indicator.textContent = '✓';
+                indicator.classList.add('text-transparent');
+                indicator.classList.remove('text-bone');
+                if (titleSpan) {
+                    titleSpan.classList.remove('line-through', 'text-ice/50');
+                    titleSpan.classList.add('text-bone');
+                }
+            }
+
+            // Update parent goal progress bar if present
+            if (typeof data.goal_progress !== 'undefined') {
+                const progressFill = document.querySelector('.progress-bar-fill');
+                if (progressFill) {
+                    progressFill.style.width = data.goal_progress + '%';
+                }
+                const progressText = document.querySelector('.font-serif.text-3xl.text-crimson');
+                if (progressText) {
+                    progressText.innerHTML = data.goal_progress + '<span class="text-xl text-slate-400">%</span>';
+                }
+            }
+        })
+        .catch(function (err) {
+            indicator.style.opacity = '';
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
+            showToast('Could not update checkpoint. Please try again.');
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // Goal Complete Handler
+    // -------------------------------------------------------------------------
+    function handleGoalCompleteForm(form, button) {
+        if (button.hasAttribute('disabled') || button.dataset.loading === 'true') {
+            return;
+        }
+
+        const actionUrl = form.getAttribute('action');
+        if (!actionUrl) return;
+
+        button.dataset.loading = 'true';
+        button.setAttribute('aria-busy', 'true');
+        button.disabled = true;
+        const origText = button.textContent;
+        button.style.opacity = '0.6';
+        const csrfToken = getCsrfToken();
+
+        fetch(actionUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams(new FormData(form))
+        })
+        .then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(function (data) {
+            button.style.opacity = '';
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
+
+            if (data.is_completed) {
+                button.textContent = 'Reopen Goal';
+            } else {
+                button.textContent = 'Fulfill Goal';
+            }
+        })
+        .catch(function (err) {
+            button.style.opacity = '';
+            button.textContent = origText;
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
+            showToast('Could not update goal. Please try again.');
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // Notification Mark Read Handler
+    // -------------------------------------------------------------------------
+    function handleNotificationForm(form, button) {
+        if (button.hasAttribute('disabled') || button.dataset.loading === 'true') {
+            return;
+        }
+
+        const actionUrl = form.getAttribute('action');
+        if (!actionUrl) return;
+
+        button.dataset.loading = 'true';
+        button.setAttribute('aria-busy', 'true');
+        button.disabled = true;
+        button.style.opacity = '0.5';
+        const csrfToken = getCsrfToken();
+
+        fetch(actionUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: new URLSearchParams(new FormData(form))
+        })
+        .then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(function (data) {
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+
+            if (actionUrl.includes('/mark_all_read/')) {
+                // All read
+                document.querySelectorAll('.wa-card.border-l-4').forEach(function (card) {
+                    card.classList.remove('border-l-4', 'border-l-crimson', 'bg-steel/10');
+                    card.classList.add('opacity-75');
+                });
+                button.parentElement.innerHTML = '<span class="font-mono text-[10px] text-ice/40 tracking-wider uppercase">All Read</span>';
+            } else {
+                // Single read
+                const card = form.closest('.wa-card');
+                if (card) {
+                    card.classList.remove('border-l-4', 'border-l-crimson', 'bg-steel/10');
+                    card.classList.add('opacity-75');
+                    const unreadDot = card.querySelector('.bg-crimson.rounded-full');
+                    if (unreadDot) unreadDot.remove();
+                }
+                form.parentElement.innerHTML = '<span class="font-mono text-[10px] text-ice/40 tracking-wider uppercase">Read</span>';
+            }
+
+            // Update badge counts in page if any
+            if (typeof data.unread_count !== 'undefined') {
+                document.querySelectorAll('[data-notification-badge]').forEach(function (badge) {
+                    if (data.unread_count === 0) {
+                        badge.classList.add('hidden');
+                    } else {
+                        badge.textContent = data.unread_count;
+                        badge.classList.remove('hidden');
+                    }
+                });
+            }
+        })
+        .catch(function (err) {
+            button.style.opacity = '';
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
+            showToast('Could not update notification.');
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // Event Delegation: Intercept Action Forms & Prevent Card Navigation
+    // -------------------------------------------------------------------------
+    document.addEventListener('submit', function (e) {
+        const form = e.target;
+        if (!form || !form.action) return;
+
+        const action = form.getAttribute('action') || '';
+
+        // 1. Task actions
+        if (action.includes('/tasks/') && (action.includes('/complete/') || action.includes('/uncomplete/'))) {
+            e.preventDefault();
+            e.stopPropagation();
+            const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+            if (btn) handleTaskForm(form, btn);
+            return;
+        }
+
+        // 2. Habit actions
+        if (action.includes('/habits/') && action.includes('/complete/')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+            if (btn) handleHabitForm(form, btn);
+            return;
+        }
+
+        // 3. Milestone toggle actions
+        if (action.includes('/goals/milestones/') && action.includes('/toggle/')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+            if (btn) handleMilestoneForm(form, btn);
+            return;
+        }
+
+        // 4. Goal complete actions
+        if (action.includes('/goals/') && action.includes('/complete/')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+            if (btn) handleGoalCompleteForm(form, btn);
+            return;
+        }
+
+        // 5. Notification mark read actions
+        if (action.includes('/notifications/mark_read/') || action.includes('/notifications/mark_all_read/')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+            if (btn) handleNotificationForm(form, btn);
+            return;
+        }
+
+        // 6. Login single submission protection
+        if (action.includes('/accounts/login/')) {
+            if (form.dataset.submitting === 'true') {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+            form.dataset.submitting = 'true';
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.style.pointerEvents = 'none';
+                btn.style.opacity = '0.8';
+                btn.innerHTML = '<span class="inline-flex items-center justify-center gap-2">Entering Watch...</span>';
+            }
+            // Allow form to submit normally once
+            return;
+        }
+    }, true);
+
+    // Stop click bubbling on all inline buttons to prevent card navigation
+    document.addEventListener('click', function (e) {
+        const actionBtn = e.target.closest('.wa-checkbox-btn, .wa-habit-btn, [data-inline-action], form button');
+        if (actionBtn) {
+            e.stopPropagation();
+        }
+    }, false);
+
+})();

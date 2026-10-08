@@ -207,10 +207,10 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="next" value="{% url 'dashboard' %}">
                                 <button type="submit"
-                                        class="w-5 h-5 border border-steel/40 hover:border-crimson hover:bg-crimson/15 flex items-center justify-center transition-all duration-150 text-transparent hover:text-crimson-light text-xs"
+                                        class="wa-checkbox-btn"
                                         title="Mark task complete"
                                         aria-label="Complete: {{ task.title }}">
-                                    ✓
+                                    <span class="wa-checkbox-indicator">✓</span>
                                 </button>
                             </form>
                             <div class="flex-1 min-w-0">
@@ -281,7 +281,7 @@
                                         {% csrf_token %}
                                         <input type="hidden" name="next" value="{% url 'dashboard' %}">
                                         <button type="submit"
-                                                class="font-mono text-[10px] uppercase text-crimson-light hover:text-bone border border-crimson/50 hover:border-crimson px-2.5 py-1 bg-crimson/10 transition-all duration-150"
+                                                class="wa-habit-btn wa-habit-btn-completed font-mono text-[10px] uppercase text-crimson-light hover:text-bone border border-crimson/50 hover:border-crimson px-2.5 py-1 bg-crimson/10 transition-all duration-150"
                                                 title="Click to undo completion"
                                                 aria-label="Undo habit completion: {{ item.habit.name }}">
                                             Done ✓
@@ -292,7 +292,8 @@
                                         {% csrf_token %}
                                         <input type="hidden" name="next" value="{% url 'dashboard' %}">
                                         <button type="submit"
-                                                class="font-mono text-[10px] uppercase text-ice/60 border border-steel/30 px-2.5 py-1 hover:border-crimson/40 hover:text-crimson-light transition-all duration-150"
+                                                class="wa-habit-btn wa-habit-btn-pending font-mono text-[10px] uppercase text-ice/60 border border-steel/30 px-2.5 py-1 hover:border-crimson/40 hover:text-crimson-light transition-all duration-150"
+                                                title="Mark done"
                                                 aria-label="Complete habit: {{ item.habit.name }}">
                                             Mark done
                                         </button>

@@ -46,9 +46,12 @@ def mark_read(request, notification_id):
     Guarantees user ownership isolation.
     """
     success = mark_notification_as_read(request.user, notification_id)
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.GET.get('format') == 'json':
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.GET.get('format') == 'json' or 'application/json' in request.headers.get('Accept', ''):
         return JsonResponse({'success': success, 'unread_count': get_unread_count(request.user)})
     
+    next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+    if next_url:
+        return redirect(next_url)
     return redirect('notifications:list')
 
 
@@ -59,10 +62,13 @@ def mark_all_read(request):
     Mark all unread notifications for current user as read.
     """
     updated_count = mark_all_notifications_as_read(request.user)
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.GET.get('format') == 'json':
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.GET.get('format') == 'json' or 'application/json' in request.headers.get('Accept', ''):
         return JsonResponse({'success': True, 'updated': updated_count, 'unread_count': 0})
 
     messages.success(request, f"Marked {updated_count} notifications as read.")
+    next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+    if next_url:
+        return redirect(next_url)
     return redirect('notifications:list')
 
 

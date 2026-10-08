@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+from django.http import JsonResponse
 import json
 
 from .models import Arc
@@ -91,7 +92,12 @@ def arc_make_primary(request, pk):
         arc.is_primary = True
         arc.save()
         messages.success(request, f'"{arc.name}" is now your primary Arc.')
-    return redirect(request.META.get('HTTP_REFERER') or 'arcs:list')
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
+            return JsonResponse({'success': True, 'arc_id': arc.pk, 'is_primary': True, 'status': arc.status})
+        next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+        if next_url:
+            return redirect(next_url)
+    return redirect('arcs:detail', pk=arc.pk)
 
 
 @login_required
@@ -101,7 +107,12 @@ def arc_pause(request, pk):
         arc.status = 'PAUSED'
         arc.save()
         messages.success(request, f'Winter Arc "{arc.name}" paused.')
-    return redirect(request.META.get('HTTP_REFERER') or 'arcs:detail', pk=arc.pk)
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
+            return JsonResponse({'success': True, 'arc_id': arc.pk, 'status': arc.status})
+        next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+        if next_url:
+            return redirect(next_url)
+    return redirect('arcs:detail', pk=arc.pk)
 
 
 @login_required
@@ -111,7 +122,12 @@ def arc_resume(request, pk):
         arc.status = 'ACTIVE'
         arc.save()
         messages.success(request, f'Winter Arc "{arc.name}" resumed.')
-    return redirect(request.META.get('HTTP_REFERER') or 'arcs:detail', pk=arc.pk)
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
+            return JsonResponse({'success': True, 'arc_id': arc.pk, 'status': arc.status})
+        next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+        if next_url:
+            return redirect(next_url)
+    return redirect('arcs:detail', pk=arc.pk)
 
 
 @login_required
@@ -141,7 +157,12 @@ def arc_complete(request, pk):
         )
         check_and_unlock_achievements(request.user)
         messages.success(request, f'Winter Arc "{arc.name}" marked as completed. Well done.')
-    return redirect(request.META.get('HTTP_REFERER') or 'arcs:detail', pk=arc.pk)
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
+            return JsonResponse({'success': True, 'arc_id': arc.pk, 'status': arc.status})
+        next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+        if next_url:
+            return redirect(next_url)
+    return redirect('arcs:detail', pk=arc.pk)
 
 
 # ==============================================================================

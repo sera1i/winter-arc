@@ -21,7 +21,7 @@
 
         <!-- Form card -->
         <div class="wa-form-card">
-            <form method="post" action="{% url 'login' %}" class="space-y-5" novalidate>
+            <form method="post" action="{% url 'login' %}" id="login-form" class="space-y-5" novalidate>
                 {% csrf_token %}
 
                 {% if form.non_field_errors %}
@@ -82,7 +82,7 @@
                     </a>
                 </div>
 
-                <button type="submit" class="btn-primary w-full text-sm uppercase tracking-widest py-3.5">
+                <button type="submit" id="login-submit-btn" class="btn-primary w-full text-sm uppercase tracking-widest py-3.5">
                     Log in
                 </button>
             </form>

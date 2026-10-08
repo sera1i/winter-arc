@@ -7,6 +7,7 @@ urlpatterns = [
     path('arc/<int:arc_id>/new/', views.goal_create, name='create'),
     path('<int:pk>/', views.goal_detail, name='detail'),
     path('<int:pk>/edit/', views.goal_update, name='update'),
+    path('<int:pk>/complete/', views.goal_complete, name='complete'),
     path('<int:pk>/delete/', views.goal_delete, name='delete'),
     
     path('<int:goal_id>/milestones/new/', views.milestone_create, name='milestone_create'),

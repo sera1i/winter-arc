@@ -38,6 +38,13 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-3 self-start sm:self-auto">
+            <form method="post" action="{% url 'goals:complete' goal.pk %}" class="inline">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" class="btn-secondary text-xs uppercase tracking-widest px-4 py-2.5">
+                    {% if goal.status == 'COMPLETED' %}Reopen Goal{% else %}Fulfill Goal{% endif %}
+                </button>
+            </form>
             <a href="#milestone-form" class="btn-primary text-xs uppercase tracking-widest px-6 py-2.5">
                 Add Milestone
             </a>
@@ -104,10 +111,12 @@
                         <div class="flex items-center gap-4 min-w-0">
                             <form method="post" action="{% url 'goals:milestone_toggle' m.pk %}" class="flex-shrink-0">
                                 {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
                                 <button type="submit" 
-                                        class="w-5 h-5 border {% if m.is_completed %}bg-crimson border-crimson text-bone{% else %}border-steel/50 hover:border-crimson text-transparent hover:text-crimson-light{% endif %} flex items-center justify-center text-xs transition-colors"
-                                        title="Toggle milestone">
-                                    ✓
+                                        class="wa-checkbox-btn"
+                                        title="{% if m.is_completed %}Mark checkpoint pending{% else %}Mark checkpoint reached{% endif %}"
+                                        aria-label="Toggle milestone: {{ m.title }}">
+                                    <span class="wa-checkbox-indicator {% if m.is_completed %}is-completed text-bone{% else %}text-transparent{% endif %}">✓</span>
                                 </button>
                             </form>
                             <div class="min-w-0">

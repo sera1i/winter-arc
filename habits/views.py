@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
 from django.utils import timezone
 from zoneinfo import ZoneInfo
 from .models import Habit, HabitCompletion
@@ -136,9 +137,20 @@ def habit_complete(request, pk):
             check_and_unlock_achievements(request.user)
             messages.success(request, 'Another beacon lit.')
 
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
+            return JsonResponse({
+                'success': True,
+                'habit_id': habit.pk,
+                'completed_today': created,
+                'streak': habit.get_current_streak(),
+                'best_streak': habit.best_streak,
+                'message': 'Another beacon lit.' if created else f'"{habit.name}" marked incomplete for today.',
+            })
+
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
         if next_url:
             return redirect(next_url)
+        return redirect('habits:detail', pk=pk)
     return redirect('habits:detail', pk=pk)
 
 
