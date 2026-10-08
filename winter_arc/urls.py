@@ -1,14 +1,15 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from accounts.views import landing_view
-from core.views import health_liveness, health_readiness, robots_txt, sitemap_xml, custom_404
+from core.views import health_liveness, health_readiness, robots_txt, sitemap_xml, custom_404, indexnow_key_view
 
 urlpatterns = [
     path('robots.txt', robots_txt, name='robots_txt'),
     path('sitemap.xml', sitemap_xml, name='sitemap_xml'),
+    re_path(r'^(?P<key>[a-zA-Z0-9_-]{8,128})\.txt$', indexnow_key_view, name='indexnow_key'),
     path('health/', health_liveness, name='health_liveness'),
     path('health/ready/', health_readiness, name='health_readiness'),
     path('admin/', admin.site.urls),

@@ -52,6 +52,11 @@ SITE_URL = env('DJANGO_SITE_URL', default=_default_site_url).strip().rstrip('/')
 if not DEBUG and SITE_URL.startswith('http://'):
     SITE_URL = 'https://' + SITE_URL[7:]
 
+# Search Console, Bing Webmaster & IndexNow Configuration
+GOOGLE_SITE_VERIFICATION = env('GOOGLE_SITE_VERIFICATION', default='').strip()
+BING_SITE_VERIFICATION = env('BING_SITE_VERIFICATION', default='').strip()
+INDEXNOW_KEY = env('INDEXNOW_KEY', default='').strip()
+
 
 # Application definition
 
@@ -87,6 +92,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'core.middleware.RobotsSecurityHeaderMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'core.middleware.TimezoneMiddleware',

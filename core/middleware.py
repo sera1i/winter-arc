@@ -46,3 +46,45 @@ class TimezoneMiddleware:
             timezone.deactivate()
 
         return response
+
+
+class RobotsSecurityHeaderMiddleware:
+    """
+    Middleware that enforces defense-in-depth search engine boundary protection.
+    Injects 'X-Robots-Tag: noindex, nofollow' HTTP header on:
+      - All private authenticated routes (/arcs/, /goals/, /tasks/, /habits/, /journal/, /analytics/, /notifications/, /api/, /admin/, /health/, account actions)
+      - All error and 404 responses
+    Guarantees that public marketing and knowledge pages (/, /winter-arc/*, /guides/*, sitemap, robots)
+    remain cleanly indexable without accidental noindex headers.
+    """
+    PRIVATE_PREFIXES = (
+        '/accounts/dashboard/',
+        '/accounts/profile/',
+        '/accounts/password-reset/',
+        '/accounts/logout/',
+        '/accounts/login/',
+        '/accounts/register/',
+        '/dashboard/',
+        '/arcs/',
+        '/goals/',
+        '/tasks/',
+        '/habits/',
+        '/journal/',
+        '/analytics/',
+        '/notifications/',
+        '/api/',
+        '/admin/',
+        '/health/',
+    )
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+
+        path = request.path_info
+        if any(path.startswith(prefix) for prefix in self.PRIVATE_PREFIXES) or response.status_code >= 400:
+            response['X-Robots-Tag'] = 'noindex, nofollow'
+
+        return response

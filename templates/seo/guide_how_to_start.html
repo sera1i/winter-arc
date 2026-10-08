@@ -34,7 +34,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "How to Start a Winter Arc",
+          "name": "How to Start",
           "item": "{{ canonical_url }}"
         }
       ]
@@ -61,15 +61,23 @@
           "name": "How do I start a Winter Arc?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Starting a Winter Arc requires defining your season's dates, selecting 3 to 5 high-leverage goals, breaking those goals down into non-negotiable daily habits, establishing a daily tracking system, and committing to weekly reviews. Success comes from simplicity, clear metrics, and treating consistency as a daily practice."
+            "text": "Starting a Winter Arc requires defining your season window, selecting 3 to 5 clear goals, breaking those goals down into non-negotiable daily habits, and establishing daily tracking with weekly reflection reviews."
           }
         },
         {
           "@type": "Question",
-          "name": "When is the best time to start a Winter Arc?",
+          "name": "What tools do I need to start?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The traditional start date is October 1, culminating on January 1. However, you can start anytime in the autumn or winter for any 60 to 90-day period."
+            "text": "A notebook or digital journal, workout attire, a water bottle, and a reliable tracking system like Winter Arc. Avoid acquiring complex gear as a method of procrastination."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use a pre-built template instead of writing my own?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We provide 6 pre-configured blueprints (Classic Winter Arc, Student Lock-In, Fitness Arc, Monk Mode, Mind + Body, Career Lock-In) plus a blank Custom Arc option. See our Templates Library."
           }
         }
       ]
@@ -219,15 +227,21 @@
         <h2 class="font-serif text-2xl sm:text-3xl text-bone font-bold tracking-wide">Starting FAQ</h2>
         <div class="space-y-4">
             <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
+                <h3 class="font-serif text-lg text-bone font-semibold">How do I start a Winter Arc?</h3>
+                <p class="text-sm text-ice/80">
+                    Starting a Winter Arc requires defining your season window, selecting 3 to 5 clear goals, breaking those goals down into non-negotiable daily habits, and establishing daily tracking with weekly reflection reviews.
+                </p>
+            </div>
+            <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
                 <h3 class="font-serif text-lg text-bone font-semibold">What tools do I need to start?</h3>
                 <p class="text-sm text-ice/80">
-                    A notebook for journaling, a water bottle, workout clothing, and a digital habit tracker like Winter Arc. Avoid buying unnecessary gear as a form of procrastination.
+                    A notebook or digital journal, workout attire, a water bottle, and a reliable tracking system like Winter Arc. Avoid acquiring complex gear as a method of procrastination.
                 </p>
             </div>
             <div class="p-5 border border-steel/20 bg-surface/40 space-y-2">
                 <h3 class="font-serif text-lg text-bone font-semibold">Can I use a pre-built template instead of writing my own?</h3>
                 <p class="text-sm text-ice/80">
-                    Yes. We provide pre-configured blueprints for Classic, Student, Fitness, Monk Mode, and Career Arcs. See our <a href="{% url 'winter_arc_templates' %}" class="text-crimson-light hover:underline">Templates Library</a>.
+                    Yes. We provide 6 pre-configured blueprints (Classic Winter Arc, Student Lock-In, Fitness Arc, Monk Mode, Mind + Body, Career Lock-In) plus a blank Custom Arc option. See our <a href="{% url 'winter_arc_templates' %}" class="text-crimson-light hover:underline">Templates Library</a>.
                 </p>
             </div>
         </div>

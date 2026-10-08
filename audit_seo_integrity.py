@@ -57,7 +57,7 @@ for fname in sorted(os.listdir(templates_dir)):
     faq_section = None
     for sec in soup.find_all('section'):
         h2 = sec.find(['h2', 'h3'])
-        if h2 and 'faq' in h2.text.lower():
+        if h2 and ('faq' in h2.text.lower() or 'frequently asked' in h2.text.lower()):
             faq_section = sec
             break
     visible_faqs = []

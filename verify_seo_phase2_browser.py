@@ -61,6 +61,12 @@ def run_seo_phase2_browser_qa():
 
     pages_to_test = [
         {
+            'path': '/',
+            'label': '00_homepage',
+            'title_keyword': 'Winter Arc',
+            'answer_keyword': 'daily discipline',
+        },
+        {
             'path': '/winter-arc/',
             'label': '01_pillar_winter_arc',
             'title_keyword': 'What Is a Winter Arc',
@@ -111,7 +117,7 @@ def run_seo_phase2_browser_qa():
         {
             'path': '/guides/',
             'label': '09_guides_index',
-            'title_keyword': 'Winter Arc Guides',
+            'title_keyword': 'Winter Arc Field Guides',
             'answer_keyword': 'Direct Overview',
         },
         {
@@ -196,7 +202,10 @@ def run_seo_phase2_browser_qa():
                 ld_data = json.loads(ld_scripts[0].inner_text())
                 assert ld_data.get('@context') == 'https://schema.org', f"Schema @context invalid on {url}"
                 types = [elem.get('@type') for elem in ld_data.get('@graph', [])]
-                assert 'BreadcrumbList' in types, f"BreadcrumbList missing in JSON-LD on {url}"
+                if item['path'] == '/':
+                    assert 'WebSite' in types and 'Organization' in types and 'SoftwareApplication' in types, f"Homepage schema missing required types on {url}"
+                else:
+                    assert 'BreadcrumbList' in types, f"BreadcrumbList missing in JSON-LD on {url}"
 
                 # 7. Check for horizontal overflow
                 is_overflow = page.evaluate("() => document.documentElement.scrollWidth > window.innerWidth")

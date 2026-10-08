@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render
 from django.db import connection
 from django.core.cache import cache
@@ -67,6 +67,8 @@ def robots_txt(request):
         "Disallow: /accounts/profile/",
         "Disallow: /accounts/password-reset/",
         "Disallow: /accounts/logout/",
+        "Disallow: /accounts/login/",
+        "Disallow: /accounts/register/",
         "Disallow: /dashboard/",
         "Disallow: /arcs/",
         "Disallow: /goals/",
@@ -167,4 +169,19 @@ def custom_404(request, exception=None):
     Renders Winter Arc branded 404 page directing users to sanctuary.
     """
     return render(request, '404.html', status=404)
+
+
+def indexnow_key_view(request, key):
+    """
+    Serves IndexNow ownership verification key file adhering to IndexNow protocol RFC.
+    Responds with key value ONLY if:
+      1. INDEXNOW_KEY is configured in settings/environment
+      2. Requested key strictly matches settings.INDEXNOW_KEY
+    Otherwise returns 404 to prevent exposing arbitrary text files.
+    """
+    configured_key = getattr(settings, 'INDEXNOW_KEY', '').strip()
+    if not configured_key or key != configured_key:
+        raise Http404("IndexNow verification key not found.")
+    return HttpResponse(configured_key, content_type="text/plain; charset=utf-8")
+
 

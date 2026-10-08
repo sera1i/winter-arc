@@ -154,6 +154,50 @@ class TechnicalSEOPhase2Tests(TestCase):
         html = resp.content.decode('utf-8')
 
         # Check that preset review links are embedded
-        for preset_key in ['classic', 'student', 'fitness', 'monk_mode', 'career', 'custom']:
+        for preset_key in ['classic', 'student', 'fitness', 'monk_mode', 'mind_body', 'career', 'custom']:
             expected_href = reverse('arcs:preset_review', kwargs={'key': preset_key})
             self.assertIn(expected_href, html, f"Preset link {expected_href} missing on templates page")
+
+    def test_no_stale_preset_names_or_unsupported_claims(self):
+        """Rendered HTML on all public routes contains zero stale preset names or unsupported claims."""
+        stale_terms = [
+            "Standard Foundation",
+            "Minimalist Reset",
+            "Academic Overhaul",
+            "Athletic Conditioning",
+            "All 5 Core Presets",
+            "5 Core Presets",
+            "five core presets",
+            "official Winter Arc rules",
+            "thousands of users",
+            "why millions choose",
+            "award-winning",
+            "trusted by",
+        ]
+        for path in self.PUBLIC_ROUTES:
+            resp = self.client.get(path)
+            html = resp.content.decode('utf-8')
+            for term in stale_terms:
+                self.assertNotIn(term.lower(), html.lower(), f"Stale or unsupported term '{term}' found on {path}")
+
+    def test_fitness_page_contains_medical_disclaimer(self):
+        """The /winter-arc/for-fitness/ page includes an explicit health disclaimer."""
+        resp = self.client.get('/winter-arc/for-fitness/')
+        html = resp.content.decode('utf-8')
+        self.assertIn("does not constitute medical", html)
+
+    def test_templates_page_displays_all_six_predefined_presets_plus_custom(self):
+        """The /winter-arc/templates/ page displays all 6 canonical predefined presets + Custom Arc."""
+        resp = self.client.get('/winter-arc/templates/')
+        html = resp.content.decode('utf-8')
+        canonical_presets = [
+            "Classic Winter Arc",
+            "Student Lock-In",
+            "Fitness Arc",
+            "Monk Mode",
+            "Mind + Body",
+            "Career Lock-In",
+            "Custom Arc",
+        ]
+        for name in canonical_presets:
+            self.assertIn(name, html, f"Canonical preset '{name}' missing on templates page")
