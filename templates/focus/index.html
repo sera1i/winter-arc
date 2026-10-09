@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Focus Mode — Winter Arc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'focus/css/focus.css' %}">
+</head>
+<body>
+<a href="{% url 'dashboard' %}" class="back-to-dashboard" aria-label="Back to Dashboard">
+ <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+  <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.75" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+ </svg>
+ <span class="btn-label-desktop">Back to Dashboard</span>
+ <span class="btn-label-mobile">Dashboard</span>
+</a>
+<button id="fullscreen-btn" class="fullscreen-btn" type="button" aria-label="Enter Fullscreen" title="Enter Fullscreen">
+ <svg id="fs-enter-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+  <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.75" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+ </svg>
+ <svg id="fs-exit-icon" class="hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+  <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.75" d="M4 4l5 5m0 0H5m4 0V5m11-1l-5 5m0 0h4m-4 0V5M4 20l5-5m0 0H5m4 0v4m11 1l-5-5m0 0h4m-4 0v4"></path>
+ </svg>
+ <span id="fs-label">Fullscreen</span>
+</button>
+<canvas id="rain" aria-hidden="true"></canvas>
+<main class="scene">
+ <div class="stage" id="stage">
+  <div class="clock main" id="mainClock" role="timer" aria-label="Current time"></div>
+  <div class="ampm" id="ampm"></div>
+ </div>
+</main>
+<section class="timer" id="timer" aria-label="Countdown">
+ <div class="clock" id="cd" role="timer" aria-label="Countdown remaining"></div>
+ <div class="ctrl">
+  <button id="minus" type="button" aria-label="Subtract 5 minutes">−5</button>
+  <button id="go" type="button">Start</button>
+  <button id="plus" type="button" aria-label="Add 5 minutes">+5</button>
+  <button id="reset" type="button">Reset</button>
+ </div>
+</section>
+
+<script src="{% static 'focus/js/focus.js' %}"></script>
+</body>
+</html>

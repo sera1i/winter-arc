@@ -1,0 +1,421 @@
+/* ==========================================================================
+   Focus Mode — Cinematic Monolith Clock & Countdown Timer
+   Extracted verbatim from Focus mode.html prototype.
+   ========================================================================== */
+
+/* TODO: Add local Isometra font files when binary assets are provided.
+   Retaining fallback stack: 'Isometra', 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif.
+   @font-face {
+     font-family: 'Isometra';
+     src: url('../fonts/Isometra.woff2') format('woff2');
+     font-weight: 200 400;
+     font-style: normal;
+     font-display: swap;
+   }
+*/
+
+:root {
+  color-scheme: dark;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --main: min(14vw, 26vh);
+  --small: calc(var(--main) / 3);
+  --r: 1.54em;
+}
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  font-family: 'Isometra', 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 200;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scene {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  perspective: 1100px;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.stage,
+.clock,
+.grp,
+.drum,
+.face,
+.ampm,
+.sep {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.stage {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--main);
+  transform-style: preserve-3d;
+  position: relative;
+  line-height: 1;
+  text-shadow: 0 0 .18em rgba(255, 255, 255, .35);
+}
+
+.clock.glitch {
+  animation: jit .12s steps(2) 14;
+}
+
+@keyframes jit {
+  0% { transform: translate3d(-.01em, 0, 0); }
+  100% { transform: translate3d(.012em, .004em, 0); }
+}
+
+.grp {
+  display: flex;
+  transform-style: preserve-3d;
+}
+
+.drum {
+  position: relative;
+  width: .5em;
+  height: 1em;
+  transform-style: preserve-3d;
+  transform: translateZ(-1.54em);
+  transition: transform .75s cubic-bezier(.2, .9, .25, 1.15);
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  backface-visibility: hidden;
+  transform: rotateX(calc(var(--i) * 36deg)) translateZ(var(--r));
+  transition: opacity .75s;
+}
+
+.ampm {
+  text-align: center;
+  font-size: calc(var(--main) / 6);
+  letter-spacing: .3em;
+  text-indent: .3em;
+  opacity: .55;
+  margin-top: .5em;
+}
+
+.sep {
+  width: .22em;
+  text-align: center;
+  opacity: .55;
+  transform: translateZ(0);
+}
+
+.timer {
+  position: fixed;
+  z-index: 20;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .6rem;
+  perspective: 600px;
+}
+
+.timer .clock {
+  font-size: var(--small);
+  text-shadow: 0 0 .2em rgba(255, 255, 255, .3);
+}
+
+.timer.done .clock {
+  animation: pulse .6s ease-in-out 6 alternate;
+}
+
+@keyframes pulse {
+  to { opacity: .25; }
+}
+
+.ctrl {
+  display: flex;
+  gap: 6px;
+  position: relative;
+  z-index: 21;
+  pointer-events: auto;
+}
+
+button {
+  font: 300 15px/1 'Barlow Condensed', Arial, sans-serif;
+  letter-spacing: .04em;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 999px;
+  min-height: 36px;
+  min-width: 44px;
+  padding: 0 14px;
+  cursor: pointer;
+  position: relative;
+  z-index: 22;
+  pointer-events: auto;
+  touch-action: manipulation;
+  transition: background .2s, color .2s, border-color .2s;
+}
+
+button:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.back-to-dashboard,
+.fullscreen-btn {
+  position: fixed;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 300 14px/1 'Barlow Condensed', Arial, sans-serif;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .75);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 999px;
+  min-height: 36px;
+  padding: 0 16px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  touch-action: manipulation;
+  pointer-events: auto;
+  transition: background .2s, color .2s, border-color .2s, opacity .2s;
+}
+
+.back-to-dashboard {
+  top: max(20px, env(safe-area-inset-top));
+  left: max(20px, env(safe-area-inset-left));
+}
+
+.fullscreen-btn {
+  top: max(20px, env(safe-area-inset-top));
+  right: max(20px, env(safe-area-inset-right));
+}
+
+.back-to-dashboard .btn-label-mobile {
+  display: none;
+}
+
+.back-to-dashboard .btn-label-desktop {
+  display: inline;
+}
+
+.back-to-dashboard:hover,
+.fullscreen-btn:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.back-to-dashboard:focus-visible,
+.fullscreen-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.back-to-dashboard svg,
+.fullscreen-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  transition: transform .2s ease;
+}
+
+.back-to-dashboard:hover svg {
+  transform: translateX(-3px);
+}
+
+.fullscreen-btn .hidden {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Layout Rules for All Device Sizes
+   -------------------------------------------------------------------------- */
+
+/* Tablet & Smaller Desktops */
+@media (max-width: 1024px) {
+  :root {
+    --main: min(15vw, 22vh);
+  }
+  .back-to-dashboard,
+  .fullscreen-btn {
+    top: max(16px, env(safe-area-inset-top));
+  }
+  .back-to-dashboard {
+    left: max(16px, env(safe-area-inset-left));
+  }
+  .fullscreen-btn {
+    right: max(16px, env(safe-area-inset-right));
+  }
+  .timer {
+    right: max(20px, env(safe-area-inset-right));
+    bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Mobile Phones (Portrait) */
+@media (max-width: 600px) {
+  :root {
+    --main: min(18vw, 11vh);
+  }
+  .clock.main {
+    flex-wrap: nowrap;
+    width: auto;
+    justify-content: center;
+  }
+  .clock.main .grp.sec {
+    flex-basis: auto;
+    justify-content: flex-start;
+  }
+  .clock.main .sep.s2 {
+    display: block;
+  }
+  .timer {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: max(20px, env(safe-area-inset-bottom));
+    align-items: center;
+    gap: .5rem;
+  }
+  .ctrl {
+    gap: 6px;
+  }
+  button {
+    min-height: 36px;
+    min-width: 44px;
+    padding: 0 13px;
+    font-size: 14px;
+  }
+  .back-to-dashboard,
+  .fullscreen-btn {
+    top: max(14px, env(safe-area-inset-top));
+    font-size: 13px;
+    min-height: 34px;
+    padding: 0 12px;
+    gap: 6px;
+  }
+  .back-to-dashboard {
+    left: max(14px, env(safe-area-inset-left));
+  }
+  .fullscreen-btn {
+    right: max(14px, env(safe-area-inset-right));
+  }
+}
+
+/* Compact Mobile Phones (under 440px, e.g. iPhone SE, iPhone Mini, Galaxy) */
+@media (max-width: 440px) {
+  :root {
+    --main: min(17.5vw, 10.5vh);
+  }
+  .back-to-dashboard .btn-label-desktop {
+    display: none;
+  }
+  .back-to-dashboard .btn-label-mobile {
+    display: inline;
+  }
+  .back-to-dashboard,
+  .fullscreen-btn {
+    padding: 0 10px;
+    gap: 5px;
+  }
+}
+
+/* Mobile Devices in Landscape Orientation */
+@media (max-height: 520px) and (orientation: landscape) {
+  :root {
+    --main: min(11vw, 22vh);
+  }
+  .clock.main {
+    flex-wrap: nowrap;
+    width: auto;
+  }
+  .clock.main .grp.sec {
+    flex-basis: auto;
+  }
+  .clock.main .sep.s2 {
+    display: block;
+  }
+  .timer {
+    left: auto;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+    transform: none;
+    align-items: flex-end;
+    gap: .4rem;
+  }
+  .back-to-dashboard,
+  .fullscreen-btn {
+    top: max(10px, env(safe-area-inset-top));
+    min-height: 30px;
+    font-size: 12px;
+    padding: 0 10px;
+  }
+  .back-to-dashboard {
+    left: max(12px, env(safe-area-inset-left));
+  }
+  .fullscreen-btn {
+    right: max(12px, env(safe-area-inset-right));
+  }
+  button {
+    min-height: 30px;
+    min-width: 38px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drum { transition: none; }
+  .clock.glitch { animation: none; }
+  .back-to-dashboard svg,
+  .fullscreen-btn svg { transition: none; }
+}
+

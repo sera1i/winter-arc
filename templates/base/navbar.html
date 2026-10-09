@@ -88,10 +88,10 @@
                             </span>
                         {% endif %}
                     </a>
-                    <a href="{% url 'profile' %}" 
-                       class="font-mono text-xs text-ice/70 hover:text-bone transition-colors border border-steel/30 px-3 py-1.5 tracking-wide truncate max-w-[140px]"
-                       title="{{ user.username }}">
-                        {{ user.username }}
+                    <a href="{% url 'focus:index' %}" 
+                       class="font-mono text-xs text-ice/70 hover:text-bone transition-colors border border-steel/30 px-3 py-1.5 tracking-wide"
+                       title="Focus Mode">
+                        Focus Mode
                     </a>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
@@ -156,7 +156,7 @@
             <a href="{% url 'habits:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Habits</a>
             <a href="{% url 'journal:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Journal</a>
             <a href="{% url 'analytics:index' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Analytics</a>
-            <a href="{% url 'profile' %}" class="block text-ice/80 hover:text-bone text-sm font-mono py-3 border-b border-steel/15 transition-colors" role="menuitem">Profile — {{ user.username }}</a>
+            <a href="{% url 'focus:index' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Focus Mode</a>
             
             <!-- Theme Toggle (Mobile) -->
             <div class="py-3 border-b border-steel/15 flex items-center justify-between">

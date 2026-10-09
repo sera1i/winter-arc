@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'gamification',
     'notifications',
     'api',
+    'focus',
 ]
 
 MIDDLEWARE = [
