@@ -5,6 +5,14 @@
 {% block content %}
 <div class="page-container pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'dashboard' %}" class="wa-back-link" aria-label="Back to Dashboard">
+            <span aria-hidden="true">←</span>
+            <span>Back to Dashboard</span>
+        </a>
+    </div>
+
     <div class="page-header">
         <div>
             <span class="page-eyebrow">Consistency</span>

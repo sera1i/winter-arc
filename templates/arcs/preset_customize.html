@@ -6,11 +6,17 @@
 <div class="page-container pt-8 sm:pt-10">
 
     <!-- Back Navigation -->
-    <div class="mb-6 flex items-center justify-between">
-        <a href="{% url 'arcs:preset_review' preset.key %}" class="wa-back-link" aria-label="Back to Blueprint Review">
-            <span aria-hidden="true">←</span>
-            <span>Review Blueprint</span>
-        </a>
+    <div class="mb-6 flex items-center justify-between flex-wrap gap-3">
+        <div class="flex items-center gap-3">
+            <a href="{% url 'arcs:preset_review' preset.key %}" class="wa-back-link" aria-label="Back to Blueprint Review">
+                <span aria-hidden="true">←</span>
+                <span>Review Blueprint</span>
+            </a>
+            <span class="text-steel/40 text-xs font-mono" aria-hidden="true">·</span>
+            <a href="{% url 'dashboard' %}" class="wa-back-link text-ice/60 hover:text-bone" aria-label="Back to Dashboard">
+                <span>Dashboard</span>
+            </a>
+        </div>
         <a href="{% url 'arcs:preset_customize' preset.key %}?reset=1" 
            class="font-mono text-xs text-ice/50 hover:text-crimson transition-colors"
            onclick="return confirm('Reset all modifications back to preset defaults?');">

@@ -6,10 +6,14 @@
 <div class="min-h-[70vh] flex items-center justify-center px-4 py-20">
     <div class="w-full max-w-md wa-form-card text-center space-y-6">
         
-        <div class="text-left">
+        <div class="flex items-center justify-between text-left">
             <a href="{% url 'journal:detail' entry.pk %}" class="wa-back-link" aria-label="Back to Entry">
                 <span aria-hidden="true">←</span>
                 <span>Back to Entry</span>
+            </a>
+            <a href="{% url 'dashboard' %}" class="wa-back-link text-ice/60 hover:text-bone" aria-label="Back to Dashboard">
+                <span>Dashboard</span>
+                <span aria-hidden="true">→</span>
             </a>
         </div>
         

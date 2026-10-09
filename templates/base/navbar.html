@@ -4,12 +4,12 @@
      style="background: transparent;"
      aria-label="Main navigation">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-18 sm:h-20">
+        <div class="flex items-center justify-between h-16 sm:h-20">
 
             <!-- Brand Mark -->
-            <a href="{% url 'home' %}" 
+            <a href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'home' %}{% endif %}" 
                class="flex items-center gap-3 group shrink-0"
-               aria-label="Winter Arc home">
+               aria-label="{% if user.is_authenticated %}Winter Arc dashboard{% else %}Winter Arc home{% endif %}">
                 <div class="w-0.5 h-7 bg-crimson flex-shrink-0"></div>
                 <span class="font-serif text-xl sm:text-2xl font-bold tracking-[0.18em] text-bone uppercase group-hover:text-bone/90 transition-colors">
                     Winter Arc
@@ -109,20 +109,38 @@
                 {% endif %}
             </div>
 
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" 
-                    type="button" 
-                    class="md:hidden p-2 text-ice hover:text-bone focus:outline-none focus:ring-1 focus:ring-crimson transition-colors"
-                    aria-label="Open navigation menu"
-                    aria-expanded="false"
-                    aria-controls="mobile-menu">
-                <svg id="menu-icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-                <svg id="menu-icon-close" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
+            <!-- Mobile Actions: Notification Icon & Hamburger Menu Button -->
+            <div class="flex md:hidden items-center gap-1.5 sm:gap-2">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'notifications:list' %}" 
+                       class="relative p-2 text-ice hover:text-bone transition-colors focus:outline-none focus:ring-1 focus:ring-crimson"
+                       title="Notifications"
+                       aria-label="View notifications">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        {% if unread_notifications_count > 0 %}
+                            <span class="absolute top-1 right-1 px-1.5 py-0.2 bg-crimson text-bone font-mono text-[10px] font-bold leading-tight">
+                                {{ unread_notifications_count }}
+                            </span>
+                        {% endif %}
+                    </a>
+                {% endif %}
+
+                <button id="mobile-menu-btn" 
+                        type="button" 
+                        class="p-2 text-ice hover:text-bone focus:outline-none focus:ring-1 focus:ring-crimson transition-colors"
+                        aria-label="Open navigation menu"
+                        aria-expanded="false"
+                        aria-controls="mobile-menu">
+                    <svg id="menu-icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg id="menu-icon-close" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -137,14 +155,6 @@
             <a href="{% url 'habits:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Habits</a>
             <a href="{% url 'journal:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Journal</a>
             <a href="{% url 'analytics:index' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Analytics</a>
-            <a href="{% url 'notifications:list' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors flex items-center justify-between" role="menuitem">
-                <span>Notifications</span>
-                {% if unread_notifications_count > 0 %}
-                    <span class="px-2 py-0.5 bg-crimson text-bone font-mono text-[10px] font-bold">
-                        {{ unread_notifications_count }}
-                    </span>
-                {% endif %}
-            </a>
             <a href="{% url 'profile' %}" class="block text-ice/80 hover:text-bone text-sm font-mono py-3 border-b border-steel/15 transition-colors" role="menuitem">Profile — {{ user.username }}</a>
             
             <!-- Theme Toggle (Mobile) -->
@@ -196,7 +206,7 @@
 
 <!-- Navbar spacer for non-landing pages -->
 {% if request.resolver_match.url_name != 'home' %}
-<div class="h-18 sm:h-20" aria-hidden="true"></div>
+<div class="h-16 sm:h-20" aria-hidden="true"></div>
 {% endif %}
 
 <script>

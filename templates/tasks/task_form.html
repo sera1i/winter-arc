@@ -7,18 +7,22 @@
 <div class="page-container-narrow pt-8 sm:pt-10">
 
     <!-- Back Navigation -->
-    <div class="mb-4">
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-3 min-w-0">
         {% if form.instance.pk %}
-            <a href="{% url 'tasks:detail' form.instance.pk %}" class="wa-back-link" aria-label="Back to Task">
+            <a href="{% url 'tasks:detail' form.instance.pk %}" class="wa-back-link shrink-0" aria-label="Back to Task">
                 <span aria-hidden="true">←</span>
                 <span>Back to Task</span>
             </a>
         {% else %}
-            <a href="{% url 'tasks:list' %}" class="wa-back-link" aria-label="Back to Tasks">
+            <a href="{% url 'tasks:list' %}" class="wa-back-link shrink-0" aria-label="Back to Tasks">
                 <span aria-hidden="true">←</span>
                 <span>Back to Tasks</span>
             </a>
         {% endif %}
+        <a href="{% url 'dashboard' %}" class="wa-back-link text-ice/60 hover:text-bone shrink-0" aria-label="Back to Dashboard">
+            <span>Dashboard</span>
+            <span aria-hidden="true">→</span>
+        </a>
     </div>
 
     <div class="page-header">

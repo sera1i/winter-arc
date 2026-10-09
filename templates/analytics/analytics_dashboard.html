@@ -5,6 +5,14 @@
 {% block content %}
 <div class="page-container pt-8 sm:pt-10">
 
+    <!-- Back Navigation -->
+    <div class="mb-6">
+        <a href="{% url 'dashboard' %}" class="wa-back-link" aria-label="Back to Dashboard">
+            <span aria-hidden="true">←</span>
+            <span>Back to Dashboard</span>
+        </a>
+    </div>
+
     <!-- Header & Arc Scope Selector -->
     <div class="border-b border-steel/20 pb-8 mb-8">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-5">

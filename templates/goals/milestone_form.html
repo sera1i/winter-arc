@@ -7,10 +7,14 @@
 <div class="page-container-narrow pt-8 sm:pt-10">
 
     <!-- Back Navigation -->
-    <div class="mb-4">
-        <a href="{% url 'goals:detail' goal.pk %}" class="wa-back-link" aria-label="Back to {{ goal.title }}">
-            <span aria-hidden="true">←</span>
-            <span>Back to {{ goal.title }}</span>
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-3 min-w-0">
+        <a href="{% url 'goals:detail' goal.pk %}" class="wa-back-link min-w-0 max-w-[190px] sm:max-w-none" aria-label="Back to {{ goal.title }}">
+            <span aria-hidden="true" class="shrink-0">←</span>
+            <span class="truncate min-w-0">Back to {{ goal.title }}</span>
+        </a>
+        <a href="{% url 'dashboard' %}" class="wa-back-link text-ice/60 hover:text-bone shrink-0" aria-label="Back to Dashboard">
+            <span>Dashboard</span>
+            <span aria-hidden="true">→</span>
         </a>
     </div>
 

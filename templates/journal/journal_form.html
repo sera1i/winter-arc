@@ -7,7 +7,7 @@
 <div class="page-container-narrow pt-8 sm:pt-10">
 
     <!-- Back Navigation -->
-    <div class="mb-4">
+    <div class="mb-6 flex items-center justify-between gap-4">
         {% if is_edit %}
             <a href="{% url 'journal:detail' form.instance.pk %}" class="wa-back-link" aria-label="Back to Entry">
                 <span aria-hidden="true">←</span>
@@ -19,6 +19,10 @@
                 <span>Back to Journal</span>
             </a>
         {% endif %}
+        <a href="{% url 'dashboard' %}" class="wa-back-link text-ice/60 hover:text-bone" aria-label="Back to Dashboard">
+            <span>Dashboard</span>
+            <span aria-hidden="true">→</span>
+        </a>
     </div>
 
     <!-- Header -->

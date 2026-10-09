@@ -7,18 +7,22 @@
 <div class="page-container-narrow pt-8 sm:pt-10">
 
     <!-- Back Navigation -->
-    <div class="mb-4">
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-3 min-w-0">
         {% if form.instance.pk %}
-            <a href="{% url 'habits:detail' form.instance.pk %}" class="wa-back-link" aria-label="Back to Habit">
-                <span aria-hidden="true">←</span>
-                <span>Back to Habit</span>
+            <a href="{% url 'habits:detail' form.instance.pk %}" class="wa-back-link min-w-0 max-w-[190px] sm:max-w-none" aria-label="Back to Habit">
+                <span aria-hidden="true" class="shrink-0">←</span>
+                <span class="truncate min-w-0">Back to {{ form.instance.name|default:"Habit" }}</span>
             </a>
         {% else %}
-            <a href="{% url 'habits:list' %}" class="wa-back-link" aria-label="Back to Habits">
+            <a href="{% url 'habits:list' %}" class="wa-back-link shrink-0" aria-label="Back to Habits">
                 <span aria-hidden="true">←</span>
                 <span>Back to Habits</span>
             </a>
         {% endif %}
+        <a href="{% url 'dashboard' %}" class="wa-back-link text-ice/60 hover:text-bone shrink-0" aria-label="Back to Dashboard">
+            <span>Dashboard</span>
+            <span aria-hidden="true">→</span>
+        </a>
     </div>
 
     <div class="page-header">

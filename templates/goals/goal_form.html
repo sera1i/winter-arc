@@ -7,23 +7,27 @@
 <div class="page-container-narrow pt-8 sm:pt-10">
 
     <!-- Back Navigation -->
-    <div class="mb-4">
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-3 min-w-0">
         {% if arc %}
-            <a href="{% url 'arcs:detail' arc.pk %}" class="wa-back-link" aria-label="Back to {{ arc.name }}">
-                <span aria-hidden="true">←</span>
-                <span>Back to {{ arc.name }}</span>
+            <a href="{% url 'arcs:detail' arc.pk %}" class="wa-back-link min-w-0 max-w-[190px] sm:max-w-none" aria-label="Back to {{ arc.name }}">
+                <span aria-hidden="true" class="shrink-0">←</span>
+                <span class="truncate min-w-0">Back to {{ arc.name }}</span>
             </a>
         {% elif form.instance.pk and form.instance.arc %}
-            <a href="{% url 'goals:detail' form.instance.pk %}" class="wa-back-link" aria-label="Back to Goal">
-                <span aria-hidden="true">←</span>
-                <span>Back to {{ form.instance.title }}</span>
+            <a href="{% url 'goals:detail' form.instance.pk %}" class="wa-back-link min-w-0 max-w-[190px] sm:max-w-none" aria-label="Back to Goal">
+                <span aria-hidden="true" class="shrink-0">←</span>
+                <span class="truncate min-w-0">Back to {{ form.instance.title }}</span>
             </a>
         {% else %}
-            <a href="{% url 'arcs:list' %}" class="wa-back-link" aria-label="Back to Arcs">
+            <a href="{% url 'arcs:list' %}" class="wa-back-link shrink-0" aria-label="Back to Arcs">
                 <span aria-hidden="true">←</span>
                 <span>Back to Arcs</span>
             </a>
         {% endif %}
+        <a href="{% url 'dashboard' %}" class="wa-back-link text-ice/60 hover:text-bone shrink-0" aria-label="Back to Dashboard">
+            <span>Dashboard</span>
+            <span aria-hidden="true">→</span>
+        </a>
     </div>
 
     <div class="page-header">

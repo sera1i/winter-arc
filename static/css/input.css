@@ -754,7 +754,7 @@ html[data-theme="light"] .btn-danger:hover {
 
 /* Back Navigation Link */
 .wa-back-link {
-  @apply inline-flex items-center gap-1.5 font-mono text-xs text-ice/80 hover:text-bone transition-colors focus:outline-none focus:ring-1 focus:ring-crimson py-1;
+  @apply inline-flex items-center gap-1.5 font-mono text-xs text-ice/80 hover:text-bone transition-colors focus:outline-none focus:ring-1 focus:ring-crimson py-1 min-w-0 overflow-hidden;
 }
 html[data-theme="light"] .wa-back-link {
   color: var(--text-secondary);
@@ -767,6 +767,25 @@ html[data-theme="dark"] .wa-back-link {
 }
 html[data-theme="dark"] .wa-back-link:hover {
   color: var(--text-primary);
+}
+
+/* Hide redundant contextual Dashboard back navigation links on desktop (>= 768px / md breakpoint)
+   where the desktop navbar already provides persistent, direct Dashboard access.
+   Preserves mobile navigation on all viewports, and preserves all other contextual back links
+   (e.g., "Back to Habits", "Back to Tasks", "Back to Arcs", etc.) on both desktop and mobile. */
+@media (min-width: 768px) {
+  a[href*="/accounts/dashboard/"].wa-back-link,
+  a[aria-label="Back to Dashboard"].wa-back-link,
+  .wa-back-dashboard {
+    display: none !important;
+  }
+
+  /* When the back navigation container on list pages contains only the Dashboard back link,
+     hide the container on desktop so no empty vertical spacing remains. */
+  div:has(> a[href*="/accounts/dashboard/"].wa-back-link:only-child),
+  div:has(> a[aria-label="Back to Dashboard"].wa-back-link:only-child) {
+    display: none !important;
+  }
 }
 
 /* Contrast Enhancements for Status & Progress */

@@ -6,10 +6,14 @@
 <div class="page-container-narrow pt-8 sm:pt-10">
 
     <!-- Back Navigation -->
-    <div class="mb-6">
+    <div class="mb-6 flex items-center justify-between gap-4">
         <a href="{% url 'arcs:preset_customize' preset.key %}" class="wa-back-link" aria-label="Modify Blueprint">
             <span aria-hidden="true">←</span>
             <span>Modify Blueprint</span>
+        </a>
+        <a href="{% url 'dashboard' %}" class="wa-back-link text-ice/60 hover:text-bone" aria-label="Back to Dashboard">
+            <span>Dashboard</span>
+            <span aria-hidden="true">→</span>
         </a>
     </div>
 
