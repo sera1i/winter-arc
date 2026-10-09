@@ -14,14 +14,19 @@ class TimezoneMiddleware:
     def __call__(self, request):
         tzname = None
 
-        # 1. Check authenticated user's profile timezone
+        # 1. Check authenticated user's profile timezone (cached in session to avoid per-request query)
         if request.user.is_authenticated:
-            try:
-                profile = getattr(request.user, 'profile', None)
-                if profile and profile.timezone:
-                    tzname = profile.timezone
-            except Exception:
-                pass
+            if hasattr(request, 'session'):
+                tzname = request.session.get('user_timezone')
+            if not tzname:
+                try:
+                    profile = getattr(request.user, 'profile', None)
+                    if profile and profile.timezone:
+                        tzname = profile.timezone
+                        if hasattr(request, 'session'):
+                            request.session['user_timezone'] = tzname
+                except Exception:
+                    pass
 
         # 2. Check browser-detected timezone from cookie
         if not tzname:

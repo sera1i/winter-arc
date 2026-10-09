@@ -46,7 +46,9 @@ def profile_view(request):
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            form.save()
+            updated_profile = form.save()
+            if hasattr(request, 'session'):
+                request.session['user_timezone'] = updated_profile.timezone
             messages.success(request, "Your profile has been updated.")
             return redirect('profile')
     else:

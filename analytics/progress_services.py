@@ -101,16 +101,17 @@ def get_habit_statistics(user):
       - current longest streak
       - best historical streak
     """
-    habits = Habit.objects.filter(user=user, is_archived=False).prefetch_related('completions')
+    habits = list(Habit.objects.filter(user=user, is_archived=False).prefetch_related('completions'))
     today = get_user_local_date(user)
-    total_habits = habits.count()
+    total_habits = len(habits)
 
     completed_today = 0
     current_streaks = []
     best_streaks = []
 
     for h in habits:
-        if h.completions.filter(local_date=today).exists():
+        completed_dates = {c.local_date for c in h.completions.all()}
+        if today in completed_dates:
             completed_today += 1
         current_streaks.append(h.get_current_streak())
         best_streaks.append(h.best_streak)
@@ -234,8 +235,9 @@ def get_full_analytics_summary(user, arc_id=None):
     goals_data = []
     if selected_arc:
         for g in selected_arc.goals.all().prefetch_related('milestones'):
-            total_m = g.milestones.count()
-            completed_m = len([m for m in g.milestones.all() if m.is_completed])
+            milestones = list(g.milestones.all())
+            total_m = len(milestones)
+            completed_m = sum(1 for m in milestones if m.is_completed)
             goals_data.append({
                 'goal': g,
                 'progress': g.progress_percentage,

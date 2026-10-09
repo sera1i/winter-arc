@@ -23,7 +23,7 @@ def _get_user_today(user):
 
 @login_required
 def habit_list(request):
-    habits = (
+    habits = list(
         Habit.objects.filter(user=request.user, is_archived=False)
         .prefetch_related('completions')
     )
@@ -31,7 +31,8 @@ def habit_list(request):
 
     habit_data = []
     for habit in habits:
-        completed_today = habit.completions.filter(local_date=today).exists()
+        completed_dates = {c.local_date for c in habit.completions.all()}
+        completed_today = today in completed_dates
         streak = habit.get_current_streak()
         habit_data.append({
             'habit': habit,
@@ -42,7 +43,7 @@ def habit_list(request):
     context = {
         'habit_data': habit_data,
         'today': today,
-        'active_count': habits.count(),
+        'active_count': len(habits),
         'completed_today_count': sum(1 for h in habit_data if h['completed_today']),
     }
     return render(request, 'habits/habit_list.html', context)

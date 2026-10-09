@@ -35,6 +35,10 @@
     <div class="fixed inset-0 z-0 pointer-events-none select-none authenticated-env-bg" aria-hidden="true">
         <img src="{% static 'images/useful/11.jpg' %}" 
              alt="" 
+             width="1920" 
+             height="1080" 
+             decoding="async" 
+             fetchpriority="low" 
              class="absolute inset-0 w-full h-full object-cover object-center env-bg-img"
              style="opacity: 0.12; mix-blend-mode: luminosity;">
         <div class="absolute inset-0 env-bg-overlay" style="background: linear-gradient(to bottom, rgba(11,13,18,0.80) 0%, rgba(11,13,18,0.92) 40%, rgba(11,13,18,0.98) 100%);"></div>
@@ -89,8 +93,8 @@
     </div>
 
     {% block extra_scripts %}{% endblock %}
-    <script src="{% static 'js/theme.js' %}"></script>
-    <script src="{% static 'js/interactions.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}" defer></script>
+    <script src="{% static 'js/interactions.js' %}" defer></script>
     <script>
         (function() {
             try {

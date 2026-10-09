@@ -61,6 +61,7 @@ INDEXNOW_KEY = env('INDEXNOW_KEY', default='').strip()
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -221,6 +222,10 @@ STORAGES = {
         'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
     },
 }
+
+# WhiteNoise production caching headers & static finders
+WHITENOISE_MAX_AGE = env.int('WHITENOISE_MAX_AGE', default=31536000)
+WHITENOISE_USE_FINDERS = True
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'

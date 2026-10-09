@@ -622,12 +622,67 @@
         }
     }, true);
 
-    // Stop click bubbling on all inline buttons to prevent card navigation
+    // -------------------------------------------------------------------------
+    // Navigation Responsiveness & Double-Click Protection
+    // -------------------------------------------------------------------------
+    function showNavProgress() {
+        let bar = document.getElementById('wa-nav-progress');
+        if (!bar) {
+            bar = document.createElement('div');
+            bar.id = 'wa-nav-progress';
+            bar.style.cssText = 'position:fixed;top:0;left:0;height:2px;background:#b3151b;z-index:99999;width:0%;transition:width 0.35s cubic-bezier(0.1, 0.9, 0.2, 1);box-shadow:0 0 8px rgba(179,21,27,0.8);pointer-events:none;';
+            document.body.appendChild(bar);
+        }
+        bar.getBoundingClientRect();
+        bar.style.width = '75%';
+    }
+
+    window.addEventListener('pageshow', function () {
+        window.__waNavigating = false;
+        const bar = document.getElementById('wa-nav-progress');
+        if (bar) {
+            bar.style.width = '100%';
+            setTimeout(function () {
+                if (bar && bar.parentNode) bar.parentNode.removeChild(bar);
+            }, 180);
+        }
+    });
+
+    // Stop click bubbling on all inline buttons to prevent card navigation,
+    // and provide instant feedback + double-click protection on page navigation.
     document.addEventListener('click', function (e) {
         const actionBtn = e.target.closest('.wa-checkbox-btn, .wa-habit-btn, [data-inline-action], form button');
         if (actionBtn) {
             e.stopPropagation();
+            return;
         }
+
+        const link = e.target.closest('a');
+        if (!link || !link.href) return;
+
+        // Skip non-primary clicks, modifiers, target=_blank, and downloads
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || link.target === '_blank' || link.hasAttribute('download')) {
+            return;
+        }
+
+        try {
+            const dest = new URL(link.href, window.location.origin);
+            if (dest.origin !== window.location.origin) return;
+            // Same-page anchors
+            if (dest.pathname === window.location.pathname && dest.search === window.location.search && dest.hash) return;
+            if (dest.pathname.startsWith('/api/') || dest.pathname.includes('/logout')) return;
+
+            // Prevent duplicate clicks in-flight
+            if (window.__waNavigating) {
+                e.preventDefault();
+                return;
+            }
+
+            window.__waNavigating = true;
+            link.style.opacity = '0.75';
+            showNavProgress();
+        } catch (err) {}
     }, false);
 
 })();
+

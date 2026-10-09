@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
-from django.utils import timezone
+from django.db.models import Count, Q
 from .models import Task
 from .forms import TaskForm
 
@@ -14,12 +14,18 @@ def task_list(request):
     if status_filter:
         tasks = tasks.filter(status=status_filter)
 
+    counts = Task.objects.filter(user=request.user).aggregate(
+        pending=Count('id', filter=Q(status='PENDING')),
+        inprogress=Count('id', filter=Q(status='IN_PROGRESS')),
+        completed=Count('id', filter=Q(status='COMPLETED')),
+    )
+
     context = {
         'tasks': tasks,
         'status_filter': status_filter,
-        'pending_count': Task.objects.filter(user=request.user, status='PENDING').count(),
-        'inprogress_count': Task.objects.filter(user=request.user, status='IN_PROGRESS').count(),
-        'completed_count': Task.objects.filter(user=request.user, status='COMPLETED').count(),
+        'pending_count': counts['pending'],
+        'inprogress_count': counts['inprogress'],
+        'completed_count': counts['completed'],
     }
     return render(request, 'tasks/task_list.html', context)
 
