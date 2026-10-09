@@ -17,7 +17,7 @@
             </a>
 
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center gap-7">
+            <div class="hidden md:flex items-center gap-4 lg:gap-7">
                 {% if user.is_authenticated %}
                     <a href="{% url 'dashboard' %}" 
                        class="{% if request.resolver_match.view_name == 'dashboard' %}nav-link-active{% else %}nav-link{% endif %}">
@@ -46,12 +46,13 @@
                 {% else %}
                     <a href="/#how-it-works" class="nav-link">How it works</a>
                     <a href="/#features" class="nav-link">Features</a>
+                    <a href="{% url 'guides_index' %}" class="nav-link">Guides</a>
                     <a href="/#privacy" class="nav-link">Privacy</a>
                 {% endif %}
             </div>
 
             <!-- Desktop Right Actions -->
-            <div class="hidden md:flex items-center gap-5">
+            <div class="hidden md:flex items-center gap-4 lg:gap-5">
                 {% if user.is_authenticated %}
                     <!-- Theme Toggle (Desktop) -->
                     <button id="theme-toggle-btn" 
@@ -191,6 +192,7 @@
         {% else %}
             <a href="/#how-it-works" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">How it works</a>
             <a href="/#features" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Features</a>
+            <a href="{% url 'guides_index' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Guides</a>
             <a href="/#privacy" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Privacy</a>
             <div class="pt-5 space-y-3">
                 <a href="{% url 'login' %}" class="block text-center text-bone text-sm font-sans py-3 border border-steel/40 hover:border-ice/50 transition-colors" role="menuitem">
