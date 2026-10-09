@@ -9,7 +9,10 @@
     <div class="relative w-44 h-44 sm:w-56 sm:h-56 mb-8 overflow-hidden rounded-sm">
         <img src="{% static 'images/clean/loader_clean.webp' %}"
              alt=""
+             width="224"
+             height="224"
              class="w-full h-full object-contain opacity-80"
+             decoding="async"
              loading="eager">
         <div class="absolute inset-0 pointer-events-none"
              style="background: radial-gradient(circle at 50% 60%, rgba(179,21,27,0.18) 0%, transparent 70%);"></div>
@@ -51,35 +54,34 @@
 
     var p = 0;
     var interval = setInterval(function() {
-        p += Math.floor(Math.random() * 20) + 8;
+        p += Math.floor(Math.random() * 20) + 16;
         if (p >= 100) {
             p = 100;
             clearInterval(interval);
+            finish();
         }
         if (progress) progress.style.width = p + '%';
         if (counter) counter.innerText = p + '%';
-    }, 90);
+    }, 45);
 
-    function hide() {
+    var hidden = false;
+    function finish() {
+        if (hidden) return;
+        hidden = true;
         clearInterval(interval);
         if (progress) progress.style.width = '100%';
         if (counter) counter.innerText = '100%';
         setTimeout(function() {
-            loader.style.transition = 'opacity 0.6s ease-out';
+            loader.style.transition = 'opacity 0.35s ease-out';
             loader.style.opacity = '0';
             setTimeout(function() {
                 loader.style.display = 'none';
                 document.body.style.overflow = '';
-            }, 600);
-        }, 250);
+            }, 350);
+        }, 120);
     }
 
     document.body.style.overflow = 'hidden';
-    if (document.readyState === 'complete') {
-        setTimeout(hide, 300);
-    } else {
-        window.addEventListener('load', function() { setTimeout(hide, 300); });
-    }
-    setTimeout(hide, 2500);
+    setTimeout(finish, 1200);
 })();
 </script>

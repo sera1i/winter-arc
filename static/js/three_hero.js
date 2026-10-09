@@ -139,9 +139,35 @@
         }
     }
 
+    function loadAndInit() {
+        if (typeof THREE !== 'undefined') {
+            initHeroScene();
+            return;
+        }
+        const currentScript = document.querySelector('script[data-three-src]');
+        const threeSrc = currentScript ? currentScript.getAttribute('data-three-src') : '/static/js/vendor/three.min.js';
+        
+        const script = document.createElement('script');
+        script.src = threeSrc;
+        script.async = true;
+        script.onload = initHeroScene;
+        script.onerror = function() {
+            console.warn('Winter Arc: Could not load three.min.js');
+        };
+        document.head.appendChild(script);
+    }
+
+    function scheduleInit() {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(loadAndInit, { timeout: 2000 });
+        } else {
+            setTimeout(loadAndInit, 200);
+        }
+    }
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initHeroScene);
+        document.addEventListener('DOMContentLoaded', scheduleInit);
     } else {
-        initHeroScene();
+        scheduleInit();
     }
 })();

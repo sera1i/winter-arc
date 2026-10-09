@@ -7,7 +7,7 @@
 
         <!-- Section header with Master copy -->
         <div class="max-w-3xl mb-16 sm:mb-20">
-            <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson font-medium block mb-4">
+            <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson-light font-medium block mb-4">
                 VI · Analytics &amp; Ranks
             </span>
             <h2 id="progress-heading" class="font-serif text-4xl sm:text-5xl lg:text-6xl text-bone leading-tight mb-4">
@@ -24,52 +24,52 @@
 
             <!-- Ranks Ladder: Recruit -> Sentinel -> Ranger -> Warden -->
             <div class="space-y-4">
-                <h3 class="font-sans text-xs font-medium uppercase tracking-widest text-ice/50 border-b border-steel/20 pb-4 mb-6">
+                <h3 class="font-sans text-xs font-medium uppercase tracking-widest text-ice/70 border-b border-steel/20 pb-4 mb-6">
                     Rank Progression · Words of the North
                 </h3>
 
                 <!-- Recruit -->
                 <div class="flex items-start gap-5 p-5 border border-steel/20 bg-steel/5 rounded-sm">
                     <div class="flex flex-col items-center gap-1 pt-0.5">
-                        <span class="font-mono text-xs text-steel uppercase font-bold">01</span>
+                        <span class="font-mono text-xs text-ice/70 uppercase font-bold">01</span>
                         <div class="w-px flex-1 bg-steel/20 min-h-[2rem]"></div>
                     </div>
                     <div class="flex-1 space-y-1">
                         <div class="flex items-center justify-between">
                             <span class="font-serif text-xl text-bone">Recruit</span>
-                            <span class="font-mono text-[10px] text-steel uppercase tracking-widest">Oath Taken</span>
+                            <span class="font-mono text-[10px] text-ice/70 uppercase tracking-widest">Oath Taken</span>
                         </div>
-                        <p class="font-sans text-xs text-ice/60 leading-relaxed">The winter begins. The line is drawn. Initial consistency is established.</p>
+                        <p class="font-sans text-xs text-ice/70 leading-relaxed">The winter begins. The line is drawn. Initial consistency is established.</p>
                     </div>
                 </div>
 
                 <!-- Sentinel -->
                 <div class="flex items-start gap-5 p-5 border border-steel/30 bg-steel/8 rounded-sm">
                     <div class="flex flex-col items-center gap-1 pt-0.5">
-                        <span class="font-mono text-xs text-crimson/70 uppercase font-bold">02</span>
+                        <span class="font-mono text-xs text-crimson-light uppercase font-bold">02</span>
                         <div class="w-px flex-1 bg-steel/20 min-h-[2rem]"></div>
                     </div>
                     <div class="flex-1 space-y-1">
                         <div class="flex items-center justify-between">
                             <span class="font-serif text-xl text-bone">Sentinel</span>
-                            <span class="font-mono text-[10px] text-crimson/70 uppercase tracking-widest">30+ Days</span>
+                            <span class="font-mono text-[10px] text-crimson-light uppercase tracking-widest">30+ Days</span>
                         </div>
-                        <p class="font-sans text-xs text-ice/60 leading-relaxed">Standing fast against the frost. Habits become automatic. The system holds.</p>
+                        <p class="font-sans text-xs text-ice/70 leading-relaxed">Standing fast against the frost. Habits become automatic. The system holds.</p>
                     </div>
                 </div>
 
                 <!-- Ranger -->
                 <div class="flex items-start gap-5 p-5 border border-crimson/30 bg-crimson/5 rounded-sm">
                     <div class="flex flex-col items-center gap-1 pt-0.5">
-                        <span class="font-mono text-xs text-crimson uppercase font-bold">03</span>
+                        <span class="font-mono text-xs text-crimson-light uppercase font-bold">03</span>
                         <div class="w-px flex-1 bg-crimson/25 min-h-[2rem]"></div>
                     </div>
                     <div class="flex-1 space-y-1">
                         <div class="flex items-center justify-between">
                             <span class="font-serif text-xl text-bone">Ranger</span>
-                            <span class="font-mono text-[10px] text-crimson uppercase tracking-widest font-bold">60+ Days</span>
+                            <span class="font-mono text-[10px] text-crimson-light uppercase tracking-widest font-bold">60+ Days</span>
                         </div>
-                        <p class="font-sans text-xs text-ice/60 leading-relaxed">Venturing deep into the cold. High completion velocity. Discipline is second nature.</p>
+                        <p class="font-sans text-xs text-ice/70 leading-relaxed">Venturing deep into the cold. High completion velocity. Discipline is second nature.</p>
                     </div>
                 </div>
 
@@ -93,8 +93,11 @@
                 <div class="relative aspect-[16/9] overflow-hidden border border-steel/30 shadow-2xl rounded-sm">
                     <img src="{% static 'images/clean/progress_clean.webp' %}"
                          alt="Rank Progression: Recruit, Sentinel, Ranger, Warden"
-                         class="w-full h-full object-cover object-center"
-                         loading="eager">
+                         width="1024"
+                         height="576"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-full object-cover object-center">
                 </div>
 
                 <div class="flex items-center justify-between px-1 text-xs">
@@ -105,19 +108,19 @@
                 <!-- 3 Master Chart cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                     <div class="p-3.5 bg-steel/5 border border-steel/20 rounded-sm space-y-1.5">
-                        <span class="font-mono text-[9px] uppercase tracking-widest text-ice/50 block">Chart 01</span>
+                        <span class="font-mono text-[9px] uppercase tracking-widest text-ice/75 block">Chart 01</span>
                         <p class="font-sans text-xs text-bone font-medium">Weekly task completion</p>
-                        <p class="font-mono text-sm text-crimson font-light">94.2%</p>
+                        <p class="font-mono text-sm text-crimson-light font-medium">94.2%</p>
                     </div>
                     <div class="p-3.5 bg-steel/5 border border-steel/20 rounded-sm space-y-1.5">
-                        <span class="font-mono text-[9px] uppercase tracking-widest text-ice/50 block">Chart 02</span>
+                        <span class="font-mono text-[9px] uppercase tracking-widest text-ice/75 block">Chart 02</span>
                         <p class="font-sans text-xs text-bone font-medium">Habit consistency</p>
-                        <p class="font-mono text-sm text-crimson font-light">98.0%</p>
+                        <p class="font-mono text-sm text-crimson-light font-medium">98.0%</p>
                     </div>
                     <div class="p-3.5 bg-steel/5 border border-steel/20 rounded-sm space-y-1.5">
-                        <span class="font-mono text-[9px] uppercase tracking-widest text-ice/50 block">Chart 03</span>
+                        <span class="font-mono text-[9px] uppercase tracking-widest text-ice/75 block">Chart 03</span>
                         <p class="font-sans text-xs text-bone font-medium">Study time</p>
-                        <p class="font-mono text-sm text-crimson font-light">38.5 hrs</p>
+                        <p class="font-mono text-sm text-crimson-light font-medium">38.5 hrs</p>
                     </div>
                 </div>
             </div>

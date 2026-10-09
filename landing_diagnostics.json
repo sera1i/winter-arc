@@ -1,0 +1,659 @@
+{
+  "Mobile_Throttled": {
+    "total_bytes": 1342590,
+    "image_bytes": 458272,
+    "js_bytes": 610044,
+    "css_bytes": 92854,
+    "font_bytes": 113228,
+    "fcp": 1968,
+    "navTimings": {
+      "ttfb": 17.700000047683716,
+      "domContentLoaded": 3352.899999976158,
+      "loadEvent": 7994.600000023842
+    },
+    "lcp": {
+      "startTime": 3224,
+      "renderTime": 3224,
+      "loadTime": 0,
+      "size": 42768,
+      "id": "",
+      "url": "",
+      "elementTag": "H1",
+      "elementId": "",
+      "elementClass": "font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight",
+      "elementHtml": "<h1 class=\"font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight\">\n                    Kill the boy.<br>\n                    Let the man be born.\n                </h1>"
+    },
+    "allLcpEntries": [
+      {
+        "startTime": 1968,
+        "renderTime": 1968,
+        "loadTime": 0,
+        "size": 3864,
+        "id": "",
+        "url": "",
+        "elementTag": "SPAN",
+        "elementId": "",
+        "elementClass": "font-serif text-xl sm:text-2xl font-bold tracking-[0.18em] text-bone uppercase group-hover:text-bone/90 transition-colors",
+        "elementHtml": "<span class=\"font-serif text-xl sm:text-2xl font-bold tracking-[0.18em] text-bone uppercase group-hover:text-bone/90 transition-colors\">\n                    Winter Arc\n                </span>"
+      },
+      {
+        "startTime": 3224,
+        "renderTime": 3224,
+        "loadTime": 0,
+        "size": 42768,
+        "id": "",
+        "url": "",
+        "elementTag": "H1",
+        "elementId": "",
+        "elementClass": "font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight",
+        "elementHtml": "<h1 class=\"font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight\">\n                    Kill the boy.<br>\n                    Let the man be born.\n                </h1>"
+      }
+    ],
+    "largest_resources": [
+      {
+        "url": "http://127.0.0.1:8000/static/js/vendor/three.min.js",
+        "status": 200,
+        "type": "script",
+        "size": 603445,
+        "timing": {
+          "startTime": 1791511655064.386,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.646,
+          "responseStart": 196.219,
+          "responseEnd": 4265.959
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/call_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 210980,
+        "timing": {
+          "startTime": 1791511654758.8767,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.814,
+          "responseStart": 190.201,
+          "responseEnd": 2518.444
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/hero_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 208290,
+        "timing": {
+          "startTime": 1791511651978.8667,
+          "domainLookupStart": 18.504,
+          "domainLookupEnd": 18.523,
+          "connectStart": 18.523,
+          "secureConnectionStart": -1,
+          "connectEnd": 23.622,
+          "requestStart": 30.447,
+          "responseStart": 208.616,
+          "responseEnd": 2107.339
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/css/output.css",
+        "status": 200,
+        "type": "stylesheet",
+        "size": 92854,
+        "timing": {
+          "startTime": 1791511651997.073,
+          "domainLookupStart": 0.226,
+          "domainLookupEnd": 0.226,
+          "connectStart": 0.226,
+          "secureConnectionStart": -1,
+          "connectEnd": 5.133,
+          "requestStart": 6.39,
+          "responseStart": 173.883,
+          "responseEnd": 1527.074
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/",
+        "status": 200,
+        "type": "document",
+        "size": 68192,
+        "timing": {
+          "startTime": 1791511651654.482,
+          "domainLookupStart": 1.125,
+          "domainLookupEnd": 3.959,
+          "connectStart": 3.959,
+          "secureConnectionStart": -1,
+          "connectEnd": 9.044,
+          "requestStart": 9.486,
+          "responseStart": 177.604,
+          "responseEnd": 503.251
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/loader_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 39002,
+        "timing": {
+          "startTime": 1791511651999.3372,
+          "domainLookupStart": 0.308,
+          "domainLookupEnd": 0.326,
+          "connectStart": 0.326,
+          "secureConnectionStart": -1,
+          "connectEnd": 3.676,
+          "requestStart": 10.858,
+          "responseStart": 188.939,
+          "responseEnd": 999.129
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 37640,
+        "timing": {
+          "startTime": 1791511651976.1902,
+          "domainLookupStart": 0.495,
+          "domainLookupEnd": 0.515,
+          "connectStart": 0.515,
+          "secureConnectionStart": -1,
+          "connectEnd": 2.308,
+          "requestStart": 25.157,
+          "responseStart": 195.72,
+          "responseEnd": 960.537
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/gNMKW3F-SZuj7xmf-HY.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 33760,
+        "timing": {
+          "startTime": 1791511654751.5203,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.648,
+          "responseStart": 176.869,
+          "responseEnd": 1819.209
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd58jD-iNM8.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 23660,
+        "timing": {
+          "startTime": 1791511654746.64,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.675,
+          "responseStart": 181.091,
+          "responseEnd": 1649.66
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/gNMKW3F-SZuj7xnx-HY6EQ.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 18168,
+        "timing": {
+          "startTime": 1791511654991.218,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.609,
+          "responseStart": 161.367,
+          "responseEnd": 727.634
+        }
+      }
+    ]
+  },
+  "Mobile_Unthrottled": {
+    "total_bytes": 1562442,
+    "image_bytes": 678124,
+    "js_bytes": 610044,
+    "css_bytes": 92854,
+    "font_bytes": 113228,
+    "fcp": 788,
+    "navTimings": {
+      "ttfb": 9.5,
+      "domContentLoaded": 666.1000000238419,
+      "loadEvent": 786.1000000238419
+    },
+    "lcp": {
+      "startTime": 788,
+      "renderTime": 788,
+      "loadTime": 0,
+      "size": 42768,
+      "id": "",
+      "url": "",
+      "elementTag": "H1",
+      "elementId": "",
+      "elementClass": "font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight",
+      "elementHtml": "<h1 class=\"font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight\">\n                    Kill the boy.<br>\n                    Let the man be born.\n                </h1>"
+    },
+    "allLcpEntries": [
+      {
+        "startTime": 788,
+        "renderTime": 788,
+        "loadTime": 0,
+        "size": 42768,
+        "id": "",
+        "url": "",
+        "elementTag": "H1",
+        "elementId": "",
+        "elementClass": "font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight",
+        "elementHtml": "<h1 class=\"font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight\">\n                    Kill the boy.<br>\n                    Let the man be born.\n                </h1>"
+      }
+    ],
+    "largest_resources": [
+      {
+        "url": "http://127.0.0.1:8000/static/js/vendor/three.min.js",
+        "status": 200,
+        "type": "script",
+        "size": 603445,
+        "timing": {
+          "startTime": 1791511664396.757,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.669,
+          "responseStart": 4.368,
+          "responseEnd": 21.14
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/oath_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 219852,
+        "timing": {
+          "startTime": 1791511664182.3171,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.624,
+          "responseStart": 8.822,
+          "responseEnd": 35.805
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/call_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 210980,
+        "timing": {
+          "startTime": 1791511664170.341,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.554,
+          "responseStart": 4.925,
+          "responseEnd": 12.946
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/hero_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 208290,
+        "timing": {
+          "startTime": 1791511663715.443,
+          "domainLookupStart": 0.293,
+          "domainLookupEnd": 0.313,
+          "connectStart": 0.313,
+          "secureConnectionStart": -1,
+          "connectEnd": 2.293,
+          "requestStart": 4.239,
+          "responseStart": 50.477,
+          "responseEnd": 99.161
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/css/output.css",
+        "status": 200,
+        "type": "stylesheet",
+        "size": 92854,
+        "timing": {
+          "startTime": 1791511663729.774,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.813,
+          "responseStart": 10.628,
+          "responseEnd": 36.227
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/",
+        "status": 200,
+        "type": "document",
+        "size": 68192,
+        "timing": {
+          "startTime": 1791511663520.618,
+          "domainLookupStart": 0.332,
+          "domainLookupEnd": 1.277,
+          "connectStart": 1.277,
+          "secureConnectionStart": -1,
+          "connectEnd": 3.534,
+          "requestStart": 3.827,
+          "responseStart": 13.67,
+          "responseEnd": 16.428
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/loader_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 39002,
+        "timing": {
+          "startTime": 1791511663735.373,
+          "domainLookupStart": 2.088,
+          "domainLookupEnd": 2.11,
+          "connectStart": 2.11,
+          "secureConnectionStart": -1,
+          "connectEnd": 4.613,
+          "requestStart": 7.621,
+          "responseStart": 169.33,
+          "responseEnd": 216.366
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 37640,
+        "timing": {
+          "startTime": 1791511663710.5342,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.429,
+          "responseStart": 7.477,
+          "responseEnd": 15.036
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/gNMKW3F-SZuj7xmf-HY.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 33760,
+        "timing": {
+          "startTime": 1791511664183.7258,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 1.763,
+          "responseStart": 8.816,
+          "responseEnd": 311.514
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd58jD-iNM8.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 23660,
+        "timing": {
+          "startTime": 1791511664184.475,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 1.467,
+          "responseStart": 10.811,
+          "responseEnd": 303.416
+        }
+      }
+    ]
+  },
+  "Desktop_Unthrottled": {
+    "total_bytes": 1562442,
+    "image_bytes": 678124,
+    "js_bytes": 610044,
+    "css_bytes": 92854,
+    "font_bytes": 113228,
+    "fcp": 644,
+    "navTimings": {
+      "ttfb": 10.699999928474426,
+      "domContentLoaded": 728.7999999523163,
+      "loadEvent": 841.6000000238419
+    },
+    "lcp": {
+      "startTime": 860,
+      "renderTime": 860,
+      "loadTime": 0,
+      "size": 88160,
+      "id": "",
+      "url": "",
+      "elementTag": "H1",
+      "elementId": "",
+      "elementClass": "font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight",
+      "elementHtml": "<h1 class=\"font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight\">\n                    Kill the boy.<br>\n                    Let the man be born.\n                </h1>"
+    },
+    "allLcpEntries": [
+      {
+        "startTime": 644,
+        "renderTime": 644,
+        "loadTime": 355.60000002384186,
+        "size": 28224,
+        "id": "",
+        "url": "http://127.0.0.1:8000/static/images/clean/loader_clean.webp",
+        "elementTag": "IMG",
+        "elementId": "",
+        "elementClass": "w-full h-full object-contain opacity-80",
+        "elementHtml": "<img src=\"/static/images/clean/loader_clean.webp\" alt=\"\" width=\"224\" height=\"224\" class=\"w-full h-full object-contain opacity-80\" decoding=\"async\" loading=\"eager\">"
+      },
+      {
+        "startTime": 860,
+        "renderTime": 860,
+        "loadTime": 0,
+        "size": 88160,
+        "id": "",
+        "url": "",
+        "elementTag": "H1",
+        "elementId": "",
+        "elementClass": "font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight",
+        "elementHtml": "<h1 class=\"font-serif text-5xl sm:text-6xl lg:text-7xl text-bone leading-[1.08] tracking-tight\">\n                    Kill the boy.<br>\n                    Let the man be born.\n                </h1>"
+      }
+    ],
+    "largest_resources": [
+      {
+        "url": "http://127.0.0.1:8000/static/js/vendor/three.min.js",
+        "status": 200,
+        "type": "script",
+        "size": 603445,
+        "timing": {
+          "startTime": 1791511669076.3228,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.724,
+          "responseStart": 15.296,
+          "responseEnd": 26.365
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/oath_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 219852,
+        "timing": {
+          "startTime": 1791511668840.868,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.605,
+          "responseStart": 28.881,
+          "responseEnd": 42.91
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/call_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 210980,
+        "timing": {
+          "startTime": 1791511668839.5688,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.688,
+          "responseStart": 31.693,
+          "responseEnd": 43.856
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/hero_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 208290,
+        "timing": {
+          "startTime": 1791511668307.029,
+          "domainLookupStart": 14.653,
+          "domainLookupEnd": 14.672,
+          "connectStart": 14.672,
+          "secureConnectionStart": -1,
+          "connectEnd": 21.154,
+          "requestStart": 23.464,
+          "responseStart": 87.563,
+          "responseEnd": 125.016
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/css/output.css",
+        "status": 200,
+        "type": "stylesheet",
+        "size": 92854,
+        "timing": {
+          "startTime": 1791511668321.424,
+          "domainLookupStart": 0.209,
+          "domainLookupEnd": 0.209,
+          "connectStart": 0.209,
+          "secureConnectionStart": -1,
+          "connectEnd": 3.503,
+          "requestStart": 7.204,
+          "responseStart": 33.2,
+          "responseEnd": 69.951
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/",
+        "status": 200,
+        "type": "document",
+        "size": 68192,
+        "timing": {
+          "startTime": 1791511668112.3782,
+          "domainLookupStart": 0.302,
+          "domainLookupEnd": 1.202,
+          "connectStart": 1.202,
+          "secureConnectionStart": -1,
+          "connectEnd": 3.319,
+          "requestStart": 3.583,
+          "responseStart": 14.676,
+          "responseEnd": 18.558
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/images/clean/loader_clean.webp",
+        "status": 200,
+        "type": "image",
+        "size": 39002,
+        "timing": {
+          "startTime": 1791511668323.2168,
+          "domainLookupStart": 0.248,
+          "domainLookupEnd": 0.265,
+          "connectStart": 0.265,
+          "secureConnectionStart": -1,
+          "connectEnd": 5.132,
+          "requestStart": 7.87,
+          "responseStart": 114.26,
+          "responseEnd": 150.085
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 37640,
+        "timing": {
+          "startTime": 1791511668305.868,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.528,
+          "responseStart": 19.339,
+          "responseEnd": 29.631
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/gNMKW3F-SZuj7xmf-HY.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 33760,
+        "timing": {
+          "startTime": 1791511668453.182,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.587,
+          "responseStart": 4.429,
+          "responseEnd": 63.658
+        }
+      },
+      {
+        "url": "http://127.0.0.1:8000/static/fonts/co3smX5slCNuHLi8bLeY9MK7whWMhyjYrGFEsdtdc62E6zd58jD-iNM8.woff2",
+        "status": 200,
+        "type": "font",
+        "size": 23660,
+        "timing": {
+          "startTime": 1791511668854.5981,
+          "domainLookupStart": -1,
+          "domainLookupEnd": -1,
+          "connectStart": -1,
+          "secureConnectionStart": -1,
+          "connectEnd": -1,
+          "requestStart": 0.719,
+          "responseStart": 10.529,
+          "responseEnd": 323.338
+        }
+      }
+    ]
+  }
+}
