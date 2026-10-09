@@ -19,7 +19,7 @@
     </div>
 
     <!-- Filter Tabs -->
-    <div class="flex items-center gap-2 border-b border-steel/20 pb-4">
+    <div class="flex items-center gap-2 border-b border-steel/20 pb-4 overflow-x-auto">
         <a href="?status=" class="{% if not request.GET.status %}filter-tab-active{% else %}filter-tab{% endif %}">
             All
         </a>
@@ -34,9 +34,9 @@
     {% if tasks %}
         <div class="space-y-2">
             {% for task in tasks %}
-                <div class="task-row justify-between">
-                    <div class="flex items-center gap-4 min-w-0">
-                        <form method="post" action="{% if task.status == 'COMPLETED' %}{% url 'tasks:uncomplete' task.pk %}{% else %}{% url 'tasks:complete' task.pk %}{% endif %}" class="flex-shrink-0">
+                <div class="task-row flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3.5 sm:p-4">
+                    <div class="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                        <form method="post" action="{% if task.status == 'COMPLETED' %}{% url 'tasks:uncomplete' task.pk %}{% else %}{% url 'tasks:complete' task.pk %}{% endif %}" class="flex-shrink-0 mt-0.5 sm:mt-0">
                             {% csrf_token %}
                             <input type="hidden" name="next" value="{{ request.get_full_path }}">
                             <button type="submit" 
@@ -47,22 +47,22 @@
                             </button>
                         </form>
                         
-                        <div class="min-w-0">
-                            <a href="{% url 'tasks:detail' task.pk %}" class="text-sm font-medium {% if task.status == 'COMPLETED' %}line-through text-ice/50{% else %}text-bone hover:text-crimson-light{% endif %} block truncate transition-colors">
+                        <div class="min-w-0 flex-1">
+                            <a href="{% url 'tasks:detail' task.pk %}" class="text-sm font-medium {% if task.status == 'COMPLETED' %}line-through text-ice/50{% else %}text-bone hover:text-crimson-light{% endif %} block break-words sm:truncate transition-colors">
                                 {{ task.title }}
                             </a>
-                            <div class="flex items-center gap-3 text-[11px] font-mono text-ice/50 mt-0.5">
+                            <div class="flex items-center gap-2 sm:gap-3 text-[11px] font-mono text-ice/50 mt-0.5 flex-wrap">
                                 {% if task.due_at %}
                                     <span>Due: {{ task.due_at|date:"M j, Y g:i A" }}</span>
                                 {% endif %}
                                 {% if task.goal %}
-                                    <span>· Goal: {{ task.goal.title }}</span>
+                                    <span class="break-words sm:truncate max-w-[180px] sm:max-w-none">· Goal: {{ task.goal.title }}</span>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-4 flex-shrink-0">
+                    <div class="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 flex-shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-steel/10">
                         {% if task.priority == 1 %}
                             <span class="priority-high">High</span>
                         {% elif task.priority == 2 %}

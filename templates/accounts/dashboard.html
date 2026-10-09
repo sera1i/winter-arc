@@ -35,14 +35,14 @@
             {% if primary_arc %}
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                     <a href="{% url 'arcs:detail' primary_arc.pk %}"
-                       class="flex items-center gap-4 bg-steel/8 border border-steel/25 px-5 py-3 hover:border-steel/50 transition-colors flex-shrink-0 group">
-                        <div class="min-w-0">
+                       class="flex items-center justify-between sm:justify-start gap-3 sm:gap-4 bg-steel/8 border border-steel/25 px-4 sm:px-5 py-3 hover:border-steel/50 transition-colors sm:flex-shrink-0 group min-w-0">
+                        <div class="min-w-0 flex-1">
                             <span class="font-mono text-[10px] uppercase tracking-widest text-ice/40 block">Primary Arc</span>
-                            <span class="font-serif text-lg text-bone group-hover:text-crimson-light transition-colors font-medium block truncate max-w-[180px]">
+                            <span class="font-serif text-base sm:text-lg text-bone group-hover:text-crimson-light transition-colors font-medium block truncate max-w-[140px] sm:max-w-[180px]">
                                 {{ primary_arc.name }}
                             </span>
                         </div>
-                        <div class="border-l border-steel/25 pl-4 flex-shrink-0">
+                        <div class="border-l border-steel/25 pl-3 sm:pl-4 flex-shrink-0">
                             <span class="badge-active text-[10px]">{{ primary_arc.status }}</span>
                         </div>
                     </a>
@@ -110,12 +110,12 @@
 
     <!-- Goals & Objectives Section -->
     <section class="wa-card space-y-4 mb-8" aria-labelledby="goals-heading">
-        <div class="flex items-center justify-between border-b border-steel/15 pb-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-steel/15 pb-4">
             <div>
                 <span class="section-eyebrow">Strategic Objectives</span>
                 <h2 id="goals-heading" class="section-heading">Goals &amp; Milestones</h2>
             </div>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
                 {% if primary_arc %}
                     <a href="{% url 'goals:create' arc_id=primary_arc.pk %}" class="btn-primary text-xs uppercase tracking-widest px-4 py-2">
                         + Add Goal
@@ -186,12 +186,12 @@
 
         <!-- Tasks column (7 cols) -->
         <section class="lg:col-span-7 wa-card space-y-0" aria-labelledby="tasks-heading">
-            <div class="flex items-center justify-between border-b border-steel/15 pb-4 mb-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-steel/15 pb-4 mb-5">
                 <div>
                     <span class="section-eyebrow">Today's Tasks</span>
                     <h2 id="tasks-heading" class="section-heading">What must be done</h2>
                 </div>
-                <div class="flex items-center gap-4 flex-shrink-0">
+                <div class="flex items-center gap-3 sm:gap-4 flex-wrap">
                     <a href="{% url 'tasks:create' %}" class="btn-primary text-xs uppercase tracking-widest px-4 py-2">
                         Add Task
                     </a>
@@ -249,12 +249,12 @@
 
         <!-- Habits column (5 cols) -->
         <section class="lg:col-span-5 wa-card space-y-0" aria-labelledby="habits-heading">
-            <div class="flex items-center justify-between border-b border-steel/15 pb-4 mb-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-steel/15 pb-4 mb-5">
                 <div>
                     <span class="section-eyebrow">Consistency</span>
                     <h2 id="habits-heading" class="section-heading">Today's Habits</h2>
                 </div>
-                <div class="flex items-center gap-4 flex-shrink-0">
+                <div class="flex items-center gap-3 sm:gap-4 flex-wrap">
                     <a href="{% url 'habits:create' %}" class="btn-primary text-xs uppercase tracking-widest px-4 py-2">
                         Add Habit
                     </a>
@@ -342,17 +342,17 @@
         </div>
         <div class="divide-y divide-steel/10">
             {% for act in recent_activity %}
-                <div class="py-3 flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <span class="w-1.5 h-1.5 bg-crimson rounded-full flex-shrink-0"></span>
-                        <div class="truncate">
-                            <span class="text-sm font-medium text-bone">{{ act.title }}</span>
+                <div class="py-3 flex items-start sm:items-center justify-between gap-3 min-w-0">
+                    <div class="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                        <span class="w-1.5 h-1.5 bg-crimson rounded-full flex-shrink-0 mt-1.5 sm:mt-0"></span>
+                        <div class="min-w-0 flex-1">
+                            <span class="text-sm font-medium text-bone break-words">{{ act.title }}</span>
                             {% if act.arc %}
-                                <span class="text-xs text-ice/40 ml-2 font-mono">[{{ act.arc.name }}]</span>
+                                <span class="text-xs text-ice/40 ml-2 font-mono break-words">[{{ act.arc.name }}]</span>
                             {% endif %}
                         </div>
                     </div>
-                    <span class="text-xs font-mono text-ice/40 flex-shrink-0">
+                    <span class="text-xs font-mono text-ice/40 flex-shrink-0 whitespace-nowrap pl-2">
                         {{ act.created_at|date:"M j, H:i" }}
                     </span>
                 </div>

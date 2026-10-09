@@ -20,10 +20,10 @@
 
             <!-- Arc Filter Dropdown Form -->
             {% if user_arcs %}
-            <form method="get" action="{% url 'analytics:index' %}" class="flex items-center gap-3">
-                <label for="arc_select" class="font-mono text-xs text-ice/50 uppercase tracking-wider">Scope Arc:</label>
+            <form method="get" action="{% url 'analytics:index' %}" class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                <label for="arc_select" class="font-mono text-xs text-ice/50 uppercase tracking-wider flex-shrink-0">Scope Arc:</label>
                 <select id="arc_select" name="arc_id" onchange="this.form.submit()" 
-                        class="bg-ink/80 border border-steel/30 text-bone text-xs font-mono px-3 py-2 focus:outline-none focus:border-crimson">
+                        class="bg-ink/80 border border-steel/30 text-bone text-xs font-mono px-3 py-2 focus:outline-none focus:border-crimson w-full sm:w-auto max-w-full">
                     {% for a in user_arcs %}
                         <option value="{{ a.pk }}" {% if selected_arc and selected_arc.pk == a.pk %}selected{% endif %}>
                             {{ a.name }}{% if a.is_primary %} (Primary){% endif %}
@@ -270,7 +270,7 @@
 
     <!-- Verified Activity Log Ledger -->
     <section class="wa-card space-y-4 mb-8" aria-labelledby="ledger-heading">
-        <div class="flex items-center justify-between border-b border-steel/15 pb-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-steel/15 pb-4">
             <div>
                 <span class="section-eyebrow">Persistent Audit</span>
                 <h2 id="ledger-heading" class="section-heading">Verified Activity Ledger</h2>
@@ -281,19 +281,19 @@
         {% if recent_events %}
             <div class="divide-y divide-steel/10">
                 {% for ev in recent_events %}
-                    <div class="py-3.5 flex items-center justify-between gap-4">
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-2.5">
-                                <span class="badge-active text-[9px]">{{ ev.event_type }}</span>
-                                <span class="font-sans text-sm text-bone font-medium truncate">{{ ev.title }}</span>
+                    <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 min-w-0">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-2.5 min-w-0 flex-wrap">
+                                <span class="badge-active text-[9px] flex-shrink-0">{{ ev.event_type }}</span>
+                                <span class="font-sans text-sm text-bone font-medium break-words sm:truncate flex-1 min-w-0">{{ ev.title }}</span>
                             </div>
                             {% if ev.arc %}
-                                <span class="font-mono text-[10px] text-ice/40 block mt-0.5">
+                                <span class="font-mono text-[10px] text-ice/40 block mt-0.5 break-words">
                                     Arc: {{ ev.arc.name }}
                                 </span>
                             {% endif %}
                         </div>
-                        <div class="text-right flex-shrink-0">
+                        <div class="sm:text-right flex-shrink-0 whitespace-nowrap">
                             <span class="font-mono text-xs text-ice/50 block">
                                 {{ ev.created_at|date:"M j, Y H:i" }}
                             </span>

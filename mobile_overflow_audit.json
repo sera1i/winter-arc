@@ -1,0 +1,1070 @@
+{
+  "320": {
+    "Dashboard": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arcs List": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Create": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Detail": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Edit": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Tasks List": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Create": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Detail": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habits List": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Create": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Detail": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Goal Detail": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal List": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal Create": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notifications List": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notification Preferences": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Analytics": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Profile": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Landing Page": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Login Page": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Register Page": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "SEO Pillar": {
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    }
+  },
+  "360": {
+    "Dashboard": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arcs List": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Create": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Detail": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Edit": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Tasks List": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Create": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Detail": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habits List": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Create": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Detail": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Goal Detail": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal List": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal Create": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notifications List": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notification Preferences": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Analytics": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Profile": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Landing Page": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Login Page": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Register Page": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "SEO Pillar": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    }
+  },
+  "375": {
+    "Dashboard": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arcs List": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Create": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Detail": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Edit": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Tasks List": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Create": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Detail": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habits List": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Create": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Detail": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Goal Detail": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal List": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal Create": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notifications List": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notification Preferences": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Analytics": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Profile": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Landing Page": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Login Page": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Register Page": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "SEO Pillar": {
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    }
+  },
+  "390": {
+    "Dashboard": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arcs List": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Create": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Detail": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Edit": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Tasks List": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Create": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Detail": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habits List": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Create": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Detail": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Goal Detail": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal List": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal Create": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notifications List": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notification Preferences": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Analytics": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Profile": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Landing Page": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Login Page": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Register Page": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "SEO Pillar": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    }
+  },
+  "414": {
+    "Dashboard": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arcs List": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Create": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Detail": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Edit": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Tasks List": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Create": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Detail": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habits List": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Create": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Detail": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Goal Detail": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal List": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal Create": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notifications List": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notification Preferences": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Analytics": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Profile": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Landing Page": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Login Page": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Register Page": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "SEO Pillar": {
+      "clientWidth": 414,
+      "scrollWidth": 414,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    }
+  },
+  "430": {
+    "Dashboard": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arcs List": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Create": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Detail": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Arc Edit": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Tasks List": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Create": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Task Detail": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habits List": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Create": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Habit Detail": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Goal Detail": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal List": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Journal Create": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notifications List": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Notification Preferences": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Analytics": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Profile": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Landing Page": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Login Page": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "Register Page": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    },
+    "SEO Pillar": {
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "hasOverflow": false,
+      "diff": 0,
+      "offendersCount": 0,
+      "offenders": []
+    }
+  }
+}

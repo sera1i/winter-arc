@@ -200,7 +200,7 @@
     @apply text-[11px] text-ice/50 mt-1;
   }
   .wa-form-card {
-    @apply bg-ink/90 border border-steel/30 p-8 sm:p-10 shadow-xl space-y-8;
+    @apply bg-ink/90 border border-steel/30 p-5 sm:p-8 md:p-10 shadow-xl space-y-6 sm:space-y-8;
   }
 
   /* ============================================================

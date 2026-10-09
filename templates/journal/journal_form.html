@@ -136,11 +136,11 @@
             </div>
 
             <!-- Actions -->
-            <div class="flex items-center justify-end gap-4 pt-6 border-t border-steel/20">
-                <a href="{% if is_edit %}{% url 'journal:detail' entry.pk %}{% else %}{% url 'journal:list' %}{% endif %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+            <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 sm:gap-4 pt-6 border-t border-steel/20">
+                <a href="{% if is_edit %}{% url 'journal:detail' entry.pk %}{% else %}{% url 'journal:list' %}{% endif %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5 text-center">
                     Cancel
                 </a>
-                <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-8 py-2.5">
+                <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-8 py-2.5 text-center">
                     {% if is_edit %}Save Changes{% else %}Record Reflection{% endif %}
                 </button>
             </div>

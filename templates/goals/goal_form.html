@@ -69,21 +69,21 @@
                 </div>
             {% endfor %}
 
-            <div class="flex items-center justify-end gap-4 pt-6 border-t border-steel/20">
+            <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 sm:gap-4 pt-6 border-t border-steel/20">
                 {% if arc %}
-                    <a href="{% url 'arcs:detail' arc.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                    <a href="{% url 'arcs:detail' arc.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5 text-center">
                         Cancel
                     </a>
                 {% elif form.instance.pk and form.instance.arc %}
-                    <a href="{% url 'goals:detail' form.instance.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                    <a href="{% url 'goals:detail' form.instance.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5 text-center">
                         Cancel
                     </a>
                 {% else %}
-                    <a href="{% url 'arcs:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                    <a href="{% url 'arcs:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5 text-center">
                         Cancel
                     </a>
                 {% endif %}
-                <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-8 py-2.5">
+                <button type="submit" class="btn-primary text-xs uppercase tracking-widest px-8 py-2.5 text-center">
                     Save Goal
                 </button>
             </div>
