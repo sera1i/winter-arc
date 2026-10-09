@@ -84,11 +84,12 @@ def dashboard_view(request):
     ).count()
     total_pending_count = Task.objects.filter(user=user, status__in=['PENDING', 'IN_PROGRESS']).count()
 
-    # Habits
-    active_habits = Habit.objects.filter(user=user, is_archived=False).prefetch_related('completions')
+    # Habits (evaluated via in-memory prefetch to avoid N+1 queries)
+    active_habits = list(Habit.objects.filter(user=user, is_archived=False).prefetch_related('completions'))
     habit_data = []
     for habit in active_habits:
-        completed_today = habit.completions.filter(local_date=today).exists()
+        completed_dates = {c.local_date for c in habit.completions.all()}
+        completed_today = today in completed_dates
         habit_data.append({'habit': habit, 'completed_today': completed_today, 'streak': habit.get_current_streak()})
     habits_done_today = sum(1 for h in habit_data if h['completed_today'])
     top_streaks = sorted(habit_data, key=lambda x: x['streak'], reverse=True)[:3]
@@ -117,7 +118,7 @@ def dashboard_view(request):
         'today_completed_tasks': today_completed_tasks,
         'habit_data': habit_data[:6],
         'habits_done_today': habits_done_today,
-        'total_habits': active_habits.count(),
+        'total_habits': len(active_habits),
         'top_streaks': top_streaks,
         'today': today,
         'recent_activity': recent_activity,

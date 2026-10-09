@@ -70,9 +70,12 @@ class Habit(models.Model):
         - Only one record per day is needed (enforced by unique_together).
         """
         today = self.get_user_today()
-        completed_dates = set(
-            self.completions.values_list('local_date', flat=True)
-        )
+        if hasattr(self, '_prefetched_objects_cache') and 'completions' in self._prefetched_objects_cache:
+            completed_dates = {c.local_date for c in self.completions.all()}
+        else:
+            completed_dates = set(
+                self.completions.values_list('local_date', flat=True)
+            )
         if not completed_dates:
             return 0
 
@@ -91,7 +94,10 @@ class Habit(models.Model):
         """
         Calculate the longest consecutive-day completion streak in this habit's history.
         """
-        dates = sorted(set(self.completions.values_list('local_date', flat=True)))
+        if hasattr(self, '_prefetched_objects_cache') and 'completions' in self._prefetched_objects_cache:
+            dates = sorted({c.local_date for c in self.completions.all()})
+        else:
+            dates = sorted(set(self.completions.values_list('local_date', flat=True)))
         if not dates:
             return 0
 

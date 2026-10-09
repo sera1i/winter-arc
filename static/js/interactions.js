@@ -66,17 +66,51 @@
         const actionUrl = form.getAttribute('action');
         if (!actionUrl) return;
 
-        // Visual loading state
+        const tStart = performance.now();
+        const indicator = button.querySelector('.wa-checkbox-indicator') || button;
+        const wasCompleted = indicator.classList.contains('is-completed') || actionUrl.includes('/uncomplete/');
+        const willBeCompleted = !wasCompleted;
+        const csrfToken = getCsrfToken();
+
+        // Find parent row to update text style
+        const taskRow = form.closest('.task-row') || form.closest('li') || form.closest('[data-task-id]');
+        const titleLink = taskRow ? taskRow.querySelector('a[href*="/tasks/"]') : null;
+
+        // TRUE OPTIMISTIC UI: apply visual state changes immediately (<5ms in same frame)
         button.dataset.loading = 'true';
         button.setAttribute('aria-busy', 'true');
         button.disabled = true;
 
-        const indicator = button.querySelector('.wa-checkbox-indicator') || button;
-        const wasCompleted = indicator.classList.contains('is-completed') || actionUrl.includes('/uncomplete/');
-        const csrfToken = getCsrfToken();
+        if (willBeCompleted) {
+            indicator.classList.add('is-completed');
+            indicator.textContent = '✓';
+            indicator.classList.remove('text-transparent');
+            indicator.classList.add('text-bone');
+            button.setAttribute('title', 'Mark pending');
+            button.setAttribute('aria-label', 'Undo completion');
+            if (titleLink) {
+                titleLink.classList.add('line-through', 'text-ice/50');
+                titleLink.classList.remove('text-bone');
+            }
+        } else {
+            indicator.classList.remove('is-completed');
+            indicator.textContent = '✓';
+            indicator.classList.add('text-transparent');
+            indicator.classList.remove('text-bone');
+            button.setAttribute('title', 'Mark complete');
+            button.setAttribute('aria-label', 'Complete task');
+            if (titleLink) {
+                titleLink.classList.remove('line-through', 'text-ice/50');
+                titleLink.classList.add('text-bone');
+            }
+        }
 
-        // Immediate visual acknowledgement (subtle opacity change)
-        indicator.style.opacity = '0.5';
+        const tOptimistic = performance.now();
+        window.__wa_last_interaction = {
+            type: willBeCompleted ? 'task_complete' : 'task_uncomplete',
+            optimistic_ms: tOptimistic - tStart,
+            completed: false
+        };
 
         fetch(actionUrl, {
             method: 'POST',
@@ -92,7 +126,13 @@
             return res.json();
         })
         .then(function (data) {
-            indicator.style.opacity = '';
+            const tEnd = performance.now();
+            if (window.__wa_last_interaction) {
+                window.__wa_last_interaction.total_ms = tEnd - tStart;
+                window.__wa_last_interaction.network_ms = tEnd - tOptimistic;
+                window.__wa_last_interaction.completed = true;
+            }
+
             button.dataset.loading = 'false';
             button.removeAttribute('aria-busy');
             button.disabled = false;
@@ -101,47 +141,42 @@
                 ? data.is_completed 
                 : (data.status === 'COMPLETED');
 
-            // Find parent row to update text style
-            const taskRow = form.closest('.task-row') || form.closest('li') || form.closest('[data-task-id]');
-            const titleLink = taskRow ? taskRow.querySelector('a[href*="/tasks/"]') : null;
+            // Switch action endpoint for next toggle
+            if (isNowCompleted && actionUrl.includes('/complete/')) {
+                form.setAttribute('action', actionUrl.replace('/complete/', '/uncomplete/'));
+            } else if (!isNowCompleted && actionUrl.includes('/uncomplete/')) {
+                form.setAttribute('action', actionUrl.replace('/uncomplete/', '/complete/'));
+            }
+        })
+        .catch(function (err) {
+            // Revert optimistic state on failure
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
 
-            if (isNowCompleted) {
+            if (wasCompleted) {
                 indicator.classList.add('is-completed');
                 indicator.textContent = '✓';
                 indicator.classList.remove('text-transparent');
                 indicator.classList.add('text-bone');
-                button.setAttribute('title', 'Mark task pending');
+                button.setAttribute('title', 'Mark pending');
                 button.setAttribute('aria-label', 'Undo completion');
                 if (titleLink) {
                     titleLink.classList.add('line-through', 'text-ice/50');
                     titleLink.classList.remove('text-bone');
-                }
-                // Switch action endpoint for next toggle
-                if (actionUrl.includes('/complete/')) {
-                    form.setAttribute('action', actionUrl.replace('/complete/', '/uncomplete/'));
                 }
             } else {
                 indicator.classList.remove('is-completed');
                 indicator.textContent = '✓';
                 indicator.classList.add('text-transparent');
                 indicator.classList.remove('text-bone');
-                button.setAttribute('title', 'Mark task complete');
+                button.setAttribute('title', 'Mark complete');
                 button.setAttribute('aria-label', 'Complete task');
                 if (titleLink) {
                     titleLink.classList.remove('line-through', 'text-ice/50');
                     titleLink.classList.add('text-bone');
                 }
-                // Switch action endpoint for next toggle
-                if (actionUrl.includes('/uncomplete/')) {
-                    form.setAttribute('action', actionUrl.replace('/uncomplete/', '/complete/'));
-                }
             }
-        })
-        .catch(function (err) {
-            indicator.style.opacity = '';
-            button.dataset.loading = 'false';
-            button.removeAttribute('aria-busy');
-            button.disabled = false;
             showToast('Could not update task. Please try again.');
         });
     }
@@ -157,13 +192,55 @@
         const actionUrl = form.getAttribute('action');
         if (!actionUrl) return;
 
+        const tStart = performance.now();
+        const wasCompleted = button.classList.contains('wa-habit-btn-completed') || button.textContent.includes('Done');
+        const willBeCompleted = !wasCompleted;
+        const origClassName = button.className;
+        const origText = button.textContent;
+        const habitContainer = form.closest('li') || form.closest('.wa-card') || form.closest('[data-habit-id]');
+        const streakEl = habitContainer ? habitContainer.querySelector('strong') : null;
+        const origStreakText = streakEl ? streakEl.textContent : '';
+        const csrfToken = getCsrfToken();
+
+        // TRUE OPTIMISTIC UI: apply visual state changes immediately (<5ms in same frame)
         button.dataset.loading = 'true';
         button.setAttribute('aria-busy', 'true');
         button.disabled = true;
 
-        const origHtml = button.innerHTML;
-        button.style.opacity = '0.6';
-        const csrfToken = getCsrfToken();
+        if (willBeCompleted) {
+            button.textContent = 'Done ✓';
+            button.setAttribute('title', 'Click to undo completion');
+            button.setAttribute('aria-label', 'Undo habit completion');
+            button.className = button.className
+                .replace('text-ice/60 border-steel/30', 'text-crimson-light border-crimson/50 bg-crimson/10')
+                .replace('btn-primary', 'font-mono text-[10px] uppercase text-crimson-light border border-crimson/50 bg-crimson/10');
+            button.classList.add('wa-habit-btn-completed');
+            button.classList.remove('wa-habit-btn-pending');
+            if (streakEl && origStreakText.includes('d')) {
+                const count = parseInt(origStreakText.replace('d', ''), 10) || 0;
+                streakEl.textContent = (count + 1) + 'd';
+            }
+        } else {
+            button.textContent = 'Mark done';
+            button.setAttribute('title', 'Mark done');
+            button.setAttribute('aria-label', 'Complete habit');
+            button.className = button.className
+                .replace('text-crimson-light border-crimson/50 bg-crimson/10', 'text-ice/60 border-steel/30')
+                .replace('text-crimson-light border border-crimson/50 bg-crimson/10', 'btn-primary');
+            button.classList.add('wa-habit-btn-pending');
+            button.classList.remove('wa-habit-btn-completed');
+            if (streakEl && origStreakText.includes('d')) {
+                const count = parseInt(origStreakText.replace('d', ''), 10) || 0;
+                streakEl.textContent = Math.max(0, count - 1) + 'd';
+            }
+        }
+
+        const tOptimistic = performance.now();
+        window.__wa_last_interaction = {
+            type: willBeCompleted ? 'habit_complete' : 'habit_undo',
+            optimistic_ms: tOptimistic - tStart,
+            completed: false
+        };
 
         fetch(actionUrl, {
             method: 'POST',
@@ -179,45 +256,27 @@
             return res.json();
         })
         .then(function (data) {
-            button.style.opacity = '';
+            const tEnd = performance.now();
+            if (window.__wa_last_interaction) {
+                window.__wa_last_interaction.total_ms = tEnd - tStart;
+                window.__wa_last_interaction.network_ms = tEnd - tOptimistic;
+                window.__wa_last_interaction.completed = true;
+            }
+
             button.dataset.loading = 'false';
             button.removeAttribute('aria-busy');
             button.disabled = false;
 
-            const isCompleted = data.completed_today;
-            const habitContainer = form.closest('li') || form.closest('.wa-card') || form.closest('[data-habit-id]');
-
-            if (isCompleted) {
-                button.textContent = 'Done ✓';
-                button.setAttribute('title', 'Click to undo completion');
-                button.setAttribute('aria-label', 'Undo habit completion');
-                button.className = button.className
-                    .replace('text-ice/60 border-steel/30', 'text-crimson-light border-crimson/50 bg-crimson/10')
-                    .replace('btn-primary', 'font-mono text-[10px] uppercase text-crimson-light border border-crimson/50 bg-crimson/10');
-                button.classList.add('wa-habit-btn-completed');
-                button.classList.remove('wa-habit-btn-pending');
-            } else {
-                button.textContent = 'Mark done';
-                button.setAttribute('title', 'Mark done');
-                button.setAttribute('aria-label', 'Complete habit');
-                button.className = button.className
-                    .replace('text-crimson-light border-crimson/50 bg-crimson/10', 'text-ice/60 border-steel/30')
-                    .replace('text-crimson-light border border-crimson/50 bg-crimson/10', 'btn-primary');
-                button.classList.add('wa-habit-btn-pending');
-                button.classList.remove('wa-habit-btn-completed');
-            }
-
-            // Update streak counter if present
-            if (habitContainer && typeof data.streak !== 'undefined') {
-                const streakEl = habitContainer.querySelector('strong');
-                if (streakEl && streakEl.textContent.includes('d')) {
-                    streakEl.textContent = data.streak + 'd';
-                }
+            // Sync authoritative server streak counter if present
+            if (habitContainer && typeof data.streak !== 'undefined' && streakEl) {
+                streakEl.textContent = data.streak + 'd';
             }
         })
         .catch(function (err) {
-            button.style.opacity = '';
-            button.innerHTML = origHtml;
+            // Revert optimistic state on failure
+            button.className = origClassName;
+            button.textContent = origText;
+            if (streakEl) streakEl.textContent = origStreakText;
             button.dataset.loading = 'false';
             button.removeAttribute('aria-busy');
             button.disabled = false;
@@ -236,13 +295,45 @@
         const actionUrl = form.getAttribute('action');
         if (!actionUrl) return;
 
+        const tStart = performance.now();
+        const indicator = button.querySelector('.wa-checkbox-indicator') || button;
+        const wasCompleted = indicator.classList.contains('is-completed');
+        const willBeCompleted = !wasCompleted;
+        const milestoneRow = form.closest('.task-row') || form.closest('li') || form.closest('div');
+        const titleSpan = milestoneRow ? milestoneRow.querySelector('span.text-sm') : null;
+        const csrfToken = getCsrfToken();
+
+        // TRUE OPTIMISTIC UI: apply visual changes immediately
         button.dataset.loading = 'true';
         button.setAttribute('aria-busy', 'true');
         button.disabled = true;
 
-        const indicator = button.querySelector('.wa-checkbox-indicator') || button;
-        indicator.style.opacity = '0.5';
-        const csrfToken = getCsrfToken();
+        if (willBeCompleted) {
+            indicator.classList.add('is-completed');
+            indicator.textContent = '✓';
+            indicator.classList.remove('text-transparent');
+            indicator.classList.add('text-bone');
+            if (titleSpan) {
+                titleSpan.classList.add('line-through', 'text-ice/50');
+                titleSpan.classList.remove('text-bone');
+            }
+        } else {
+            indicator.classList.remove('is-completed');
+            indicator.textContent = '✓';
+            indicator.classList.add('text-transparent');
+            indicator.classList.remove('text-bone');
+            if (titleSpan) {
+                titleSpan.classList.remove('line-through', 'text-ice/50');
+                titleSpan.classList.add('text-bone');
+            }
+        }
+
+        const tOptimistic = performance.now();
+        window.__wa_last_interaction = {
+            type: willBeCompleted ? 'milestone_complete' : 'milestone_undo',
+            optimistic_ms: tOptimistic - tStart,
+            completed: false
+        };
 
         fetch(actionUrl, {
             method: 'POST',
@@ -258,16 +349,35 @@
             return res.json();
         })
         .then(function (data) {
-            indicator.style.opacity = '';
+            const tEnd = performance.now();
+            if (window.__wa_last_interaction) {
+                window.__wa_last_interaction.total_ms = tEnd - tStart;
+                window.__wa_last_interaction.network_ms = tEnd - tOptimistic;
+                window.__wa_last_interaction.completed = true;
+            }
+
             button.dataset.loading = 'false';
             button.removeAttribute('aria-busy');
             button.disabled = false;
 
-            const isCompleted = data.is_completed;
-            const milestoneRow = form.closest('.task-row') || form.closest('li') || form.closest('div');
-            const titleSpan = milestoneRow ? milestoneRow.querySelector('span.text-sm') : null;
+            // Update parent goal progress bar if present
+            if (typeof data.goal_progress !== 'undefined') {
+                const progressFill = document.querySelector('.progress-bar-fill');
+                if (progressFill) {
+                    progressFill.style.width = data.goal_progress + '%';
+                }
+                const progressText = document.querySelector('.font-serif.text-3xl.text-crimson');
+                if (progressText) {
+                    progressText.innerHTML = data.goal_progress + '<span class="text-xl text-slate-400">%</span>';
+                }
+            }
+        })
+        .catch(function (err) {
+            button.dataset.loading = 'false';
+            button.removeAttribute('aria-busy');
+            button.disabled = false;
 
-            if (isCompleted) {
+            if (wasCompleted) {
                 indicator.classList.add('is-completed');
                 indicator.textContent = '✓';
                 indicator.classList.remove('text-transparent');
@@ -286,24 +396,6 @@
                     titleSpan.classList.add('text-bone');
                 }
             }
-
-            // Update parent goal progress bar if present
-            if (typeof data.goal_progress !== 'undefined') {
-                const progressFill = document.querySelector('.progress-bar-fill');
-                if (progressFill) {
-                    progressFill.style.width = data.goal_progress + '%';
-                }
-                const progressText = document.querySelector('.font-serif.text-3xl.text-crimson');
-                if (progressText) {
-                    progressText.innerHTML = data.goal_progress + '<span class="text-xl text-slate-400">%</span>';
-                }
-            }
-        })
-        .catch(function (err) {
-            indicator.style.opacity = '';
-            button.dataset.loading = 'false';
-            button.removeAttribute('aria-busy');
-            button.disabled = false;
             showToast('Could not update checkpoint. Please try again.');
         });
     }
@@ -319,12 +411,29 @@
         const actionUrl = form.getAttribute('action');
         if (!actionUrl) return;
 
+        const tStart = performance.now();
+        const origText = button.textContent;
+        const wasCompleted = origText.includes('Reopen');
+        const willBeCompleted = !wasCompleted;
+        const csrfToken = getCsrfToken();
+
+        // TRUE OPTIMISTIC UI: apply visual state changes immediately
         button.dataset.loading = 'true';
         button.setAttribute('aria-busy', 'true');
         button.disabled = true;
-        const origText = button.textContent;
-        button.style.opacity = '0.6';
-        const csrfToken = getCsrfToken();
+
+        if (willBeCompleted) {
+            button.textContent = 'Reopen Goal';
+        } else {
+            button.textContent = 'Fulfill Goal';
+        }
+
+        const tOptimistic = performance.now();
+        window.__wa_last_interaction = {
+            type: willBeCompleted ? 'goal_complete' : 'goal_reopen',
+            optimistic_ms: tOptimistic - tStart,
+            completed: false
+        };
 
         fetch(actionUrl, {
             method: 'POST',
@@ -340,7 +449,13 @@
             return res.json();
         })
         .then(function (data) {
-            button.style.opacity = '';
+            const tEnd = performance.now();
+            if (window.__wa_last_interaction) {
+                window.__wa_last_interaction.total_ms = tEnd - tStart;
+                window.__wa_last_interaction.network_ms = tEnd - tOptimistic;
+                window.__wa_last_interaction.completed = true;
+            }
+
             button.dataset.loading = 'false';
             button.removeAttribute('aria-busy');
             button.disabled = false;
@@ -352,7 +467,6 @@
             }
         })
         .catch(function (err) {
-            button.style.opacity = '';
             button.textContent = origText;
             button.dataset.loading = 'false';
             button.removeAttribute('aria-busy');

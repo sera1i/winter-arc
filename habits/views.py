@@ -109,33 +109,35 @@ def habit_complete(request, pk):
     habit = get_object_or_404(Habit, pk=pk, user=request.user)
     if request.method == 'POST':
         today = _get_user_today(request.user)
-        completion, created = HabitCompletion.objects.get_or_create(
-            habit=habit, local_date=today
-        )
-        if not created:
-            # Already completed today — uncomplete it
-            completion.delete()
-            messages.info(request, f'"{habit.name}" marked incomplete for today.')
-        else:
-            from gamification.services import award_xp, check_and_unlock_achievements
-            from analytics.services import log_activity
-            
-            # Idempotency source_id combines habit id and date
-            award_xp(
-                user=request.user,
-                source_type='habit',
-                source_id=f"{habit.pk}_{today}",
-                description=f'Completed habit: {habit.name} on {today}'
+        from django.db import transaction
+        with transaction.atomic():
+            completion, created = HabitCompletion.objects.get_or_create(
+                habit=habit, local_date=today
             )
-            log_activity(
-                user=request.user,
-                event_type='HABIT_COMPLETED',
-                title=f'Beacon lit: {habit.name}',
-                source_type='habit',
-                source_id=f"{habit.pk}_{today}"
-            )
-            check_and_unlock_achievements(request.user)
-            messages.success(request, 'Another beacon lit.')
+            if not created:
+                # Already completed today — uncomplete it
+                completion.delete()
+                messages.info(request, f'"{habit.name}" marked incomplete for today.')
+            else:
+                from gamification.services import award_xp, check_and_unlock_achievements
+                from analytics.services import log_activity
+                
+                # Idempotency source_id combines habit id and date
+                award_xp(
+                    user=request.user,
+                    source_type='habit',
+                    source_id=f"{habit.pk}_{today}",
+                    description=f'Completed habit: {habit.name} on {today}'
+                )
+                log_activity(
+                    user=request.user,
+                    event_type='HABIT_COMPLETED',
+                    title=f'Beacon lit: {habit.name}',
+                    source_type='habit',
+                    source_id=f"{habit.pk}_{today}"
+                )
+                check_and_unlock_achievements(request.user, trigger_type='habit')
+                messages.success(request, 'Another beacon lit.')
 
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
             return JsonResponse({

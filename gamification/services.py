@@ -169,49 +169,76 @@ ACHIEVEMENT_DEFINITIONS = [
     },
 ]
 
-def check_and_unlock_achievements(user):
+def _ensure_achievements_seeded():
+    codes = [d['code'] for d in ACHIEVEMENT_DEFINITIONS]
+    existing = set(Achievement.objects.filter(code__in=codes).values_list('code', flat=True))
+    if len(existing) < len(ACHIEVEMENT_DEFINITIONS):
+        to_create = [
+            Achievement(
+                code=d['code'],
+                name=d['name'],
+                description=d['description'],
+                xp_reward=d['xp_reward'],
+            )
+            for d in ACHIEVEMENT_DEFINITIONS
+            if d['code'] not in existing
+        ]
+        if to_create:
+            Achievement.objects.bulk_create(to_create, ignore_conflicts=True)
+
+
+def check_and_unlock_achievements(user, trigger_type=None):
     """
     Evaluate deterministic criteria from actual user data and unlock eligible achievements.
     Awards XP reward if newly unlocked.
-    Returns list of newly unlocked UserAchievement instances.
+    Optimized:
+    - Seeds static achievement definitions once in memory
+    - Fast index check on UserAchievement skips all already-unlocked achievements
+    - Filters checks by trigger_type ('task', 'habit', 'goal', 'arc') to avoid querying unrelated models
     """
     from tasks.models import Task
     from goals.models import Goal
     from habits.models import Habit
     from arcs.models import Arc
 
-    # Ensure system achievements exist
-    for d in ACHIEVEMENT_DEFINITIONS:
-        Achievement.objects.get_or_create(
-            code=d['code'],
-            defaults={
-                'name': d['name'],
-                'description': d['description'],
-                'xp_reward': d['xp_reward'],
-            }
-        )
+    _ensure_achievements_seeded()
+
+    unlocked_codes = set(
+        UserAchievement.objects.filter(user=user).values_list('achievement__code', flat=True)
+    )
+    if len(unlocked_codes) >= len(ACHIEVEMENT_DEFINITIONS):
+        return []
 
     unlocked_list = []
 
     # Check FIRST_TASK
-    if Task.objects.filter(user=user, status='COMPLETED').exists():
-        _unlock(user, 'FIRST_TASK', unlocked_list)
+    if 'FIRST_TASK' not in unlocked_codes and (trigger_type is None or trigger_type == 'task'):
+        if Task.objects.filter(user=user, status='COMPLETED').exists():
+            _unlock(user, 'FIRST_TASK', unlocked_list)
+            unlocked_codes.add('FIRST_TASK')
 
     # Check FIRST_GOAL
-    if Goal.objects.filter(user=user, status='COMPLETED').exists():
-        _unlock(user, 'FIRST_GOAL', unlocked_list)
+    if 'FIRST_GOAL' not in unlocked_codes and (trigger_type is None or trigger_type == 'goal'):
+        if Goal.objects.filter(user=user, status='COMPLETED').exists():
+            _unlock(user, 'FIRST_GOAL', unlocked_list)
+            unlocked_codes.add('FIRST_GOAL')
 
     # Check habit streaks (7d & 30d)
-    user_habits = Habit.objects.filter(user=user)
-    max_streak = max([h.best_streak for h in user_habits], default=0)
-    if max_streak >= 7:
-        _unlock(user, 'STREAK_7', unlocked_list)
-    if max_streak >= 30:
-        _unlock(user, 'STREAK_30', unlocked_list)
+    if ('STREAK_7' not in unlocked_codes or 'STREAK_30' not in unlocked_codes) and (trigger_type is None or trigger_type == 'habit'):
+        user_habits = Habit.objects.filter(user=user).prefetch_related('completions')
+        max_streak = max([h.best_streak for h in user_habits], default=0)
+        if 'STREAK_7' not in unlocked_codes and max_streak >= 7:
+            _unlock(user, 'STREAK_7', unlocked_list)
+            unlocked_codes.add('STREAK_7')
+        if 'STREAK_30' not in unlocked_codes and max_streak >= 30:
+            _unlock(user, 'STREAK_30', unlocked_list)
+            unlocked_codes.add('STREAK_30')
 
     # Check FIRST_ARC
-    if Arc.objects.filter(user=user, status='COMPLETED').exists():
-        _unlock(user, 'FIRST_ARC', unlocked_list)
+    if 'FIRST_ARC' not in unlocked_codes and (trigger_type is None or trigger_type == 'arc'):
+        if Arc.objects.filter(user=user, status='COMPLETED').exists():
+            _unlock(user, 'FIRST_ARC', unlocked_list)
+            unlocked_codes.add('FIRST_ARC')
 
     return unlocked_list
 

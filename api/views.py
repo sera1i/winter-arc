@@ -338,6 +338,9 @@ class HabitViewSet(viewsets.ModelViewSet):
             )
             check_and_unlock_achievements(request.user)
 
+        if hasattr(habit, '_prefetched_objects_cache'):
+            habit._prefetched_objects_cache.pop('completions', None)
+
         return Response({
             "status": "completed",
             "habit": HabitSerializer(habit).data,
@@ -349,6 +352,8 @@ class HabitViewSet(viewsets.ModelViewSet):
         habit = self.get_object()
         today = habit.get_user_today()
         HabitCompletion.objects.filter(habit=habit, local_date=today).delete()
+        if hasattr(habit, '_prefetched_objects_cache'):
+            habit._prefetched_objects_cache.pop('completions', None)
         return Response({
             "status": "undone",
             "habit": HabitSerializer(habit).data
