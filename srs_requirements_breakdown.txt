@@ -1,0 +1,115 @@
+[WA-SRS-001] Page 1 SOFTWARE REQUIREMENTS SPECIFICATION WINTER ARC Personal Transformation & Productivity Platform Document Type Software Requirements Specification \(SRS\) Version 1.0 Status Baseline / Development Specification Date 01 October 2026 Target Platform Responsive Web Application Primary Stack Python
+[WA-SRS-001] Page 2 Document Control Item Specification Document ID
+[WA-SRS-001] Project Name Winter Arc Version 1.0 Prepared For Academic / Portfolio Full-Stack Development Project Primary Users Individual users pursuing structured personal goals System Type Web-based personal productivity and self-management platform Requirement Baseline Requirements in this document define th
+[WA-SRS-001] Page 3 Table of Contents 1 1. Introduction 2 2. Product Overview 3 3. Stakeholders and User Classes 4 4. Product Scope 5 5. Assumptions, Constraints and Dependencies 6 6. Functional Requirements 7 7. Detailed Module Requirements 8 8. User Interface and UX Requirements 9 9. System Architecture 10 10.
+[WA-SRS-001] Page 4 1. Introduction 1.1 Purpose This Software Requirements Specification defines the complete requirements for Winter Arc, a responsive web application designed to help users organize a defined period of personal improvement through goals, habits, tasks, study/workout tracking, journaling, analyt
+[WA-AUTH-001] . Priority terms MUST, SHOULD, and MAY indicate implementation priority. A MUST requirement is part of the acceptance baseline unless explicitly deferred to a later phase. === PAGE 5 === WINTER ARC \001 SOFTWARE REQUIREMENTS SPECIFICATION Version 1.0
+[WA-SRS-001] Page 5 2. Product Overview 2.1 Product Vision Winter Arc is a personal transformation operating system: the user defines an arc, chooses measurable outcomes, executes daily actions, records relevant data, reviews progress, and adjusts the plan. 2.2 Core User Journey 1 Create an account and configure
+[WA-SRS-001] Page 6 3. Stakeholders and User Classes Stakeholder / Class Role Needs End User Uses the platform for personal transformation Simple planning, tracking, privacy, useful feedback Administrator Operates the application User management, system monitoring, moderation, audit visibility Developer Builds a
+[WA-SRS-001] Page 7 4. Product Scope 4.1 In Scope \001 Account registration, login, logout, password recovery and profile management. \001 Winter Arc lifecycle management. \001 Goals, milestones, tasks, habits, streaks and completion records. \001 Daily dashboard and calendar. \001 Study session and workout sess
+[WA-SRS-001] Page 8 5. Assumptions, Constraints and Dependencies 5.1 Assumptions \001 Users have a modern browser and internet access for the hosted application. \001 Dates and times are interpreted according to the user's configured timezone. \001 Only the user can decide which personal metrics to track. \001 E
+[WA-SRS-001] Page 9 6. Functional Requirements 6.1 Requirement Priority Legend Priority Meaning MUST Required for the applicable release and acceptance. SHOULD Important but can be deferred when schedule requires. MAY Optional enhancement. 6.2 High-Level Functional Requirements ID Requirement Priority
+[WA-AUTH-001] System shall allow a user to register with a unique email/username and securely stored password. MUST
+[WA-AUTH-002] System shall authenticate users and create a secure session/token according to the selected frontend architecture. MUST
+[WA-AUTH-003] System shall support logout and invalidation of the active authentication context. MUST
+[WA-AUTH-004] System shall provide password reset using a time-limited secure token. MUST
+[WA-PROF-001] User shall be able to view and edit profile information and timezone. MUST
+[WA-ARC-001] User shall be able to create, edit, pause and complete an Arc. MUST
+[WA-GOAL-001] User shall be able to create measurable goals associated with an Arc. MUST
+[WA-TASK-001] User shall be able to create, update, complete, reschedule and archive tasks. MUST
+[WA-HAB-001] User shall be able to create recurring habits and record daily completion. MUST
+[WA-DASH-001] System shall provide a Today dashboard combining due tasks, habits and progress. MUST
+[WA-JRN-001] User shall be able to create, edit and delete private journal entries. MUST
+[WA-ANA-001] System shall calculate and display progress metrics from stored records. MUST
+[WA-GAM-001] System shall award XP for defined eligible completion events. SHOULD
+[WA-NOT-001] System shall support configurable reminders for selected tasks/habits. SHOULD
+[WA-API-001] Backend shall expose documented REST endpoints for core resources. MUST
+[WA-ADM-001] Authorized administrators shall be able to manage operational user/system functions. SHOULD
+[WA-AI-001] System may generate personalized insights from user-authorized activity data. MAY === PAGE 10 === WINTER ARC \001 SOFTWARE REQUIREMENTS SPECIFICATION Version 1.0
+[WA-SRS-001] Page 10 7. Detailed Module Requirements 7.1 Authentication & Account ID Requirement Priority
+[WA-AUTH-010] Registration must validate email format, username rules, password policy, uniqueness, and required consent. MUST
+[WA-AUTH-011] Passwords must never be stored in plaintext; Django's password hashing mechanisms must be used. MUST
+[WA-AUTH-012] Repeated failed authentication attempts should be rate-limited or otherwise protected. MUST
+[WA-AUTH-013] Password reset tokens must expire and be single-use. SHOULD
+[WA-AUTH-014] Authenticated endpoints must enforce user ownership or role-based authorization. SHOULD 7.2 Winter Arc Management ID Requirement Priority
+[WA-ARC-010] An Arc shall contain name, description/objective, start date, end date, status, timezone and timestamps. MUST
+[WA-ARC-011] Start date shall not be after end date. MUST
+[WA-ARC-012] An Arc may be Draft, Active, Paused, Completed or Archived. MUST
+[WA-ARC-013] Only one Arc may be marked as the user's primary active Arc at a time. SHOULD
+[WA-ARC-014] Deleting an Arc must use an explicit confirmation and should prefer archival where historical data is valuable. SHOULD 7.3 Goals & Milestones ID Requirement Priority
+[WA-GOAL-010] Goal shall belong to exactly one user and may belong to one Arc. MUST
+[WA-GOAL-011] Goal shall support title, description, category, priority, target value, unit, current value, deadline and status. MUST
+[WA-GOAL-012] Progress shall be computed consistently from explicit goal measurements or linked completion events. MUST
+[WA-GOAL-013] Milestones shall provide intermediate checkpoints and completion dates. SHOULD 7.4 Tasks ID Requirement Priority
+[WA-TASK-010] Task shall support title, description, due date/time, priority, status, optional goal, recurrence metadata and timestamps. MUST
+[WA-TASK-011] Task status shall support at least Pending, In Progress, Completed and Cancelled. MUST
+[WA-TASK-012] Completion must record a completion timestamp. MUST
+[WA-TASK-013] Recurring tasks shall generate or represent future occurrences without duplicating historical completion data incorrectly. SHOULD
+[WA-TASK-014] User shall be able to filter tasks by date, status, priority and goal. SHOULD 7.5 Habits === PAGE 11 === WINTER ARC \001 SOFTWARE REQUIREMENTS SPECIFICATION Version 1.0
+[WA-SRS-001] Page 11 ID Requirement Priority
+[WA-HAB-010] Habit shall support name, description, frequency, target count, active period and reminder preference. MUST
+[WA-HAB-011] A habit completion record shall identify the habit, user, local date and completion quantity where applicable. MUST
+[WA-HAB-012] The system shall calculate current and best streak using deterministic rules. MUST
+[WA-HAB-013] Habit history shall remain available after a habit is archived. SHOULD 7.6 Daily Check-in & Journal ID Requirement Priority
+[WA-JRN-010] A user may create one daily check-in for a local calendar date. MUST
+[WA-JRN-011] Check-in may include mood, energy, sleep duration, reflection and notes; fields should be optional. MUST
+[WA-JRN-012] Journal entries shall be private by default. MUST
+[WA-JRN-013] Journal content shall be excluded from analytics unless the user explicitly enables an analysis feature. SHOULD 7.7 Study Tracking ID Requirement Priority
+[WA-STU-010] User shall be able to record a study session with subject, start/end or duration, topic and notes. MUST
+[WA-STU-011] System shall calculate daily, weekly and monthly study totals. MUST
+[WA-STU-012] Study sessions may be linked to a goal. MUST 7.8 Workout Tracking ID Requirement Priority
+[WA-WKT-010] User shall be able to create workout sessions and record exercises. MUST
+[WA-WKT-011] Exercise records may include sets, repetitions, duration, load and notes. MUST
+[WA-WKT-012] System shall summarize workout frequency and selected measurable performance values. MUST 7.9 Calendar ID Requirement Priority
+[WA-CAL-010] Calendar shall display tasks, habits and relevant milestones using the user's timezone. MUST
+[WA-CAL-011] Selecting an item shall open the corresponding detail/edit action. MUST
+[WA-CAL-012] Calendar filtering shall allow category-based visibility. MUST 7.10 Dashboard ID Requirement Priority
+[WA-DASH-010] Dashboard shall display current Arc progress, today's tasks, habits, streaks and key metrics. MUST
+[WA-DASH-011] Dashboard shall identify overdue items separately from upcoming items. MUST === PAGE 12 === WINTER ARC \001 SOFTWARE REQUIREMENTS SPECIFICATION Version 1.0
+[WA-SRS-001] Page 12 ID Requirement Priority
+[WA-DASH-012] Dashboard shall support a fast completion action without navigating through multiple screens. MUST 7.11 Analytics ID Requirement Priority
+[WA-ANA-010] System shall provide daily/weekly/monthly aggregation for task completion, habit consistency, study time and workouts. MUST
+[WA-ANA-011] Analytics shall clearly distinguish raw values, derived metrics and user-entered targets. MUST
+[WA-ANA-012] Date ranges and timezone must be applied consistently to aggregation. MUST
+[WA-ANA-013] Analytics pages shall remain usable when data volume is low; empty states shall explain how to start collecting data. SHOULD 7.12 Gamification ID Requirement Priority
+[WA-GAM-010] XP rules shall be defined in a central service/module rather than duplicated in UI code. MUST
+[WA-GAM-011] Achievements shall have deterministic unlock criteria. MUST
+[WA-GAM-012] XP should not be awarded multiple times for the same unique completion event unless the rule explicitly permits it. MUST
+[WA-GAM-013] Users shall be able to see the reason for an XP award. SHOULD 7.13 Notifications ID Requirement Priority
+[WA-NOT-010] User shall be able to configure reminder preferences. MUST
+[WA-NOT-011] Notifications shall respect user timezone and quiet-hour settings. MUST
+[WA-NOT-012] Failed background notification jobs shall be retried according to configured retry policy. MUST
+[WA-NOT-013] The system shall avoid sending duplicate notifications for the same scheduled event. SHOULD === PAGE 13 === WINTER ARC \001 SOFTWARE REQUIREMENTS SPECIFICATION Version 1.0
+[WA-SRS-001] Page 13 8. User Interface and UX Requirements 8.1 Design Requirements \001 Responsive layout must work on desktop, tablet and mobile viewport sizes. \001 Primary navigation should expose Dashboard, Tasks, Habits, Goals, Calendar, Journal, Analytics and Profile. \001 Important actions such as complet
+[WA-SRS-001] Page 14 9. System Architecture 9.1 Logical Architecture The recommended architecture is a modular Django monolith with a REST API boundary. This provides lower operational complexity than microservices while retaining clean separation for future scaling. Layer Responsibilities Client/UI Responsive H
+[WA-SRS-001] Page 15 10. Database Requirements and Data Model 10.1 Database Technology PostgreSQL is the recommended production database because the application is relational, transaction-oriented, and expected to perform aggregate queries over structured activity data. 10.2 Core Entities Entity Key Fields / Rel
+[WA-SRS-001] Page 16 11. API Requirements 11.1 API Principles \001 API versioning should begin at /api/v1/. \001 JSON is the default request/response representation. \001 Authentication and authorization are mandatory for personal resources. \001 Validation errors must return structured, actionable messages. \00
+[WA-SRS-001] Page 17 \001 Use server-side authorization on every object endpoint. \001 Apply rate limiting to authentication and other abuse-prone endpoints. \001 Do not return password hashes, reset tokens, internal secrets or unnecessary private metadata. === PAGE 18 === WINTER ARC \001 SOFTWARE REQUIREMENTS S
+[WA-SRS-001] Page 18 12. Security and Privacy Requirements 12.1 Authentication Security \001 Use Django's proven password hashing framework. \001 Use HTTPS in production. \001 Secure cookies must use appropriate Secure, HttpOnly and SameSite settings. \001 CSRF protection must remain enabled for cookie-authentic
+[WA-SRS-001] Page 19 Threat Mitigation Secret exposure Environment secrets; never commit credentials Background-job duplication Idempotency keys/business event uniqueness === PAGE 20 === WINTER ARC \001 SOFTWARE REQUIREMENTS SPECIFICATION Version 1.0
+[WA-SRS-001] Page 20 13. Non-Functional Requirements ID Category Requirement Priority
+[WA-NFR-001] Performance Typical dashboard/API requests should target a server response time under 500 ms at the application layer under expected project load, excluding slow external services. SHOULD
+[WA-NFR-002] Availability Production deployment should include health checks and restart/recovery procedures. SHOULD
+[WA-NFR-003] Scalability Architecture should permit horizontal web-worker scaling without changing core domain logic. SHOULD
+[WA-NFR-004] Maintainability Code shall use clear module boundaries, naming conventions, documentation and automated tests. MUST
+[WA-NFR-005] Security Production traffic shall use HTTPS and authentication secrets shall not be stored in source control. MUST
+[WA-NFR-006] Usability A first-time user should be able to create an Arc and first task without external instructions. SHOULD
+[WA-NFR-007] Accessibility Core workflows shall be keyboard usable and provide labels and visible focus. MUST
+[WA-NFR-008] Compatibility Application shall support current major versions of Chrome/Edge/Firefox/Safari where practical. SHOULD
+[WA-NFR-009] Reliability Critical database operations shall be transactional and recoverable from application errors. MUST
+[WA-NFR-010] Observability Application shall provide structured logs and health endpoints for production diagnosis. SHOULD
+[WA-NFR-011] Backup Production database shall have a documented backup and restore procedure. MUST
+[WA-NFR-012] Privacy Personal records shall be isolated by authenticated user ownership. MUST
+[WA-NFR-013] Localization Dates/times shall be rendered using user timezone; locale expansion may be added later. SHOULD
+[WA-NFR-014] Testability Critical domain services and authorization paths shall be covered by automated tests. MUST 13.1 Performance Measurement Notes Performance targets are engineering targets, not guarantees. They must be measured under a defined test dataset and load profile. External email, AI, or third-par
+[WA-SRS-001] Page 21 14. Business Rules Rule ID Area Rule BR-001 Arc dates start_date < = end_date. BR-002 Primary Arc A user may have at most one primary active Arc. BR-003 Task ownership A task can only be viewed/modified by its owner or authorized system role. BR-004 Habit completion A completion event must b
+[WA-SRS-001] Page 22 15. Validation and Error Handling 15.1 Validation Rules \001 Required fields must be checked server-side. \001 Dates must use valid calendar values. \001 End dates must not precede start dates. \001 Numeric targets must respect configured minimum/maximum constraints where applicable. \001 Te
+[WA-SRS-001] Page 23 16. Testing and Quality Assurance 16.1 Testing Strategy Test Level Scope Examples Unit Pure functions/services XP calculation, streak calculation, goal progress Model Constraints/relationships Ownership, uniqueness, date rules API Endpoint contracts Auth, CRUD, filtering, permissions Integra
+[WA-SRS-001] Page 24 17. Deployment and DevOps Requirements 17.1 Environment Model Environment Purpose Local Developer implementation and debugging Test/CI Automated tests, migrations and quality checks Staging Production-like validation before release Production Live user-facing application 17.2 Production Comp
+[WA-SRS-001] Page 25 18. Monitoring, Logging and Maintenance 18.1 Health Checks \001 Application health endpoint should verify basic process readiness. \001 Readiness checks may verify database connectivity and required dependencies. \001 Background worker health should be observable separately. 18.2 Logging \00
+[WA-SRS-001] Page 26 19. Acceptance Criteria 19.1 MVP Acceptance Area Acceptance Condition Account A new user can register, log in, log out and recover password. Arc User can create an Arc with valid dates and see its active state. Goals User can create a goal and see its progress. Tasks User can create, edit, c
+[WA-SRS-001] Page 27 20. MVP and Development Phases 20.1 Phase Plan Phase Deliverable Main Skills 0 Project setup, Git, environment, architecture Python, Git, Django setup 1 Authentication + profile Django auth, forms, security 2 Arc + goals + milestones Models, ORM, relationships 3 Tasks + habits + streaks CRUD
+[WA-SRS-001] Page 28 21. Future Enhancements 21.1 AI/ML Recommendation Engine \001 Predict likelihood of completing a task based on historical execution patterns. \001 Suggest realistic daily workload using historical completion rate. \001 Identify recurring bottlenecks such as frequent overdue categories. \001 
+[WA-SRS-001] Page 29 22. Traceability and Requirement IDs 22.1 Requirement Naming Scheme WA identifies the Winter Arc project. The middle code identifies the module \(AUTH, ARC, GOAL, TASK, HAB, JRN, ANA, API, NFR, etc.\). The numeric suffix uniquely identifies the requirement. 22.2 Traceability Matrix Requireme
+[WA-SRS-001] Page 30 23. Risks and Mitigations Risk Impact Mitigation Scope expansion High Freeze MVP; implement features by phases Overengineering Medium Use modular monolith before microservices Poor data model High Design relationships before UI; test constraints Cross-user data leakage Critical Central owner
+[WA-SRS-001] Page 31 24. Glossary Term Definition Arc A defined personal-improvement period with start/end dates and an objective. Goal A measurable or status-based outcome the user wants to achieve. Milestone An intermediate checkpoint within a goal. Task A discrete action that can be scheduled and completed. H

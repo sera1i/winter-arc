@@ -70,13 +70,16 @@
             <!-- Right: clean useful artwork -->
             <div class="space-y-8">
                 <div class="relative aspect-[4/3] overflow-hidden border border-dawn/60 shadow-xl bg-ink rounded-sm">
-                    <img src="{% static 'images/clean/call_clean.webp' %}"
-                         alt="Fortress in the northern winter mountains"
-                         width="1672"
-                         height="941"
-                         loading="lazy"
-                         decoding="async"
-                         class="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700">
+                    <picture>
+                        <source media="(max-width: 767px)" srcset="{% static 'images/clean/call_clean_mobile.webp' %}">
+                        <img src="{% static 'images/clean/call_clean.webp' %}"
+                             alt="Fortress in the northern winter mountains"
+                             width="1672"
+                             height="941"
+                             loading="lazy"
+                             decoding="async"
+                             class="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700">
+                    </picture>
                     <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to top, rgba(244,241,236,0.3) 0%, transparent 50%);"></div>
                 </div>
 

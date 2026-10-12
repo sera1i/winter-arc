@@ -69,13 +69,16 @@
 
         <!-- Clean panoramic rider banner (NO baked-in Canva text) -->
         <div class="relative aspect-[21/6] sm:aspect-[21/5] lg:aspect-[21/4] overflow-hidden border border-steel/25 rounded-sm">
-            <img src="{% static 'images/clean/oath_clean.webp' %}"
-                 alt="Rider in winter pass"
-                 width="1672"
-                 height="941"
-                 loading="lazy"
-                 decoding="async"
-                 class="w-full h-full object-cover object-center">
+            <picture>
+                <source media="(max-width: 767px)" srcset="{% static 'images/clean/oath_clean_mobile.webp' %}">
+                <img src="{% static 'images/clean/oath_clean.webp' %}"
+                     alt="Rider in winter pass"
+                     width="1672"
+                     height="941"
+                     loading="lazy"
+                     decoding="async"
+                     class="w-full h-full object-cover object-center">
+            </picture>
             <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(11,13,18,0.85) 0%, rgba(11,13,18,0.3) 40%, rgba(11,13,18,0.3) 60%, rgba(11,13,18,0.85) 100%);"></div>
             
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">

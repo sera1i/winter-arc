@@ -34,8 +34,8 @@
     <!-- Laser progress bar -->
     <div class="w-48 sm:w-64 h-0.5 bg-steel/30 relative overflow-hidden">
         <div id="loader-progress" 
-             class="absolute left-0 top-0 h-full bg-crimson transition-all duration-300 ease-out"
-             style="width: 0%;"></div>
+             class="absolute inset-0 bg-crimson transition-transform duration-200 ease-out origin-left"
+             style="transform: scaleX(0);"></div>
     </div>
 
 </div>
@@ -54,34 +54,41 @@
 
     var p = 0;
     var interval = setInterval(function() {
-        p += Math.floor(Math.random() * 20) + 16;
+        p += Math.floor(Math.random() * 25) + 20;
         if (p >= 100) {
             p = 100;
             clearInterval(interval);
             finish();
         }
-        if (progress) progress.style.width = p + '%';
+        if (progress) progress.style.transform = 'scaleX(' + (p / 100) + ')';
         if (counter) counter.innerText = p + '%';
-    }, 45);
+    }, 20);
 
     var hidden = false;
     function finish() {
         if (hidden) return;
         hidden = true;
         clearInterval(interval);
-        if (progress) progress.style.width = '100%';
+        if (progress) progress.style.transform = 'scaleX(1)';
         if (counter) counter.innerText = '100%';
         setTimeout(function() {
-            loader.style.transition = 'opacity 0.35s ease-out';
+            loader.style.transition = 'opacity 0.25s ease-out';
             loader.style.opacity = '0';
             setTimeout(function() {
                 loader.style.display = 'none';
                 document.body.style.overflow = '';
-            }, 350);
-        }, 120);
+            }, 250);
+        }, 60);
     }
 
     document.body.style.overflow = 'hidden';
-    setTimeout(finish, 1200);
+    if (document.readyState === 'complete') {
+        setTimeout(finish, 300);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(finish, 100);
+        });
+        setTimeout(finish, 500);
+    }
 })();
 </script>

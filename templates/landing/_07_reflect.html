@@ -9,13 +9,16 @@
 
             <!-- Clean kneeling knight image from useful source (no baked-in Canva text) -->
             <div class="relative aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] overflow-hidden border border-dawn/60 shadow-xl order-2 lg:order-1 rounded-sm bg-ink">
-                <img src="{% static 'images/clean/reflect_clean.webp' %}"
-                     alt="Knight kneeling in contemplation at winter waterside"
-                     width="1672"
-                     height="941"
-                     loading="lazy"
-                     decoding="async"
-                     class="w-full h-full object-cover object-center">
+                <picture>
+                    <source media="(max-width: 767px)" srcset="{% static 'images/clean/reflect_clean_mobile.webp' %}">
+                    <img src="{% static 'images/clean/reflect_clean.webp' %}"
+                         alt="Knight kneeling in contemplation at winter waterside"
+                         width="1672"
+                         height="941"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-full object-cover object-center">
+                </picture>
                 <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to top, rgba(244,241,236,0.3) 0%, transparent 50%);"></div>
             </div>
 

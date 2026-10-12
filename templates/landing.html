@@ -85,7 +85,8 @@
 
     <!-- Preload Critical LCP Assets -->
     <link rel="preload" href="{% static 'fonts/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2' %}" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" as="image" href="{% static 'images/clean/hero_clean.webp' %}" fetchpriority="high">
+    <link rel="preload" as="image" href="{% static 'images/clean/hero_clean_mobile.webp' %}" media="(max-width: 767px)" fetchpriority="high">
+    <link rel="preload" as="image" href="{% static 'images/clean/hero_clean.webp' %}" media="(min-width: 768px)" fetchpriority="high">
 
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
     {% block extra_head %}{% endblock %}

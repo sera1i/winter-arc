@@ -6,8 +6,18 @@
 
     <!-- Full-bleed atmospheric background using clean useful source -->
     <div class="absolute inset-0 z-0" aria-hidden="true">
-        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-             style="background-image: url('{% static 'images/clean/hero_clean.webp' %}'); opacity: 0.55;"></div>
+        <style>
+            .hero-bg-art {
+                background-image: url('{% static "images/clean/hero_clean_mobile.webp" %}');
+                opacity: 0.55;
+            }
+            @media (min-width: 768px) {
+                .hero-bg-art {
+                    background-image: url('{% static "images/clean/hero_clean.webp" %}');
+                }
+            }
+        </style>
+        <div class="hero-bg-art absolute inset-0 bg-cover bg-center bg-no-repeat"></div>
         <!-- Layered overlays for depth and text legibility -->
         <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(11,13,18,0.92) 0%, rgba(11,13,18,0.70) 50%, rgba(11,13,18,0.35) 100%);"></div>
         <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(11,13,18,1) 0%, rgba(11,13,18,0.0) 35%);"></div>

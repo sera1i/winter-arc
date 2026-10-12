@@ -158,6 +158,30 @@
     }
 
     function scheduleInit() {
+        // On mobile (< 768px), delay loading Three.js bundle until idle or first interaction to protect mobile bandwidth & LCP
+        if (window.innerWidth < 768) {
+            let triggered = false;
+            function triggerOnInteraction() {
+                if (triggered) return;
+                triggered = true;
+                window.removeEventListener('scroll', triggerOnInteraction);
+                window.removeEventListener('touchstart', triggerOnInteraction);
+                loadAndInit();
+            }
+            window.addEventListener('scroll', triggerOnInteraction, { passive: true, once: true });
+            window.addEventListener('touchstart', triggerOnInteraction, { passive: true, once: true });
+            
+            // Fallback load after 3.5s if no interaction occurs
+            setTimeout(function() {
+                if (!triggered) {
+                    triggered = true;
+                    loadAndInit();
+                }
+            }, 3500);
+            return;
+        }
+
+        // On desktop, load via requestIdleCallback as before
         if ('requestIdleCallback' in window) {
             requestIdleCallback(loadAndInit, { timeout: 2000 });
         } else {
