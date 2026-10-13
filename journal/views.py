@@ -24,17 +24,17 @@ def _get_user_today(user):
 
 @login_required
 def journal_list(request):
-    entries = JournalEntry.objects.filter(user=request.user).order_by('-local_date', '-created_at')
+    entries = list(JournalEntry.objects.filter(user=request.user).order_by('-local_date', '-created_at'))
     today = _get_user_today(request.user)
-    has_today_entry = entries.filter(local_date=today).exists()
-    today_entry = entries.filter(local_date=today).first() if has_today_entry else None
+    today_entry = next((e for e in entries if e.local_date == today), None)
+    has_today_entry = today_entry is not None
 
     context = {
         'entries': entries,
         'today': today,
         'has_today_entry': has_today_entry,
         'today_entry': today_entry,
-        'total_entries': entries.count(),
+        'total_entries': len(entries),
     }
     return render(request, 'journal/journal_list.html', context)
 

@@ -51,12 +51,15 @@ class Habit(models.Model):
             user_tz = timezone.get_current_timezone()
         return timezone.now().astimezone(user_tz).date()
 
-    def is_completed_today(self):
+    def is_completed_today(self, today=None):
         """Return True if there's a completion record for today (user-local date)."""
-        today = self.get_user_today()
+        if today is None:
+            today = self.get_user_today()
+        if hasattr(self, '_prefetched_objects_cache') and 'completions' in self._prefetched_objects_cache:
+            return any(c.local_date == today for c in self.completions.all())
         return self.completions.filter(local_date=today).exists()
 
-    def get_current_streak(self):
+    def get_current_streak(self, today=None, completed_dates=None):
         """
         Calculate the current consecutive-day completion streak.
         
@@ -69,13 +72,15 @@ class Habit(models.Model):
         - Future dates do NOT count.
         - Only one record per day is needed (enforced by unique_together).
         """
-        today = self.get_user_today()
-        if hasattr(self, '_prefetched_objects_cache') and 'completions' in self._prefetched_objects_cache:
-            completed_dates = {c.local_date for c in self.completions.all()}
-        else:
-            completed_dates = set(
-                self.completions.values_list('local_date', flat=True)
-            )
+        if today is None:
+            today = self.get_user_today()
+        if completed_dates is None:
+            if hasattr(self, '_prefetched_objects_cache') and 'completions' in self._prefetched_objects_cache:
+                completed_dates = {c.local_date for c in self.completions.all()}
+            else:
+                completed_dates = set(
+                    self.completions.values_list('local_date', flat=True)
+                )
         if not completed_dates:
             return 0
 

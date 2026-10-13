@@ -1,6 +1,6 @@
 /**
  * Focus Mode — Cinematic Monolith Clock & Countdown Timer
- * Extracted verbatim from Focus mode.html prototype.
+ * Optimized for mobile interaction latency, rendering performance, and clean lifecycle management.
  */
 (function() {
   'use strict';
@@ -8,7 +8,7 @@
   // ---------- 3D drum digits ----------
   function Drum(solo) {
     var el = document.createElement('div');
-    el.className = 'drum' + (solo ? ' solo' : '');
+    el.className = 'drum no-anim' + (solo ? ' solo' : '');
     var faces = [];
     for (var i = 0; i < 10; i++) {
       var f = document.createElement('div');
@@ -135,6 +135,18 @@
 
   drawCd();
 
+  // ---------- Back Navigation (State & History Preservation) ----------
+  var backBtn = document.getElementById('back-nav-btn') || document.querySelector('.back-to-dashboard');
+  if (backBtn) {
+    backBtn.addEventListener('click', function(e) {
+      // Use history.back() if user navigated from within the app to restore state instantly without full reload
+      if (window.history.length > 1 && document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
+        e.preventDefault();
+        window.history.back();
+      }
+    });
+  }
+
   // ---------- Fullscreen ----------
   var fsBtn = document.getElementById('fullscreen-btn');
   var fsEnterIcon = document.getElementById('fs-enter-icon');
@@ -190,7 +202,8 @@
     });
   }
 
-  ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(function(ev) {
+  var fsEvents = ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'];
+  fsEvents.forEach(function(ev) {
     document.addEventListener(ev, updateFullscreenUI);
   });
   updateFullscreenUI();
@@ -220,33 +233,58 @@
       }
     }
   }
-  setInterval(tick, 200);
+  var tickTimer = setInterval(tick, 200);
   tick();
+
+  // Remove initial mount transition suppression after first paint
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      var noAnims = document.querySelectorAll('.drum.no-anim');
+      for (var i = 0; i < noAnims.length; i++) {
+        noAnims[i].classList.remove('no-anim');
+      }
+    });
+  });
 
   // ---------- 3D tilt (pointer + device) ----------
   var stage = document.getElementById('stage'), tx = 0, ty = 0, cx = 0, cy = 0, t0 = performance.now();
-  addEventListener('pointermove', function(e) {
+  var prevCx = null, prevCy = null;
+
+  function onPointerMove(e) {
     tx = (e.clientX / innerWidth - .5) * 2;
     ty = (e.clientY / innerHeight - .5) * 2;
-  });
-  addEventListener('pointerdown', function() {
+  }
+  addEventListener('pointermove', onPointerMove, { passive: true });
+
+  function onPointerDown() {
     if (window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) {
       DeviceOrientationEvent.requestPermission().catch(function() {});
     }
-  }, { once: true });
-  addEventListener('deviceorientation', function(e) {
+  }
+  addEventListener('pointerdown', onPointerDown, { once: true, passive: true });
+
+  function onOrientation(e) {
     if (e.gamma == null) return;
     tx = Math.max(-1, Math.min(1, e.gamma / 30));
     ty = Math.max(-1, Math.min(1, (e.beta - 45) / 30));
-  });
+  }
+  addEventListener('deviceorientation', onOrientation, { passive: true });
+
+  // Cache prefers-reduced-motion to avoid calling matchMedia every frame
+  var rmQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var rm = rmQuery ? rmQuery.matches : false;
+  if (rmQuery && rmQuery.addEventListener) {
+    rmQuery.addEventListener('change', function(e) { rm = e.matches; });
+  }
 
   // ---------- Digital rain ----------
   var cv = document.getElementById('rain');
-  if (!cv) return;
-  var ctx = cv.getContext('2d'), W = 0, H = 0, dpr = 1;
-  var streams = [], rainT = 0, rainOn = false, clockEl = document.getElementById('mainClock');
+  var ctx = cv ? cv.getContext('2d') : null;
+  var W = 0, H = 0, dpr = 1;
+  var streams = [], rainT = 0, rainOn = false, wasRainOn = false, clockEl = document.getElementById('mainClock');
 
   function size() {
+    if (!cv || !ctx) return;
     dpr = Math.min(devicePixelRatio || 1, 2);
     W = innerWidth;
     H = innerHeight;
@@ -254,13 +292,15 @@
     cv.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
-  addEventListener('resize', size);
+  addEventListener('resize', size, { passive: true });
   size();
 
   function rainStart() {
+    if (!ctx || !W || !H) return;
     streams = [];
     rainT = 0;
     rainOn = true;
+    wasRainOn = true;
     var count = Math.round(W / 14);
     for (var i = 0; i < count; i++) {
       var z = .25 + Math.random() * .75, fs = 9 + z * 24, len = 8 + Math.floor(Math.random() * 14);
@@ -283,21 +323,35 @@
     }
   }
 
-  addEventListener('keydown', function(e) {
+  function onKeyDown(e) {
     if (e.key === 'r' || e.key === 'R') rainStart();
-  });
+  }
+  addEventListener('keydown', onKeyDown);
 
+  // ---------- Animation Loop with Resource Conservation ----------
   var last = performance.now();
+  var rafId = null;
+
   function frame(now) {
+    rafId = requestAnimationFrame(frame);
     var dt = Math.min(.05, (now - last) / 1000);
     last = now;
-    var rm = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
     var sway = rm ? 0 : Math.sin((now - t0) / 2600);
     cx += ((tx * 9 + sway * 2.5) - cx) * .06;
     cy += ((-ty * 7 + Math.cos((now - t0) / 3100) * 2) - cy) * .06;
-    if (!rm && stage) stage.style.transform = 'rotateY(' + cx + 'deg) rotateX(' + cy + 'deg)';
-    ctx.clearRect(0, 0, W, H);
-    if (rainOn) {
+
+    if (!rm && stage) {
+      if (prevCx === null || Math.abs(cx - prevCx) > 0.02 || Math.abs(cy - prevCy) > 0.02) {
+        prevCx = cx;
+        prevCy = cy;
+        stage.style.transform = 'rotateY(' + cx.toFixed(2) + 'deg) rotateX(' + cy.toFixed(2) + 'deg)';
+      }
+    }
+
+    // Only clear and paint canvas when rain is actually active
+    if (rainOn && ctx) {
+      ctx.clearRect(0, 0, W, H);
       rainT += dt;
       var alive = 0;
       ctx.textAlign = 'center';
@@ -324,9 +378,32 @@
           ctx.fillText(s.g[k], s.x, y);
         }
       });
-      if (!alive) rainOn = false;
+      if (!alive) {
+        rainOn = false;
+        ctx.clearRect(0, 0, W, H);
+      }
+    } else if (wasRainOn && ctx) {
+      wasRainOn = false;
+      ctx.clearRect(0, 0, W, H);
     }
-    requestAnimationFrame(frame);
   }
-  requestAnimationFrame(frame);
+
+  rafId = requestAnimationFrame(frame);
+
+  // ---------- Complete Lifecycle Cleanup on Page Hide / Exit ----------
+  function cleanup() {
+    if (rafId) cancelAnimationFrame(rafId);
+    if (tickTimer) clearInterval(tickTimer);
+    removeEventListener('resize', size);
+    removeEventListener('pointermove', onPointerMove);
+    removeEventListener('deviceorientation', onOrientation);
+    removeEventListener('keydown', onKeyDown);
+    fsEvents.forEach(function(ev) {
+      document.removeEventListener(ev, updateFullscreenUI);
+    });
+    if (ctx && W && H) ctx.clearRect(0, 0, W, H);
+  }
+
+  window.addEventListener('pagehide', cleanup, { once: true });
+  window.addEventListener('beforeunload', cleanup, { once: true });
 })();

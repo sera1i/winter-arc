@@ -63,19 +63,25 @@ def get_task_statistics(user, arc=None):
         qs = user_tasks
         is_scoped_to_arc = False
 
-    total = qs.count()
-    completed = qs.filter(status='COMPLETED').count()
-    in_progress = qs.filter(status='IN_PROGRESS').count()
-    pending = qs.filter(status='PENDING').count()
-
     today = get_user_local_date(user)
-    # Overdue tasks: pending or in_progress with due_at date < today
-    overdue = qs.filter(status__in=['PENDING', 'IN_PROGRESS'], due_at__date__lt=today).count()
-
-    # Priority breakdown
-    high_priority = qs.filter(priority=Task.PRIORITY_HIGH).count()
-    med_priority = qs.filter(priority=Task.PRIORITY_MEDIUM).count()
-    low_priority = qs.filter(priority=Task.PRIORITY_LOW).count()
+    stats = qs.aggregate(
+        total=Count('id'),
+        completed=Count('id', filter=Q(status='COMPLETED')),
+        in_progress=Count('id', filter=Q(status='IN_PROGRESS')),
+        pending=Count('id', filter=Q(status='PENDING')),
+        overdue=Count('id', filter=Q(status__in=['PENDING', 'IN_PROGRESS'], due_at__date__lt=today)),
+        high_priority=Count('id', filter=Q(priority=Task.PRIORITY_HIGH)),
+        med_priority=Count('id', filter=Q(priority=Task.PRIORITY_MEDIUM)),
+        low_priority=Count('id', filter=Q(priority=Task.PRIORITY_LOW)),
+    )
+    total = stats['total'] or 0
+    completed = stats['completed'] or 0
+    in_progress = stats['in_progress'] or 0
+    pending = stats['pending'] or 0
+    overdue = stats['overdue'] or 0
+    high_priority = stats['high_priority'] or 0
+    med_priority = stats['med_priority'] or 0
+    low_priority = stats['low_priority'] or 0
 
     completion_rate = int((completed / total) * 100) if total > 0 else 0
 
@@ -113,7 +119,7 @@ def get_habit_statistics(user):
         completed_dates = {c.local_date for c in h.completions.all()}
         if today in completed_dates:
             completed_today += 1
-        current_streaks.append(h.get_current_streak())
+        current_streaks.append(h.get_current_streak(today=today, completed_dates=completed_dates))
         best_streaks.append(h.best_streak)
 
     top_current_streak = max(current_streaks, default=0)

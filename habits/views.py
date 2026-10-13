@@ -33,7 +33,7 @@ def habit_list(request):
     for habit in habits:
         completed_dates = {c.local_date for c in habit.completions.all()}
         completed_today = today in completed_dates
-        streak = habit.get_current_streak()
+        streak = habit.get_current_streak(today=today, completed_dates=completed_dates)
         habit_data.append({
             'habit': habit,
             'completed_today': completed_today,

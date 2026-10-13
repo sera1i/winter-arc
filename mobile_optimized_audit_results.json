@@ -1,0 +1,125 @@
+{
+  "device": "Mobile Viewport (iPhone 14/15 390x844, 3x DPR, Touch)",
+  "throttling": "Mobile 4G (Latency 70ms, Download 4Mbps, Upload 2Mbps) + 4x CPU Throttling",
+  "timestamp": "2026-10-13 07:09:06",
+  "journeys": {
+    "1_initial_landing": {
+      "server_response_time_ms": 742,
+      "ttfb_ms": 598,
+      "request_count": 10,
+      "js_execution_rendering_ms": 6632,
+      "time_until_interactive_ms": 7273,
+      "total_operation_ms": 8382,
+      "has_three_canvas": false
+    },
+    "2_login_and_dashboard": {
+      "server_response_time_ms": 476,
+      "ttfb_ms": 336,
+      "request_count": 10,
+      "js_execution_rendering_ms": 2815,
+      "time_until_action_visibly_responds_ms": 2387.39,
+      "time_until_interactive_ms": 4836,
+      "total_operation_ms": 5344
+    },
+    "3_page_navigation": {
+      "Arcs": {
+        "ttfb_ms": 148,
+        "dom_interactive_ms": 559,
+        "js_rendering_ms": 346,
+        "request_count": 9,
+        "total_ms": 605
+      },
+      "Tasks": {
+        "ttfb_ms": 128,
+        "dom_interactive_ms": 524,
+        "js_rendering_ms": 168,
+        "request_count": 9,
+        "total_ms": 540
+      },
+      "Habits": {
+        "ttfb_ms": 99,
+        "dom_interactive_ms": 547,
+        "js_rendering_ms": 275,
+        "request_count": 9,
+        "total_ms": 570
+      },
+      "Journal": {
+        "ttfb_ms": 70,
+        "dom_interactive_ms": 235,
+        "js_rendering_ms": 97,
+        "request_count": 9,
+        "total_ms": 281
+      },
+      "Analytics": {
+        "ttfb_ms": 253,
+        "dom_interactive_ms": 724,
+        "js_rendering_ms": 359,
+        "request_count": 9,
+        "total_ms": 748
+      }
+    },
+    "4_task_and_habit_completion": {
+      "task": {
+        "time_until_visibly_responds_ms": 349.08,
+        "total_operation_confirmed_ms": 814,
+        "requests": 1
+      },
+      "habit": {
+        "time_until_visibly_responds_ms": 578.4,
+        "total_operation_confirmed_ms": 827,
+        "requests": 1
+      }
+    },
+    "5_open_and_save_form": {
+      "open_form_ttfb_ms": 75,
+      "open_form_total_ms": 369,
+      "save_form_ttfb_ms": 104,
+      "save_form_total_ms": 956,
+      "requests": 10
+    },
+    "6_enter_focus_mode": {
+      "ttfb_ms": 57,
+      "server_response_time_ms": 94,
+      "request_count": 4,
+      "font_requests_count": 1,
+      "font_urls": [
+        "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300&display=swap"
+      ],
+      "time_until_timer_usable_ms": 2304,
+      "total_operation_ms": 2304
+    },
+    "7_exit_focus_mode": {
+      "ttfb_ms": 0,
+      "server_response_time_ms": 10,
+      "request_count": 9,
+      "time_until_interactive_ms": 528,
+      "total_exit_operation_ms": 781
+    },
+    "8_repeat_focus_mode_cycles": [
+      {
+        "cycle": 1,
+        "enter_ms": 1040,
+        "exit_ms": 1648,
+        "total_cycle_ms": 2688
+      },
+      {
+        "cycle": 2,
+        "enter_ms": 4713,
+        "exit_ms": 1365,
+        "total_cycle_ms": 6078
+      },
+      {
+        "cycle": 3,
+        "enter_ms": 1195,
+        "exit_ms": 1442,
+        "total_cycle_ms": 2638
+      }
+    ],
+    "9_refresh_confirm_state": {
+      "ttfb_ms": 87,
+      "dom_interactive_ms": 419,
+      "request_count": 9,
+      "total_reload_ms": 434
+    }
+  }
+}

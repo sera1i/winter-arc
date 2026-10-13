@@ -8,11 +8,12 @@
 <title>Focus Mode — Winter Arc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300&display=swap" rel="stylesheet">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300&display=swap"></noscript>
 <link rel="stylesheet" href="{% static 'focus/css/focus.css' %}">
 </head>
 <body>
-<a href="{% url 'dashboard' %}" class="back-to-dashboard" aria-label="Back to Dashboard">
+<a href="{{ return_url|default:'/dashboard/' }}" id="back-nav-btn" class="back-to-dashboard" aria-label="Back to Previous Page">
  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
   <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.75" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
  </svg>

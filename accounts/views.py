@@ -92,7 +92,7 @@ def dashboard_view(request):
     for habit in active_habits:
         completed_dates = {c.local_date for c in habit.completions.all()}
         completed_today = today in completed_dates
-        habit_data.append({'habit': habit, 'completed_today': completed_today, 'streak': habit.get_current_streak()})
+        habit_data.append({'habit': habit, 'completed_today': completed_today, 'streak': habit.get_current_streak(today=today, completed_dates=completed_dates)})
     habits_done_today = sum(1 for h in habit_data if h['completed_today'])
     top_streaks = sorted(habit_data, key=lambda x: x['streak'], reverse=True)[:3]
 

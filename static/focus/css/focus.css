@@ -114,6 +114,11 @@ canvas {
   transition: transform .75s cubic-bezier(.2, .9, .25, 1.15);
 }
 
+.drum.no-anim,
+.drum.no-anim .face {
+  transition: none !important;
+}
+
 .face {
   position: absolute;
   inset: 0;
