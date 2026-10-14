@@ -48,10 +48,10 @@
                         Focus Mode
                     </a>
                 {% else %}
-                    <a href="/#how-it-works" class="nav-link">How it works</a>
-                    <a href="/#features" class="nav-link">Features</a>
-                    <a href="{% url 'guides_index' %}" class="nav-link">Guides</a>
-                    <a href="/#privacy" class="nav-link">Privacy</a>
+                    <a href="/#how-it-works" class="nav-link focus:outline-none focus-visible:text-bone focus-visible:underline">How it works</a>
+                    <a href="/#features" class="nav-link focus:outline-none focus-visible:text-bone focus-visible:underline">Features</a>
+                    <a href="{% url 'guides_index' %}" class="nav-link focus:outline-none focus-visible:text-bone focus-visible:underline">Guides</a>
+                    <a href="/#privacy" class="nav-link focus:outline-none focus-visible:text-bone focus-visible:underline">Privacy</a>
                 {% endif %}
             </div>
 
@@ -100,10 +100,10 @@
                         </button>
                     </form>
                 {% else %}
-                    <a href="{% url 'login' %}" class="text-sm font-sans font-medium text-ice/80 hover:text-bone transition-colors tracking-wide">
+                    <a href="{% url 'login' %}" class="text-sm font-sans font-medium text-ice hover:text-bone transition-colors tracking-wide focus:outline-none focus-visible:ring-1 focus-visible:ring-crimson">
                         Log in
                     </a>
-                    <a href="{% url 'register' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5">
+                    <a href="{% url 'register' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5 shadow-md hover:shadow-crimson/20 focus:outline-none focus:ring-2 focus:ring-crimson focus:ring-offset-2 focus:ring-offset-ink transition-all">
                         Take the Oath
                     </a>
                 {% endif %}
@@ -189,10 +189,10 @@
                 </form>
             </div>
         {% else %}
-            <a href="/#how-it-works" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">How it works</a>
-            <a href="/#features" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Features</a>
-            <a href="{% url 'guides_index' %}" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Guides</a>
-            <a href="/#privacy" class="block text-ice/80 hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Privacy</a>
+            <a href="/#how-it-works" class="block text-ice hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">How it works</a>
+            <a href="/#features" class="block text-ice hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Features</a>
+            <a href="{% url 'guides_index' %}" class="block text-ice hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Guides</a>
+            <a href="/#privacy" class="block text-ice hover:text-bone text-base font-sans py-3 border-b border-steel/15 transition-colors" role="menuitem">Privacy</a>
             <div class="pt-5 space-y-3">
                 <a href="{% url 'login' %}" class="block text-center text-bone text-sm font-sans py-3 border border-steel/40 hover:border-ice/50 transition-colors" role="menuitem">
                     Log in
@@ -212,53 +212,58 @@
 
 <script>
 (function() {
-    const nav = document.getElementById('global-navbar');
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const iconOpen = document.getElementById('menu-icon-open');
-    const iconClose = document.getElementById('menu-icon-close');
-    let menuOpen = false;
+    function initNavbar() {
+        const nav = document.getElementById('global-navbar');
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconOpen = document.getElementById('menu-icon-open');
+        const iconClose = document.getElementById('menu-icon-close');
+        let menuOpen = false;
 
-    function applyScrolledState() {
-        const isScrolled = window.scrollY > 50;
-        nav.classList.toggle('nav-scrolled', isScrolled);
-        if (isScrolled) {
-            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-            nav.style.background = isLight ? 'rgba(233, 238, 244, 0.94)' : 'rgba(7, 9, 14, 0.92)';
-            nav.style.backdropFilter = 'blur(16px)';
-            nav.style.borderBottom = isLight ? '1px solid rgba(148, 163, 184, 0.5)' : '1px solid rgba(70, 88, 112, 0.4)';
-            nav.style.boxShadow = isLight ? '0 4px 20px -2px rgba(15, 23, 42, 0.08)' : '0 4px 24px -2px rgba(0, 0, 0, 0.5)';
-        } else {
-            nav.style.background = 'transparent';
-            nav.style.backdropFilter = 'none';
-            nav.style.borderBottom = '1px solid transparent';
-            nav.style.boxShadow = 'none';
+        let ticking = false;
+        function updateScrollState() {
+            if (!nav) return;
+            nav.classList.toggle('nav-scrolled', (window.scrollY || 0) > 50);
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                requestAnimationFrame(updateScrollState);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        if ((window.scrollY || 0) > 50 && nav) {
+            nav.classList.add('nav-scrolled');
+        }
+
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', function() {
+                menuOpen = !menuOpen;
+                mobileMenu.classList.toggle('hidden', !menuOpen);
+                menuBtn.setAttribute('aria-expanded', String(menuOpen));
+                if (iconOpen) iconOpen.classList.toggle('hidden', menuOpen);
+                if (iconClose) iconClose.classList.toggle('hidden', !menuOpen);
+            });
+
+            // Close on outside click
+            document.addEventListener('click', function(e) {
+                if (menuOpen && !nav.contains(e.target)) {
+                    menuOpen = false;
+                    mobileMenu.classList.add('hidden');
+                    menuBtn.setAttribute('aria-expanded', 'false');
+                    if (iconOpen) iconOpen.classList.remove('hidden');
+                    if (iconClose) iconClose.classList.add('hidden');
+                }
+            }, { passive: true });
         }
     }
 
-    window.addEventListener('scroll', applyScrolledState, { passive: true });
-    window.addEventListener('winter-arc-theme-change', applyScrolledState);
-    applyScrolledState();
-
-    if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', function() {
-            menuOpen = !menuOpen;
-            mobileMenu.classList.toggle('hidden', !menuOpen);
-            menuBtn.setAttribute('aria-expanded', String(menuOpen));
-            iconOpen.classList.toggle('hidden', menuOpen);
-            iconClose.classList.toggle('hidden', !menuOpen);
-        });
-
-        // Close on outside click
-        document.addEventListener('click', function(e) {
-            if (menuOpen && !nav.contains(e.target)) {
-                menuOpen = false;
-                mobileMenu.classList.add('hidden');
-                menuBtn.setAttribute('aria-expanded', 'false');
-                iconOpen.classList.remove('hidden');
-                iconClose.classList.add('hidden');
-            }
-        });
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNavbar, { once: true });
+    } else {
+        initNavbar();
     }
 })();
 </script>

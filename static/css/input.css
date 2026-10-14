@@ -116,7 +116,7 @@
   }
   .btn-ghost {
     @apply inline-flex items-center gap-1
-           text-xs font-mono text-ice/70 hover:text-bone
+           text-xs font-mono text-ice/85 hover:text-bone
            transition-colors duration-150 underline underline-offset-2;
   }
   .btn-danger {
@@ -337,14 +337,14 @@
     @apply font-serif text-2xl text-bone;
   }
   .section-eyebrow {
-    @apply font-mono text-[10px] uppercase tracking-[0.25em] text-ice/50 block mb-1;
+    @apply font-mono text-[10px] uppercase tracking-[0.25em] text-ice/85 block mb-1;
   }
 
   /* ============================================================
      NAVIGATION LINK STATES
      ============================================================ */
   .nav-link {
-    @apply text-sm font-sans font-medium tracking-wide text-ice/80 hover:text-bone
+    @apply text-sm font-sans font-medium tracking-wide text-ice/90 hover:text-bone
            transition-colors duration-150 relative;
   }
   .nav-link-active {
@@ -512,6 +512,51 @@
    ============================================================ */
 
 :root,
+[data-theme="dark"] {
+  --bg-primary: #07090E;
+  --bg-secondary: #0D1117;
+  --surface: rgba(15, 20, 29, 0.88);
+  --surface-elevated: rgba(21, 28, 40, 0.96);
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --border: rgba(70, 88, 112, 0.45);
+  --border-subtle: rgba(70, 88, 112, 0.25);
+  --accent: #B3151B;
+  --accent-bright: #E0231C;
+  --accent-light: #FF5A4F;
+  --ice: #8FA4BF;
+  --input-bg: rgba(11, 14, 20, 0.7);
+  --input-border: rgba(70, 88, 112, 0.5);
+  --card-inset-bg: rgba(70, 88, 112, 0.12);
+  --card-inset-border: rgba(70, 88, 112, 0.25);
+  --task-row-bg: rgba(15, 20, 29, 0.7);
+  --task-row-border: rgba(70, 88, 112, 0.3);
+  --task-row-hover-bg: rgba(21, 28, 40, 0.85);
+  --filter-tab-active-bg: rgba(70, 88, 112, 0.2);
+  --filter-tab-active-border: rgba(70, 88, 112, 0.55);
+  --filter-tab-active-text: #F1F5F9;
+  --badge-pending-bg: rgba(70, 88, 112, 0.1);
+  --badge-pending-text: rgba(174, 184, 198, 0.8);
+  --badge-pending-border: rgba(70, 88, 112, 0.35);
+  --badge-complete-bg: rgba(70, 88, 112, 0.15);
+  --badge-complete-text: #AEB8C6;
+  --badge-complete-border: rgba(70, 88, 112, 0.5);
+  --badge-active-bg: rgba(179, 21, 27, 0.15);
+  --badge-active-text: #FF5A4F;
+  --badge-active-border: rgba(179, 21, 27, 0.45);
+  --nav-scrolled-bg: rgba(11, 13, 18, 0.94);
+  --nav-scrolled-border: rgba(70, 88, 112, 0.35);
+  --nav-link-color: rgba(222, 231, 238, 0.9);
+  --nav-link-hover: #F4F1EC;
+  --nav-link-active: #F4F1EC;
+  --card-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7), 0 4px 14px -2px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+  --card-shadow-hover: 0 22px 50px -8px rgba(0, 0, 0, 0.85), 0 6px 18px -2px rgba(179, 21, 27, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(179, 21, 27, 0.4);
+  --card-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --metallic-bevel: inset 0 1px 0 rgba(180, 210, 240, 0.14), inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
 [data-theme="light"] {
   --bg-primary: #E9EEF4;
   --bg-secondary: #DCE3EC;
@@ -555,51 +600,6 @@
   --card-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.95);
   --metallic-bevel: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(148, 163, 184, 0.35);
   color-scheme: light;
-}
-
-[data-theme="dark"] {
-  --bg-primary: #07090E;
-  --bg-secondary: #0D1117;
-  --surface: rgba(15, 20, 29, 0.88);
-  --surface-elevated: rgba(21, 28, 40, 0.96);
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --border: rgba(70, 88, 112, 0.45);
-  --border-subtle: rgba(70, 88, 112, 0.25);
-  --accent: #B3151B;
-  --accent-bright: #E0231C;
-  --accent-light: #FF5A4F;
-  --ice: #8FA4BF;
-  --input-bg: rgba(11, 14, 20, 0.7);
-  --input-border: rgba(70, 88, 112, 0.5);
-  --card-inset-bg: rgba(70, 88, 112, 0.12);
-  --card-inset-border: rgba(70, 88, 112, 0.25);
-  --task-row-bg: rgba(15, 20, 29, 0.7);
-  --task-row-border: rgba(70, 88, 112, 0.3);
-  --task-row-hover-bg: rgba(21, 28, 40, 0.85);
-  --filter-tab-active-bg: rgba(70, 88, 112, 0.2);
-  --filter-tab-active-border: rgba(70, 88, 112, 0.55);
-  --filter-tab-active-text: #F1F5F9;
-  --badge-pending-bg: rgba(70, 88, 112, 0.1);
-  --badge-pending-text: rgba(174, 184, 198, 0.8);
-  --badge-pending-border: rgba(70, 88, 112, 0.35);
-  --badge-complete-bg: rgba(70, 88, 112, 0.15);
-  --badge-complete-text: #AEB8C6;
-  --badge-complete-border: rgba(70, 88, 112, 0.5);
-  --badge-active-bg: rgba(179, 21, 27, 0.15);
-  --badge-active-text: #FF5A4F;
-  --badge-active-border: rgba(179, 21, 27, 0.45);
-  --nav-scrolled-bg: rgba(7, 9, 14, 0.92);
-  --nav-scrolled-border: rgba(70, 88, 112, 0.35);
-  --nav-link-color: rgba(174, 184, 198, 0.85);
-  --nav-link-hover: #F1F5F9;
-  --nav-link-active: #F1F5F9;
-  --card-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7), 0 4px 14px -2px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.5);
-  --card-shadow-hover: 0 22px 50px -8px rgba(0, 0, 0, 0.85), 0 6px 18px -2px rgba(179, 21, 27, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(179, 21, 27, 0.4);
-  --card-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --metallic-bevel: inset 0 1px 0 rgba(180, 210, 240, 0.14), inset 0 -1px 0 rgba(0, 0, 0, 0.6);
-  color-scheme: dark;
 }
 
 /* ============================================================
@@ -1050,6 +1050,28 @@ html[data-theme="light"] .nav-link:hover {
 html[data-theme="light"] .nav-link-active {
   color: var(--nav-link-active);
 }
+#global-navbar {
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, backdrop-filter 0.25s ease;
+}
+#global-navbar.nav-scrolled {
+  background: var(--nav-scrolled-bg) !important;
+  border-bottom: 1px solid var(--nav-scrolled-border) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.65), inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+}
+.landing-page #global-navbar.nav-scrolled {
+  background: rgba(11, 13, 18, 0.94) !important;
+  border-bottom: 1px solid rgba(70, 88, 112, 0.35) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.75), inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+}
+html[data-theme="light"] #global-navbar.nav-scrolled {
+  background: var(--nav-scrolled-bg) !important;
+  border-bottom: 1px solid var(--nav-scrolled-border) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+}
 html[data-theme="light"] #global-navbar .text-bone {
   color: var(--text-primary);
 }
@@ -1222,5 +1244,3 @@ html[data-theme="light"] .wa-toast-error {
   border-color: #B3151B;
   color: #B3151B;
 }
-
-

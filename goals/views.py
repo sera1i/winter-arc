@@ -110,14 +110,21 @@ def milestone_toggle(request, pk):
     if request.method == 'POST':
         from django.db import transaction
         with transaction.atomic():
+            from gamification.services import award_xp, revoke_xp, check_and_unlock_achievements
+            from analytics.services import log_activity
+            from analytics.progress_services import get_user_sync_state
+
+            arc = milestone.goal.arc if milestone.goal else None
+
             if milestone.completed_at:
                 milestone.completed_at = None
+                revoke_xp(user=request.user, source_type='milestone', source_id=milestone.pk)
+                if milestone.goal.status == 'COMPLETED':
+                    milestone.goal.status = 'IN_PROGRESS' if milestone.goal.milestones.exists() else 'PENDING'
+                    milestone.goal.save(update_fields=['status', 'updated_at'])
+                    revoke_xp(user=request.user, source_type='goal', source_id=milestone.goal.pk)
             else:
                 milestone.completed_at = timezone.now()
-                from gamification.services import award_xp, check_and_unlock_achievements
-                from analytics.services import log_activity
-                
-                arc = milestone.goal.arc if milestone.goal else None
                 award_xp(
                     user=request.user,
                     source_type='milestone',
@@ -159,6 +166,8 @@ def milestone_toggle(request, pk):
                 check_and_unlock_achievements(request.user, trigger_type='milestone')
 
             milestone.save()
+            sync_state = get_user_sync_state(request.user, arc=arc, goal=milestone.goal)
+
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
             return JsonResponse({
                 'success': True,
@@ -167,6 +176,7 @@ def milestone_toggle(request, pk):
                 'goal_id': milestone.goal.pk,
                 'goal_progress': milestone.goal.progress_percentage,
                 'goal_status': milestone.goal.status,
+                'sync': sync_state,
             })
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
         if next_url:
@@ -179,14 +189,16 @@ def goal_complete(request, pk):
     if request.method == 'POST':
         from django.db import transaction
         with transaction.atomic():
+            from gamification.services import award_xp, revoke_xp, check_and_unlock_achievements
+            from analytics.services import log_activity
+            from analytics.progress_services import get_user_sync_state
+
+            arc = goal.arc if goal.arc else None
             was_completed = (goal.status == 'COMPLETED')
             if not was_completed:
                 goal.status = 'COMPLETED'
                 goal.save(update_fields=['status', 'updated_at'])
-                from gamification.services import award_xp, check_and_unlock_achievements
-                from analytics.services import log_activity
 
-                arc = goal.arc if goal.arc else None
                 award_xp(
                     user=request.user,
                     source_type='goal',
@@ -205,9 +217,12 @@ def goal_complete(request, pk):
                 check_and_unlock_achievements(request.user, trigger_type='goal')
                 messages.success(request, f'Goal "{goal.title}" fulfilled.')
             else:
+                revoke_xp(user=request.user, source_type='goal', source_id=goal.pk)
                 goal.status = 'IN_PROGRESS' if goal.milestones.exists() else 'PENDING'
                 goal.save(update_fields=['status', 'updated_at'])
                 messages.info(request, f'Goal "{goal.title}" reopened.')
+
+            sync_state = get_user_sync_state(request.user, arc=arc, goal=goal)
 
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
             return JsonResponse({
@@ -217,6 +232,7 @@ def goal_complete(request, pk):
                 'is_completed': goal.status == 'COMPLETED',
                 'progress_percentage': goal.progress_percentage,
                 'message': f'Goal "{goal.title}" {"fulfilled" if goal.status == "COMPLETED" else "reopened"}.',
+                'sync': sync_state,
             })
 
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')

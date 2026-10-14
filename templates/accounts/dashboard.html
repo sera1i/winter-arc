@@ -69,19 +69,15 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="font-mono text-[10px] uppercase tracking-wider text-ice/60">Rank Standing</span>
-                            <span class="font-mono text-[9px] text-crimson-light border border-crimson/40 px-1 py-0.2 bg-crimson/10">Tier {{ rank_info.current_level }}</span>
+                            <span class="font-mono text-[9px] text-crimson-light border border-crimson/40 px-1 py-0.2 bg-crimson/10" data-sync="rank-tier">Tier {{ rank_info.current_level }}</span>
                         </div>
-                        <span class="font-serif text-lg sm:text-xl text-bone font-medium block mt-0.5 truncate max-w-[160px]">
+                        <span class="font-serif text-lg sm:text-xl text-bone font-medium block mt-0.5 truncate max-w-[160px]" data-sync="rank-name">
                             {{ rank_info.current_rank }}
                         </span>
                     </div>
                     <div class="border-l border-steel/25 pl-4 text-right">
-                        <span class="font-mono text-xs text-crimson-light font-bold block">{{ total_xp }} XP</span>
-                        {% if rank_info.next_rank %}
-                            <span class="font-mono text-[9px] text-ice/50 block mt-0.5">{{ rank_info.xp_to_next }} XP to next tier</span>
-                        {% else %}
-                            <span class="font-mono text-[9px] text-ice/50 block mt-0.5">Maximum Rank</span>
-                        {% endif %}
+                        <span class="font-mono text-xs text-crimson-light font-bold block" data-sync="total-xp">{{ total_xp }} XP</span>
+                        <span class="font-mono text-[9px] text-ice/50 block mt-0.5" data-sync="rank-xp-to-next">{% if rank_info.next_rank %}{{ rank_info.xp_to_next }} XP to next tier{% else %}Maximum Rank{% endif %}</span>
                     </div>
                 </div>
 
@@ -145,11 +141,11 @@
             <div class="lg:col-span-4 border border-steel/25 bg-steel/5 p-5 space-y-3">
                 <div class="flex items-baseline justify-between">
                     <span class="font-mono text-[10px] uppercase tracking-widest text-ice/60">Campaign Completion</span>
-                    <span class="font-serif text-4xl sm:text-5xl text-crimson-light font-medium">{{ arc_progress }}%</span>
+                    <span class="font-serif text-4xl sm:text-5xl text-crimson-light font-medium" data-sync="arc-progress-text">{{ arc_progress }}%</span>
                 </div>
                 
                 <div class="progress-bar-track h-2 bg-steel/20 border border-steel/30 rounded-none overflow-hidden">
-                    <div class="progress-bar-fill h-full bg-gradient-to-r from-crimson via-crimson to-crimson-bright shadow-[0_0_12px_rgba(179,21,27,0.6)]" style="width: {{ arc_progress }}%;"></div>
+                    <div class="progress-bar-fill h-full bg-gradient-to-r from-crimson via-crimson to-crimson-bright shadow-[0_0_12px_rgba(179,21,27,0.6)]" data-sync="arc-progress-bar" style="width: {{ arc_progress }}%;"></div>
                 </div>
 
                 <div class="flex items-center justify-between text-[11px] font-mono text-ice/50 pt-1">
@@ -199,10 +195,10 @@
         <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <div class="flex justify-between items-start">
                 <span class="section-eyebrow">Rank Standing</span>
-                <span class="font-mono text-[10px] text-ice/60 border border-steel/20 px-1.5 py-0.5">Tier {{ rank_info.current_level }}</span>
+                <span class="font-mono text-[10px] text-ice/60 border border-steel/20 px-1.5 py-0.5" data-sync="rank-tier">Tier {{ rank_info.current_level }}</span>
             </div>
-            <div class="font-serif text-2xl sm:text-3xl text-bone mt-2 truncate">{{ rank_info.current_rank }}</div>
-            <div class="font-mono text-[11px] text-crimson-light mt-1 font-medium">{{ total_xp }} XP</div>
+            <div class="font-serif text-2xl sm:text-3xl text-bone mt-2 truncate" data-sync="rank-name">{{ rank_info.current_rank }}</div>
+            <div class="font-mono text-[11px] text-crimson-light mt-1 font-medium" data-sync="total-xp">{{ total_xp }} XP</div>
         </div>
 
         <!-- Metric 2: Arc Progress -->
@@ -211,9 +207,9 @@
                 <span class="section-eyebrow">Arc Progress</span>
                 <span class="font-mono text-[10px] text-ice/50">{{ active_arcs }} active</span>
             </div>
-            <div class="font-serif text-2xl sm:text-3xl text-crimson-light font-medium mt-2">{{ arc_progress }}%</div>
+            <div class="font-serif text-2xl sm:text-3xl text-crimson-light font-medium mt-2" data-sync="arc-progress-text">{{ arc_progress }}%</div>
             <div class="progress-bar-track mt-3 h-1.5 bg-steel/20">
-                <div class="progress-bar-fill h-full bg-crimson" style="width: {{ arc_progress }}%;"></div>
+                <div class="progress-bar-fill h-full bg-crimson" data-sync="arc-progress-bar" style="width: {{ arc_progress }}%;"></div>
             </div>
         </div>
 
@@ -223,8 +219,8 @@
                 <span class="section-eyebrow">Tasks Done Today</span>
                 <span class="font-mono text-[10px] text-ice/50">Daily Queue</span>
             </div>
-            <div class="font-serif text-2xl sm:text-3xl text-bone mt-2">{{ today_completed_tasks }}</div>
-            <div class="font-mono text-[11px] text-ice/60 mt-1">{{ total_pending_count }} remaining</div>
+            <div class="font-serif text-2xl sm:text-3xl text-bone mt-2" data-sync="tasks-today-completed">{{ today_completed_tasks }}</div>
+            <div class="font-mono text-[11px] text-ice/60 mt-1" data-sync="tasks-pending-count">{{ total_pending_count }} remaining</div>
         </div>
 
         <!-- Metric 4: Habits Done Today -->
@@ -233,10 +229,10 @@
                 <span class="section-eyebrow">Habits Today</span>
                 <span class="font-mono text-[10px] text-ice/50">Discipline</span>
             </div>
-            <div class="font-serif text-2xl sm:text-3xl text-bone mt-2">
+            <div class="font-serif text-2xl sm:text-3xl text-bone mt-2" data-sync="habits-today-ratio">
                 {{ habits_done_today }}<span class="text-ice/40 text-lg font-mono font-light"> / {{ total_habits }}</span>
             </div>
-            <div class="font-mono text-[11px] text-ice/60 mt-1">
+            <div class="font-mono text-[11px] text-ice/60 mt-1" data-sync="habits-top-streak">
                 {% if top_streaks %}{{ top_streaks.0.streak }}d top streak{% else %}0d streak{% endif %}
             </div>
         </div>
@@ -266,7 +262,7 @@
                         <div>
                             <div class="flex justify-between items-start gap-2">
                                 <span class="badge-pending text-[9px]">{{ goal.category }}</span>
-                                <span class="font-serif text-lg text-crimson font-light">{{ goal.progress_percentage }}%</span>
+                                <span class="font-serif text-lg text-crimson font-light" data-sync="goal-progress-text" data-goal-id="{{ goal.pk }}">{{ goal.progress_percentage }}%</span>
                             </div>
                             <h3 class="font-serif text-lg text-bone mt-1.5 hover:text-crimson-light transition-colors">
                                 <a href="{% url 'goals:detail' goal.pk %}">{{ goal.title }}</a>
@@ -274,7 +270,7 @@
                         </div>
                         <div class="space-y-2 pt-2 border-t border-steel/15">
                             <div class="progress-bar-track">
-                                <div class="progress-bar-fill" style="width: {{ goal.progress_percentage }}%;"></div>
+                                <div class="progress-bar-fill" data-sync="goal-progress-bar" data-goal-id="{{ goal.pk }}" style="width: {{ goal.progress_percentage }}%;"></div>
                             </div>
                             <div class="flex justify-between items-center text-[11px] font-mono text-ice/50">
                                 <span>{{ goal.milestones.count }} checkpoints</span>

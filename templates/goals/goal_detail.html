@@ -65,10 +65,10 @@
     <div class="wa-card space-y-4">
         <div class="flex justify-between items-baseline">
             <span class="section-eyebrow">Calculated Progression</span>
-            <span class="font-serif text-3xl text-crimson font-light">{{ goal.progress_percentage }}<span class="text-xl text-slate-400">%</span></span>
+            <span class="font-serif text-3xl text-crimson font-light" data-sync="goal-progress-text" data-goal-id="{{ goal.pk }}">{{ goal.progress_percentage }}<span class="text-xl text-slate-400">%</span></span>
         </div>
         <div class="progress-bar-track">
-            <div class="progress-bar-fill" style="width: {{ goal.progress_percentage }}%;"></div>
+            <div class="progress-bar-fill" data-sync="goal-progress-bar" data-goal-id="{{ goal.pk }}" style="width: {{ goal.progress_percentage }}%;"></div>
         </div>
         <div class="flex justify-between text-xs font-mono text-ice/60 pt-1">
             <span>Current: {{ goal.current_value }} {{ goal.unit }}</span>

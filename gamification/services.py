@@ -53,6 +53,23 @@ def award_xp(user, source_type, source_id, amount=None, description='', arc=None
             event.save(update_fields=['arc'])
     return event, created
 
+def revoke_xp(user, source_type, source_id):
+    """
+    Revoke XP idempotently by removing the corresponding XPEvent from the ledger if it exists.
+    Returns (revoked_amount, deleted: bool).
+    """
+    with transaction.atomic():
+        events = XPEvent.objects.filter(
+            user=user,
+            source_type=source_type,
+            source_id=str(source_id)
+        )
+        if events.exists():
+            total_revoked = sum(e.amount for e in events)
+            events.delete()
+            return total_revoked, True
+        return 0, False
+
 def get_user_total_xp(user, arc=None):
     """
     Calculate the user's total verified XP from the persistent ledger.

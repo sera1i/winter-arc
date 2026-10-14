@@ -22,8 +22,6 @@
         <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(11,13,18,0.92) 0%, rgba(11,13,18,0.70) 50%, rgba(11,13,18,0.35) 100%);"></div>
         <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(11,13,18,1) 0%, rgba(11,13,18,0.0) 35%);"></div>
         <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(11,13,18,0.7) 0%, rgba(11,13,18,0.0) 25%);"></div>
-        <!-- Three.js canvas will be inserted here -->
-        <div id="three-hero-container" class="absolute inset-0 z-10 pointer-events-none"></div>
     </div>
 
     <!-- Content -->
@@ -76,7 +74,7 @@
                     <span class="w-2.5 h-2.5 bg-steel/30 rounded-full border border-steel/40"></span>
                     <span class="w-2.5 h-2.5 bg-steel/30 rounded-full border border-steel/40"></span>
                 </div>
-                <p class="font-mono text-[11px] uppercase tracking-widest text-ice/70">
+                <p class="font-mono text-[11px] uppercase tracking-widest text-ice/85">
                     Beacons lit · Hold the line
                 </p>
             </div>
@@ -84,5 +82,3 @@
     </div>
 
 </section>
-
-<script src="{% static 'js/three_hero.js' %}" defer data-three-src="{% static 'js/vendor/three.min.js' %}"></script>

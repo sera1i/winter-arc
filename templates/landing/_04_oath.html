@@ -1,93 +1,120 @@
 {% load static %}
 <!-- THE OATH — 4 Movements, clean panoramic rider artwork from useful source -->
 <section id="features"
-         class="bg-ink py-24 sm:py-32 border-b border-steel/20 overflow-hidden"
+         class="scroll-mt-20 sm:scroll-mt-24 bg-ink py-16 sm:py-20 lg:py-24 border-b border-steel/20 overflow-hidden relative"
          aria-labelledby="oath-heading">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
 
-        <!-- Section header -->
-        <div class="max-w-2xl mb-16 sm:mb-20">
-            <span class="font-mono text-[11px] uppercase tracking-[0.35em] text-crimson-light font-medium block mb-4">
-                II · The Oath
-            </span>
-            <h2 id="oath-heading" class="font-serif text-4xl sm:text-5xl lg:text-6xl text-bone leading-tight mb-4">
-                Four movements.<br>One season.
-            </h2>
-            <p class="font-sans text-base text-ice/70 leading-relaxed">
+        <!-- Section header: Balanced two-sided on desktop/tablet, stacked on mobile -->
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 sm:mb-14">
+            <div>
+                <span class="font-mono text-xs uppercase tracking-[0.35em] text-crimson-light font-bold block mb-3">
+                    II · The Oath
+                </span>
+                <h2 id="oath-heading" class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone leading-tight">
+                    Four movements.<br class="hidden sm:inline"> One season.
+                </h2>
+            </div>
+            <p class="font-sans text-sm sm:text-base text-ice/90 leading-relaxed max-w-md md:text-right">
                 The Arc is not a goal-tracking app. It is a discipline operating system. Each movement builds on the last.
             </p>
         </div>
 
-        <!-- 4 Steps grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-steel/20 mb-16">
+        <!-- 4 Steps grid: 4 cols on desktop, 2 cols on tablet, 1 col on mobile -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-steel/25 border border-steel/25 shadow-xl overflow-hidden mb-12 sm:mb-16">
 
             <!-- Step 01: Swear -->
-            <div class="bg-ink p-8 sm:p-10 space-y-4 group hover:bg-steel/5 transition-colors">
-                <div class="flex items-start justify-between">
-                    <span class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-light font-bold">01 · Swear</span>
+            <div class="bg-ink/95 p-6 sm:p-8 flex flex-col justify-between group hover:bg-steel/[0.08] transition-all duration-200 relative">
+                <div class="absolute top-0 left-0 right-0 h-0.5 bg-steel/30 group-hover:bg-crimson transition-colors"></div>
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-bold">01 · Swear</span>
+                    </div>
+                    <h3 class="font-serif text-xl sm:text-2xl text-bone mb-2 group-hover:text-white transition-colors">Create your Arc</h3>
+                    <p class="font-sans text-sm text-ice/90 leading-relaxed">
+                        Set fixed start and end dates with a singular, non-negotiable objective.
+                    </p>
                 </div>
-                <h3 class="font-serif text-2xl text-bone">Create your Arc</h3>
-                <p class="font-sans text-sm text-ice/65 leading-relaxed">
-                    Set fixed start and end dates with a singular, non-negotiable objective.
-                </p>
             </div>
 
             <!-- Step 02: Arm -->
-            <div class="bg-ink p-8 sm:p-10 space-y-4 group hover:bg-steel/5 transition-colors">
-                <div class="flex items-start justify-between">
-                    <span class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-light font-bold">02 · Arm</span>
+            <div class="bg-ink/95 p-6 sm:p-8 flex flex-col justify-between group hover:bg-steel/[0.08] transition-all duration-200 relative">
+                <div class="absolute top-0 left-0 right-0 h-0.5 bg-steel/30 group-hover:bg-crimson transition-colors"></div>
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-bold">02 · Arm</span>
+                    </div>
+                    <h3 class="font-serif text-xl sm:text-2xl text-bone mb-2 group-hover:text-white transition-colors">Set the system</h3>
+                    <p class="font-sans text-sm text-ice/90 leading-relaxed">
+                        Define measurable goals, concrete milestones, recurring habits, and atomic tasks.
+                    </p>
                 </div>
-                <h3 class="font-serif text-2xl text-bone">Set the system</h3>
-                <p class="font-sans text-sm text-ice/65 leading-relaxed">
-                    Define measurable goals, concrete milestones, recurring habits, and atomic tasks.
-                </p>
             </div>
 
             <!-- Step 03: Ride -->
-            <div class="bg-ink p-8 sm:p-10 space-y-4 group hover:bg-steel/5 transition-colors">
-                <div class="flex items-start justify-between">
-                    <span class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-light font-bold">03 · Ride</span>
+            <div class="bg-ink/95 p-6 sm:p-8 flex flex-col justify-between group hover:bg-steel/[0.08] transition-all duration-200 relative">
+                <div class="absolute top-0 left-0 right-0 h-0.5 bg-steel/30 group-hover:bg-crimson transition-colors"></div>
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-bold">03 · Ride</span>
+                    </div>
+                    <h3 class="font-serif text-xl sm:text-2xl text-bone mb-2 group-hover:text-white transition-colors">Execute daily</h3>
+                    <p class="font-sans text-sm text-ice/90 leading-relaxed">
+                        Show up each morning and execute from the Today command center.
+                    </p>
                 </div>
-                <h3 class="font-serif text-2xl text-bone">Execute daily</h3>
-                <p class="font-sans text-sm text-ice/65 leading-relaxed">
-                    Show up each morning and execute from the Today command center.
-                </p>
             </div>
 
             <!-- Step 04: Reflect -->
-            <div class="bg-ink p-8 sm:p-10 space-y-4 group hover:bg-steel/5 transition-colors">
-                <div class="flex items-start justify-between">
-                    <span class="font-mono text-[11px] uppercase tracking-[0.3em] text-crimson-light font-bold">04 · Reflect</span>
+            <div class="bg-ink/95 p-6 sm:p-8 flex flex-col justify-between group hover:bg-steel/[0.08] transition-all duration-200 relative">
+                <div class="absolute top-0 left-0 right-0 h-0.5 bg-steel/30 group-hover:bg-crimson transition-colors"></div>
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-bold">04 · Reflect</span>
+                    </div>
+                    <h3 class="font-serif text-xl sm:text-2xl text-bone mb-2 group-hover:text-white transition-colors">Review &amp; adapt</h3>
+                    <p class="font-sans text-sm text-ice/90 leading-relaxed">
+                        Private evening check-ins, honest audit, and cumulative progress analytics.
+                    </p>
                 </div>
-                <h3 class="font-serif text-2xl text-bone">Review &amp; adapt</h3>
-                <p class="font-sans text-sm text-ice/65 leading-relaxed">
-                    Private evening check-ins, honest audit, and cumulative progress analytics.
-                </p>
             </div>
         </div>
 
-        <!-- Clean panoramic rider banner (NO baked-in Canva text) -->
-        <div class="relative aspect-[21/6] sm:aspect-[21/5] lg:aspect-[21/4] overflow-hidden border border-steel/25 rounded-sm">
-            <picture>
-                <source media="(max-width: 767px)" srcset="{% static 'images/clean/oath_clean_mobile.webp' %}">
-                <img src="{% static 'images/clean/oath_clean.webp' %}"
-                     alt="Rider in winter pass"
-                     width="1672"
-                     height="941"
-                     loading="lazy"
-                     decoding="async"
-                     class="w-full h-full object-cover object-center">
-            </picture>
-            <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(11,13,18,0.85) 0%, rgba(11,13,18,0.3) 40%, rgba(11,13,18,0.3) 60%, rgba(11,13,18,0.85) 100%);"></div>
-            
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                <p class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone italic tracking-wide mb-2 drop-shadow-lg">
-                    "Winter is coming."
-                </p>
-                <p class="font-mono text-xs uppercase tracking-[0.3em] text-crimson-light font-medium">
-                    — House Stark
-                </p>
+        <!-- Integrated Knight Quote Banner: Seamless Tonal Blending & Cinematic Depth -->
+        <div class="relative w-full overflow-hidden border border-steel/25 shadow-2xl bg-ink">
+            <div class="relative min-h-[220px] sm:min-h-[280px] lg:min-h-[340px] aspect-[16/9] sm:aspect-[21/8] lg:aspect-[24/8] w-full">
+                <picture>
+                    <source media="(max-width: 767px)" srcset="{% static 'images/clean/oath_clean_mobile.webp' %}">
+                    <img src="{% static 'images/clean/oath_clean.webp' %}"
+                         alt="Armored rider in winter mountain pass"
+                         width="1672"
+                         height="941"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-full object-cover object-center transform scale-[1.01]">
+                </picture>
+
+                <!-- Dual-axis cinematic tonal blending vignettes -->
+                <!-- Top & bottom soft fade so image dissolves seamlessly into section background -->
+                <div class="absolute inset-0 pointer-events-none"
+                     style="background: linear-gradient(to bottom, rgba(11,13,18,0.75) 0%, rgba(11,13,18,0.15) 30%, rgba(11,13,18,0.15) 70%, rgba(11,13,18,0.85) 100%);"></div>
+
+                <!-- Left & right vignette for framing and contrast -->
+                <div class="absolute inset-0 pointer-events-none"
+                     style="background: linear-gradient(to right, rgba(11,13,18,0.85) 0%, rgba(11,13,18,0.25) 30%, rgba(11,13,18,0.25) 70%, rgba(11,13,18,0.85) 100%);"></div>
+
+                <!-- Centered quote block with House Stark attribution -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4 sm:px-8 py-6">
+                    <blockquote class="max-w-2xl">
+                        <p class="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-bone italic tracking-wide leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+                            &ldquo;Winter is coming.&rdquo;
+                        </p>
+                        <footer class="font-mono text-xs sm:text-sm uppercase tracking-[0.35em] text-crimson-light font-semibold mt-3 sm:mt-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+                            &mdash; House Stark
+                        </footer>
+                    </blockquote>
+                </div>
             </div>
         </div>
 

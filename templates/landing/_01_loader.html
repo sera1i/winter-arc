@@ -2,6 +2,7 @@
 <!-- LOADER — "Winter is coming", live counter 0-100%, clean helmet artwork -->
 <div id="wa-loader" 
      class="fixed inset-0 z-[100] bg-ink flex flex-col items-center justify-center select-none"
+     style="contain: strict; will-change: opacity;"
      aria-hidden="true"
      aria-live="off">
 
@@ -26,7 +27,7 @@
     <!-- Live counter and micro-label -->
     <div class="flex items-center gap-3 mb-6">
         <span class="w-1.5 h-1.5 bg-crimson rounded-full animate-ping"></span>
-        <p class="font-mono text-xs uppercase tracking-[0.3em] text-ice/70">
+        <p class="font-mono text-xs uppercase tracking-[0.3em] text-ice/85">
             Lighting the beacons... <span id="loader-counter" class="text-bone font-bold ml-1">0%</span>
         </p>
     </div>
@@ -42,53 +43,64 @@
 
 <script>
 (function() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        var el = document.getElementById('wa-loader');
-        if (el) el.style.display = 'none';
-        return;
-    }
+    'use strict';
     var loader = document.getElementById('wa-loader');
-    var progress = document.getElementById('loader-progress');
-    var counter = document.getElementById('loader-counter');
     if (!loader) return;
 
-    var p = 0;
-    var interval = setInterval(function() {
-        p += Math.floor(Math.random() * 25) + 20;
-        if (p >= 100) {
-            p = 100;
-            clearInterval(interval);
-            finish();
-        }
-        if (progress) progress.style.transform = 'scaleX(' + (p / 100) + ')';
-        if (counter) counter.innerText = p + '%';
-    }, 20);
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        loader.style.display = 'none';
+        document.body.style.overflow = '';
+        return;
+    }
 
-    var hidden = false;
+    var progress = document.getElementById('loader-progress');
+    var counter = document.getElementById('loader-counter');
+    var finished = false;
+
     function finish() {
-        if (hidden) return;
-        hidden = true;
-        clearInterval(interval);
+        if (finished) return;
+        finished = true;
         if (progress) progress.style.transform = 'scaleX(1)';
-        if (counter) counter.innerText = '100%';
+        if (counter) counter.textContent = '100%';
+
         setTimeout(function() {
-            loader.style.transition = 'opacity 0.25s ease-out';
+            loader.style.transition = 'opacity 0.2s ease-out';
             loader.style.opacity = '0';
             setTimeout(function() {
                 loader.style.display = 'none';
-                document.body.style.overflow = '';
-            }, 250);
-        }, 60);
+                try {
+                    window.dispatchEvent(new CustomEvent('wa-loader-finished'));
+                } catch (e) {}
+            }, 200);
+        }, 50);
     }
 
-    document.body.style.overflow = 'hidden';
+    // Animate progress smoothly via CSS compositor
+    if (progress) {
+        progress.style.transition = 'transform 0.42s cubic-bezier(0.16, 1, 0.3, 1)';
+        requestAnimationFrame(function() {
+            progress.style.transform = 'scaleX(1)';
+        });
+    }
+
+    // Two clean non-blocking percentage updates
+    setTimeout(function() {
+        if (!finished && counter) counter.textContent = '54%';
+    }, 180);
+
+    setTimeout(function() {
+        if (!finished && counter) counter.textContent = '88%';
+    }, 340);
+
+    // Finish loader cleanly
+    var watchdog = setTimeout(finish, 480);
+
     if (document.readyState === 'complete') {
-        setTimeout(finish, 300);
+        setTimeout(finish, 200);
     } else {
         window.addEventListener('load', function() {
-            setTimeout(finish, 100);
-        });
-        setTimeout(finish, 500);
+            setTimeout(finish, 80);
+        }, { once: true });
     }
 })();
 </script>

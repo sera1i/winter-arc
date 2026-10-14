@@ -263,3 +263,67 @@ def get_full_analytics_summary(user, arc_id=None):
         'recent_events': recent_events,
         'goals_data': goals_data,
     }
+
+
+def get_user_sync_state(user, arc=None, goal=None):
+    """
+    Build an authoritative, real-time synchronization payload for the user.
+    """
+    today = get_user_local_date(user)
+    total_xp = get_user_total_xp(user)
+    rank_info = get_user_rank(user)
+
+    user_tasks = Task.objects.filter(user=user)
+    today_completed_tasks = user_tasks.filter(status='COMPLETED', completed_at__date=today).count()
+    total_pending_count = user_tasks.filter(status__in=['PENDING', 'IN_PROGRESS']).count()
+    task_counts = user_tasks.exclude(status='CANCELLED').aggregate(
+        pending=Count('id', filter=Q(status='PENDING')),
+        inprogress=Count('id', filter=Q(status='IN_PROGRESS')),
+        completed=Count('id', filter=Q(status='COMPLETED')),
+        total=Count('id')
+    )
+
+    habit_stats = get_habit_statistics(user)
+
+    target_arc = arc
+    if not target_arc:
+        target_arc = Arc.objects.filter(user=user, is_primary=True).exclude(status='ARCHIVED').first()
+    arc_prog = calculate_arc_progress(target_arc) if target_arc else 0
+
+    goal_prog = goal.progress_percentage if goal else None
+    goal_status = goal.status if goal else None
+
+    return {
+        'total_xp': total_xp,
+        'rank': {
+            'current_rank': rank_info['current_rank'],
+            'current_level': rank_info['current_level'],
+            'next_rank': rank_info['next_rank'],
+            'xp_to_next': rank_info['xp_to_next'],
+            'progress_percentage': rank_info['progress_percentage'],
+            'is_max_rank': rank_info['is_max_rank'],
+        },
+        'tasks': {
+            'today_completed': today_completed_tasks,
+            'total_pending': total_pending_count,
+            'pending': task_counts['pending'] or 0,
+            'inprogress': task_counts['inprogress'] or 0,
+            'completed': task_counts['completed'] or 0,
+            'total': task_counts['total'] or 0,
+        },
+        'habits': {
+            'completed_today': habit_stats['completed_today'],
+            'total_habits': habit_stats['total_habits'],
+            'top_streak': habit_stats['top_current_streak'],
+            'best_streak': habit_stats['top_best_streak'],
+        },
+        'arc': {
+            'id': target_arc.pk if target_arc else None,
+            'progress': arc_prog,
+        } if target_arc else None,
+        'goal': {
+            'id': goal.pk if goal else None,
+            'progress': goal_prog,
+            'status': goal_status,
+        } if goal else None,
+    }

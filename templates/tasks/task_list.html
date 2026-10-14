@@ -45,11 +45,11 @@
         <a href="?status=" class="{% if not request.GET.status %}filter-tab-active{% else %}filter-tab{% endif %}">
             All
         </a>
-        <a href="?status=PENDING" class="{% if request.GET.status == 'PENDING' %}filter-tab-active{% else %}filter-tab{% endif %}">
-            Pending
+        <a href="?status=PENDING" class="{% if request.GET.status == 'PENDING' %}filter-tab-active{% else %}filter-tab{% endif %}" data-sync="tasks-filter-pending">
+            Pending ({{ pending_count }})
         </a>
-        <a href="?status=COMPLETED" class="{% if request.GET.status == 'COMPLETED' %}filter-tab-active{% else %}filter-tab{% endif %}">
-            Completed
+        <a href="?status=COMPLETED" class="{% if request.GET.status == 'COMPLETED' %}filter-tab-active{% else %}filter-tab{% endif %}" data-sync="tasks-filter-completed">
+            Completed ({{ completed_count }})
         </a>
     </div>
 

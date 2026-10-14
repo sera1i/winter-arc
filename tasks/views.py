@@ -96,6 +96,7 @@ def task_complete(request, pk):
             
             from gamification.services import award_xp, check_and_unlock_achievements
             from analytics.services import log_activity
+            from analytics.progress_services import get_user_sync_state
 
             arc = task.goal.arc if task.goal else None
             event, created = award_xp(
@@ -116,6 +117,8 @@ def task_complete(request, pk):
                 )
                 check_and_unlock_achievements(request.user, trigger_type='task')
 
+            sync_state = get_user_sync_state(request.user, arc=arc, goal=task.goal)
+
         messages.success(request, 'Done. The frost gives way.')
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
             return JsonResponse({
@@ -124,6 +127,7 @@ def task_complete(request, pk):
                 'status': task.status,
                 'is_completed': task.is_completed,
                 'message': 'Done. The frost gives way.',
+                'sync': sync_state,
             })
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
         if next_url:
@@ -143,6 +147,18 @@ def task_uncomplete(request, pk):
                 user=request.user
             )
             task.uncomplete()
+            
+            from gamification.services import revoke_xp
+            from analytics.progress_services import get_user_sync_state
+
+            arc = task.goal.arc if task.goal else None
+            revoke_xp(
+                user=request.user,
+                source_type='task',
+                source_id=task.pk
+            )
+            sync_state = get_user_sync_state(request.user, arc=arc, goal=task.goal)
+
         messages.success(request, f'"{task.title}" marked incomplete.')
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
             return JsonResponse({
@@ -151,6 +167,7 @@ def task_uncomplete(request, pk):
                 'status': task.status,
                 'is_completed': task.is_completed,
                 'message': f'"{task.title}" marked incomplete.',
+                'sync': sync_state,
             })
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
         if next_url:

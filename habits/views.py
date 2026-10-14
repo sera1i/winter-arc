@@ -115,19 +115,22 @@ def habit_complete(request, pk):
             completion, created = HabitCompletion.objects.get_or_create(
                 habit=habit, local_date=today
             )
+            from gamification.services import award_xp, revoke_xp, check_and_unlock_achievements
+            from analytics.services import log_activity
+            from analytics.progress_services import get_user_sync_state
+            
+            habit_source_id = f"{habit.pk}_{today}"
             if not created:
                 # Already completed today — uncomplete it
                 completion.delete()
+                revoke_xp(user=request.user, source_type='habit', source_id=habit_source_id)
                 messages.info(request, f'"{habit.name}" marked incomplete for today.')
             else:
-                from gamification.services import award_xp, check_and_unlock_achievements
-                from analytics.services import log_activity
-                
                 # Idempotency source_id combines habit id and date
                 award_xp(
                     user=request.user,
                     source_type='habit',
-                    source_id=f"{habit.pk}_{today}",
+                    source_id=habit_source_id,
                     description=f'Completed habit: {habit.name} on {today}'
                 )
                 log_activity(
@@ -135,19 +138,22 @@ def habit_complete(request, pk):
                     event_type='HABIT_COMPLETED',
                     title=f'Beacon lit: {habit.name}',
                     source_type='habit',
-                    source_id=f"{habit.pk}_{today}"
+                    source_id=habit_source_id
                 )
                 check_and_unlock_achievements(request.user, trigger_type='habit')
                 messages.success(request, 'Another beacon lit.')
+
+            sync_state = get_user_sync_state(request.user)
 
         if request.headers.get('x-requested-with') == 'XMLHttpRequest' or 'application/json' in request.headers.get('Accept', ''):
             return JsonResponse({
                 'success': True,
                 'habit_id': habit.pk,
                 'completed_today': created,
-                'streak': habit.get_current_streak(),
+                'streak': habit.get_current_streak(today=today),
                 'best_streak': habit.best_streak,
                 'message': 'Another beacon lit.' if created else f'"{habit.name}" marked incomplete for today.',
+                'sync': sync_state,
             })
 
         next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')

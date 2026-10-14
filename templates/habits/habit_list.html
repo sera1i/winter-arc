@@ -33,6 +33,11 @@
                 <p class="font-serif italic text-base sm:text-lg text-ice/80">
                     The daily rituals that build the season.
                 </p>
+                <div class="flex items-center gap-4 text-xs font-mono text-ice/60 pt-1">
+                    <span>Active: <strong class="text-bone font-normal" data-sync="habits-total-count">{{ active_count }}</strong></span>
+                    <span>·</span>
+                    <span>Completed Today: <strong class="text-crimson-light font-normal" data-sync="habits-today-completed">{{ completed_today_count }}</strong></span>
+                </div>
             </div>
             <a href="{% url 'habits:create' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 self-start sm:self-auto flex-shrink-0">
                 Create Habit

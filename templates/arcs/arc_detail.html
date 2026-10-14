@@ -138,7 +138,7 @@
                                         </a>
                                     </h3>
                                 </div>
-                                <span class="font-serif text-xl text-crimson font-light flex-shrink-0">
+                                <span class="font-serif text-xl text-crimson font-light flex-shrink-0" data-sync="goal-progress-text" data-goal-id="{{ goal.pk }}">
                                     {{ goal.progress_percentage }}%
                                 </span>
                             </div>
@@ -153,7 +153,7 @@
                         <div class="space-y-4 pt-4 border-t border-steel/20 mt-4">
                             <!-- Progress Bar -->
                             <div class="progress-bar-track">
-                                <div class="progress-bar-fill" style="width: {{ goal.progress_percentage }}%;"></div>
+                                <div class="progress-bar-fill" data-sync="goal-progress-bar" data-goal-id="{{ goal.pk }}" style="width: {{ goal.progress_percentage }}%;"></div>
                             </div>
 
                             <div class="flex justify-between items-center text-xs font-mono text-ice/60">

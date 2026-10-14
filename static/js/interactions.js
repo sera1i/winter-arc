@@ -56,6 +56,127 @@
     }
 
     // -------------------------------------------------------------------------
+    // Real-Time Cross-Component State Synchronizer
+    // -------------------------------------------------------------------------
+    function applySyncState(sync) {
+        if (!sync) return;
+
+        // 1. Total XP across all plaques & metric cards
+        if (typeof sync.total_xp !== 'undefined') {
+            document.querySelectorAll('[data-sync="total-xp"]').forEach(function (el) {
+                el.textContent = sync.total_xp + ' XP';
+            });
+        }
+
+        // 2. Rank, Tier & XP to Next Tier
+        if (sync.rank) {
+            if (sync.rank.current_rank) {
+                document.querySelectorAll('[data-sync="rank-name"]').forEach(function (el) {
+                    el.textContent = sync.rank.current_rank;
+                });
+            }
+            if (sync.rank.current_level) {
+                document.querySelectorAll('[data-sync="rank-tier"]').forEach(function (el) {
+                    el.textContent = 'Tier ' + sync.rank.current_level;
+                });
+            }
+            if (typeof sync.rank.xp_to_next !== 'undefined') {
+                document.querySelectorAll('[data-sync="rank-xp-to-next"]').forEach(function (el) {
+                    if (sync.rank.next_rank && sync.rank.xp_to_next !== null) {
+                        el.textContent = sync.rank.xp_to_next + ' XP to next tier';
+                    } else {
+                        el.textContent = 'Maximum Rank';
+                    }
+                });
+            }
+        }
+
+        // 3. Daily Tasks & Filter Pills
+        if (sync.tasks) {
+            if (typeof sync.tasks.today_completed !== 'undefined') {
+                document.querySelectorAll('[data-sync="tasks-today-completed"]').forEach(function (el) {
+                    el.textContent = sync.tasks.today_completed;
+                });
+            }
+            if (typeof sync.tasks.total_pending !== 'undefined') {
+                document.querySelectorAll('[data-sync="tasks-pending-count"]').forEach(function (el) {
+                    el.textContent = sync.tasks.total_pending + ' remaining';
+                });
+            }
+            if (typeof sync.tasks.pending !== 'undefined') {
+                document.querySelectorAll('[data-sync="tasks-filter-pending"]').forEach(function (el) {
+                    el.textContent = 'Pending (' + sync.tasks.pending + ')';
+                });
+            }
+            if (typeof sync.tasks.inprogress !== 'undefined') {
+                document.querySelectorAll('[data-sync="tasks-filter-inprogress"]').forEach(function (el) {
+                    el.textContent = 'In Progress (' + sync.tasks.inprogress + ')';
+                });
+            }
+            if (typeof sync.tasks.completed !== 'undefined') {
+                document.querySelectorAll('[data-sync="tasks-filter-completed"]').forEach(function (el) {
+                    el.textContent = 'Completed (' + sync.tasks.completed + ')';
+                });
+            }
+        }
+
+        // 4. Daily Habits
+        if (sync.habits) {
+            if (typeof sync.habits.completed_today !== 'undefined') {
+                document.querySelectorAll('[data-sync="habits-today-completed"]').forEach(function (el) {
+                    el.textContent = sync.habits.completed_today;
+                });
+            }
+            if (typeof sync.habits.total_habits !== 'undefined') {
+                document.querySelectorAll('[data-sync="habits-total-count"]').forEach(function (el) {
+                    el.textContent = sync.habits.total_habits;
+                });
+            }
+            if (typeof sync.habits.completed_today !== 'undefined' && typeof sync.habits.total_habits !== 'undefined') {
+                document.querySelectorAll('[data-sync="habits-today-ratio"]').forEach(function (el) {
+                    el.innerHTML = sync.habits.completed_today + '<span class="text-ice/40 text-lg font-mono font-light"> / ' + sync.habits.total_habits + '</span>';
+                });
+            }
+            if (typeof sync.habits.top_streak !== 'undefined') {
+                document.querySelectorAll('[data-sync="habits-top-streak"]').forEach(function (el) {
+                    el.textContent = sync.habits.top_streak + 'd top streak';
+                });
+            }
+        }
+
+        // 5. Arc Progress
+        if (sync.arc && typeof sync.arc.progress !== 'undefined') {
+            document.querySelectorAll('[data-sync="arc-progress-text"]').forEach(function (el) {
+                el.textContent = sync.arc.progress + '%';
+            });
+            document.querySelectorAll('[data-sync="arc-progress-bar"]').forEach(function (el) {
+                el.style.width = sync.arc.progress + '%';
+            });
+        }
+
+        // 6. Goal Progress
+        if (sync.goal && typeof sync.goal.progress !== 'undefined') {
+            const goalId = sync.goal.id;
+            const textSelector = goalId ? `[data-sync="goal-progress-text"][data-goal-id="${goalId}"], [data-sync="goal-progress-text"]:not([data-goal-id])` : '[data-sync="goal-progress-text"]';
+            const barSelector = goalId ? `[data-sync="goal-progress-bar"][data-goal-id="${goalId}"], [data-sync="goal-progress-bar"]:not([data-goal-id])` : '[data-sync="goal-progress-bar"]';
+
+            document.querySelectorAll(textSelector).forEach(function (el) {
+                if (el.querySelector('.text-slate-400')) {
+                    el.innerHTML = sync.goal.progress + '<span class="text-xl text-slate-400">%</span>';
+                } else {
+                    el.textContent = sync.goal.progress + '%';
+                }
+            });
+            document.querySelectorAll(barSelector).forEach(function (el) {
+                el.style.width = sync.goal.progress + '%';
+            });
+        }
+    }
+
+    // Expose for testing if window exists
+    window.__wa_applySyncState = applySyncState;
+
+    // -------------------------------------------------------------------------
     // Task Complete / Uncomplete Handler
     // -------------------------------------------------------------------------
     function handleTaskForm(form, button) {
@@ -146,6 +267,10 @@
                 form.setAttribute('action', actionUrl.replace('/complete/', '/uncomplete/'));
             } else if (!isNowCompleted && actionUrl.includes('/uncomplete/')) {
                 form.setAttribute('action', actionUrl.replace('/uncomplete/', '/complete/'));
+            }
+
+            if (data.sync) {
+                applySyncState(data.sync);
             }
         })
         .catch(function (err) {
@@ -271,6 +396,10 @@
             if (habitContainer && typeof data.streak !== 'undefined' && streakEl) {
                 streakEl.textContent = data.streak + 'd';
             }
+
+            if (data.sync) {
+                applySyncState(data.sync);
+            }
         })
         .catch(function (err) {
             // Revert optimistic state on failure
@@ -371,6 +500,10 @@
                     progressText.innerHTML = data.goal_progress + '<span class="text-xl text-slate-400">%</span>';
                 }
             }
+
+            if (data.sync) {
+                applySyncState(data.sync);
+            }
         })
         .catch(function (err) {
             button.dataset.loading = 'false';
@@ -464,6 +597,10 @@
                 button.textContent = 'Reopen Goal';
             } else {
                 button.textContent = 'Fulfill Goal';
+            }
+
+            if (data.sync) {
+                applySyncState(data.sync);
             }
         })
         .catch(function (err) {
