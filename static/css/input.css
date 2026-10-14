@@ -209,6 +209,32 @@
     box-shadow: var(--card-shadow), 0 20px 48px -10px rgba(0, 0, 0, 0.35);
   }
 
+  /* Interactive Card Spotlight Sheen (Skiper UI & VengeanceUI inspired) */
+  .wa-card, .wa-card-primary, .wa-sanctum-slab, .wa-form-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .wa-card::before, .wa-card-primary::before, .wa-sanctum-slab::before, .wa-form-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(450px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(186, 215, 245, 0.08), transparent 50%);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  html[data-theme="light"] .wa-card::before, 
+  html[data-theme="light"] .wa-card-primary::before, 
+  html[data-theme="light"] .wa-sanctum-slab::before, 
+  html[data-theme="light"] .wa-form-card::before {
+    background: radial-gradient(450px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(70, 88, 112, 0.07), transparent 50%);
+  }
+  .wa-card:hover::before, .wa-card-primary:hover::before, .wa-sanctum-slab:hover::before, .wa-form-card:hover::before {
+    opacity: 1;
+  }
+
+
   /* ============================================================
      FORM FIELDS
      ============================================================ */

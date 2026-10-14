@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block title %}Journal | Winter Arc{% endblock %}
 
@@ -13,32 +14,42 @@
         </a>
     </div>
 
-    <!-- Page Header -->
-    <div class="page-header">
-        <div>
-            <span class="page-eyebrow">Inner Citadel · Daily Ledger</span>
-            <h1 class="page-title">
-                Journal
-            </h1>
-            <p class="page-subtitle">
-                Private daily reflections, state of mind, and discipline logs across your watch.
-            </p>
+    <!-- Master Journal Contemplation Plaque -->
+    <section class="relative border border-steel/30 bg-surface-elevated/95 backdrop-blur-xl p-6 sm:p-8 lg:p-10 mb-8 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.5)] overflow-hidden" aria-labelledby="journal-title">
+        <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-crimson via-crimson-bright to-transparent"></div>
+        <div class="hidden md:block absolute right-0 top-0 bottom-0 w-96 pointer-events-none select-none overflow-hidden opacity-25" aria-hidden="true">
+            <img src="{% static 'images/clean/reflect_clean.webp' %}" 
+                 alt="" 
+                 class="w-full h-full object-cover object-center mask-radial"
+                 loading="eager"
+                 width="600"
+                 height="300">
+            <div class="absolute inset-0 bg-gradient-to-l from-transparent via-surface-elevated/50 to-surface-elevated"></div>
         </div>
-        <div class="flex items-center gap-3">
-            {% if not has_today_entry %}
-                <a href="{% url 'journal:create' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-2.5">
-                    + Log Today's Reflection
-                </a>
-            {% else %}
-                <a href="{% url 'journal:detail' today_entry.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
-                    View Today's Entry
-                </a>
-                <a href="{% url 'journal:create' %}" class="btn-ghost text-xs">
-                    Log Past Entry
-                </a>
-            {% endif %}
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="space-y-2 max-w-xl">
+                <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-semibold">Inner Citadel · Daily Reflections</span>
+                <h1 id="journal-title" class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone leading-tight">Journal</h1>
+                <p class="font-serif italic text-base sm:text-lg text-ice/80">
+                    Private daily reflections, state of mind, and discipline logs across your watch.
+                </p>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0">
+                {% if not has_today_entry %}
+                    <a href="{% url 'journal:create' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-2.5">
+                        + Log Today's Reflection
+                    </a>
+                {% else %}
+                    <a href="{% url 'journal:detail' today_entry.pk %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-2.5">
+                        View Today's Entry
+                    </a>
+                    <a href="{% url 'journal:create' %}" class="btn-ghost text-xs">
+                        Log Past Entry
+                    </a>
+                {% endif %}
+            </div>
         </div>
-    </div>
+    </section>
 
     <!-- Overview Bar -->
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">

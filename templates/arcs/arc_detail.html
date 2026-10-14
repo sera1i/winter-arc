@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block title %}{{ arc.name }} | Winter Arc{% endblock %}
 
@@ -17,24 +18,35 @@
         </a>
     </div>
 
-    <!-- Arc Header -->
-    <div class="page-header">
-        <div class="space-y-2 max-w-3xl">
-            <div class="flex items-center gap-3">
-                <span class="page-eyebrow">Arc Overview</span>
-                {% if arc.is_primary %}
-                    <span class="badge-primary">★ Primary Active Arc</span>
+    <!-- Master Campaign Command Plaque -->
+    <section class="relative border border-steel/30 bg-surface-elevated/95 backdrop-blur-xl p-6 sm:p-8 lg:p-10 mb-8 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.5)] overflow-hidden" aria-labelledby="arc-detail-title">
+        <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-crimson via-crimson-bright to-transparent"></div>
+        <div class="hidden lg:block absolute right-0 top-0 bottom-0 w-96 pointer-events-none select-none overflow-hidden opacity-25" aria-hidden="true">
+            <img src="{% static 'images/clean/oath_clean.webp' %}" 
+                 alt="" 
+                 class="w-full h-full object-cover object-center mask-radial"
+                 loading="eager"
+                 width="600"
+                 height="300">
+            <div class="absolute inset-0 bg-gradient-to-l from-transparent via-surface-elevated/50 to-surface-elevated"></div>
+        </div>
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="space-y-2 max-w-2xl">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-semibold">Active Campaign</span>
+                    {% if arc.is_primary %}
+                        <span class="badge-primary">★ Primary Active Arc</span>
+                    {% endif %}
+                </div>
+                <h1 id="arc-detail-title" class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone leading-tight">{{ arc.name }}</h1>
+                {% if arc.objective %}
+                    <p class="font-serif italic text-base sm:text-lg text-ice/80">
+                        {{ arc.objective }}
+                    </p>
                 {% endif %}
             </div>
-            <h1 class="page-title">{{ arc.name }}</h1>
-            {% if arc.objective %}
-                <p class="page-subtitle">
-                    {{ arc.objective }}
-                </p>
-            {% endif %}
-        </div>
 
-        <div class="flex flex-wrap items-center gap-3 self-start sm:self-auto">
+            <div class="flex flex-wrap items-center gap-3 self-start lg:self-auto flex-shrink-0">
             {% if not arc.is_primary and arc.status == 'ACTIVE' %}
                 <form method="post" action="{% url 'arcs:make_primary' arc.pk %}" class="inline">
                     {% csrf_token %}

@@ -94,6 +94,9 @@
     }
 
     function init() {
+        if (document.documentElement.classList.contains('landing-page')) {
+            return;
+        }
         var current = document.documentElement.getAttribute('data-theme') || getSavedTheme();
         // Ensure root has data-theme
         document.documentElement.setAttribute('data-theme', current);

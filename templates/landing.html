@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth landing-page" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,10 +91,24 @@
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-ink text-bone font-sans antialiased selection:bg-crimson selection:text-bone overflow-x-hidden">
-    {% include 'base/navbar.html' %}
-    {% block content %}{% endblock %}
-    {% include 'base/footer.html' %}
+<body class="bg-ink text-bone font-sans antialiased selection:bg-crimson selection:text-bone overflow-x-hidden relative">
+    <!-- Master Atmospheric Environmental Background with Cinematic 3D Depth -->
+    <div class="fixed inset-0 z-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
+        <div id="three-env-container" class="absolute inset-0 pointer-events-none z-[1]"></div>
+        <div class="absolute inset-0 env-bg-mist pointer-events-none z-[2]"></div>
+    </div>
+
+    <div class="relative z-10 flex flex-col min-h-screen">
+        {% include 'base/navbar.html' %}
+        <main class="flex-grow">
+            {% block content %}{% endblock %}
+        </main>
+        {% include 'base/footer.html' %}
+    </div>
+
     {% block extra_scripts %}{% endblock %}
+    <script src="{% static 'js/vendor/three.min.js' %}" defer></script>
+    <script src="{% static 'js/three_environment.js' %}" defer></script>
+    <script src="{% static 'js/interactions.js' %}" defer></script>
 </body>
 </html>

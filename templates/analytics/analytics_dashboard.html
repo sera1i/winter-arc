@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block title %}Analytics &amp; Ranks | Winter Arc{% endblock %}
 
@@ -13,25 +14,33 @@
         </a>
     </div>
 
-    <!-- Header & Arc Scope Selector -->
-    <div class="border-b border-steel/20 pb-8 mb-8">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-5">
-            <div>
-                <span class="page-eyebrow">VI · Analytics &amp; Ranks</span>
-                <h1 class="font-serif text-4xl sm:text-5xl text-bone mt-1 leading-tight">
-                    Progress &amp; Ledger
-                </h1>
-                <p class="font-sans text-sm text-ice/50 mt-2 max-w-xl">
-                    Every statistic, XP event, and badge is derived strictly from verified historical action. No fabricated metrics.
+    <!-- Master Analytics Advancement Plaque -->
+    <section class="relative border border-steel/30 bg-surface-elevated/95 backdrop-blur-xl p-6 sm:p-8 lg:p-10 mb-8 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.5)] overflow-hidden" aria-labelledby="analytics-title">
+        <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-crimson via-crimson-bright to-transparent"></div>
+        <div class="hidden md:block absolute right-0 top-0 bottom-0 w-96 pointer-events-none select-none overflow-hidden opacity-25" aria-hidden="true">
+            <img src="{% static 'images/clean/progress_clean.webp' %}" 
+                 alt="" 
+                 class="w-full h-full object-cover object-center mask-radial"
+                 loading="eager"
+                 width="600"
+                 height="300">
+            <div class="absolute inset-0 bg-gradient-to-l from-transparent via-surface-elevated/50 to-surface-elevated"></div>
+        </div>
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="space-y-2 max-w-xl">
+                <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-semibold">Ledger · Measurable Advancement</span>
+                <h1 id="analytics-title" class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone leading-tight">Progress &amp; Ledger</h1>
+                <p class="font-serif italic text-base sm:text-lg text-ice/80">
+                    Every statistic, XP event, and badge is derived strictly from verified historical action.
                 </p>
             </div>
 
             <!-- Arc Filter Dropdown Form -->
             {% if user_arcs %}
-            <form method="get" action="{% url 'analytics:index' %}" class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                <label for="arc_select" class="font-mono text-xs text-ice/50 uppercase tracking-wider flex-shrink-0">Scope Arc:</label>
+            <form method="get" action="{% url 'analytics:index' %}" class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto flex-shrink-0">
+                <label for="arc_select" class="font-mono text-xs text-ice/60 uppercase tracking-wider flex-shrink-0">Scope Arc:</label>
                 <select id="arc_select" name="arc_id" onchange="this.form.submit()" 
-                        class="bg-ink/80 border border-steel/30 text-bone text-xs font-mono px-3 py-2 focus:outline-none focus:border-crimson w-full sm:w-auto max-w-full">
+                        class="bg-ink/80 border border-steel/30 text-bone text-xs font-mono px-3 py-2.5 focus:outline-none focus:border-crimson w-full sm:w-auto max-w-full">
                     {% for a in user_arcs %}
                         <option value="{{ a.pk }}" {% if selected_arc and selected_arc.pk == a.pk %}selected{% endif %}>
                             {{ a.name }}{% if a.is_primary %} (Primary){% endif %}
@@ -41,7 +50,7 @@
             </form>
             {% endif %}
         </div>
-    </div>
+    </section>
 
     <!-- Rank & Progression Banner -->
     <section class="wa-card mb-8 space-y-6" aria-labelledby="rank-heading">
