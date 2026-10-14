@@ -43,6 +43,10 @@
                        class="{% if request.resolver_match.app_name == 'analytics' %}nav-link-active{% else %}nav-link{% endif %}">
                         Analytics
                     </a>
+                    <a href="{% url 'focus:index' %}" 
+                       class="{% if request.resolver_match.app_name == 'focus' %}nav-link-active{% else %}nav-link{% endif %}">
+                        Focus Mode
+                    </a>
                 {% else %}
                     <a href="/#how-it-works" class="nav-link">How it works</a>
                     <a href="/#features" class="nav-link">Features</a>
@@ -87,11 +91,6 @@
                                 {{ unread_notifications_count }}
                             </span>
                         {% endif %}
-                    </a>
-                    <a href="{% url 'focus:index' %}" 
-                       class="font-mono text-xs text-ice/70 hover:text-bone transition-colors border border-steel/30 px-3 py-1.5 tracking-wide"
-                       title="Focus Mode">
-                        Focus Mode
                     </a>
                     <form method="post" action="{% url 'logout' %}" class="inline">
                         {% csrf_token %}
@@ -225,13 +224,15 @@
         nav.classList.toggle('nav-scrolled', isScrolled);
         if (isScrolled) {
             const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-            nav.style.background = isLight ? 'rgba(244,241,236,0.94)' : 'rgba(11,13,18,0.88)';
-            nav.style.backdropFilter = 'blur(12px)';
-            nav.style.borderBottom = isLight ? '1px solid rgba(216,212,204,0.8)' : '1px solid rgba(74,82,94,0.3)';
+            nav.style.background = isLight ? 'rgba(233, 238, 244, 0.94)' : 'rgba(7, 9, 14, 0.92)';
+            nav.style.backdropFilter = 'blur(16px)';
+            nav.style.borderBottom = isLight ? '1px solid rgba(148, 163, 184, 0.5)' : '1px solid rgba(70, 88, 112, 0.4)';
+            nav.style.boxShadow = isLight ? '0 4px 20px -2px rgba(15, 23, 42, 0.08)' : '0 4px 24px -2px rgba(0, 0, 0, 0.5)';
         } else {
             nav.style.background = 'transparent';
             nav.style.backdropFilter = 'none';
             nav.style.borderBottom = '1px solid transparent';
+            nav.style.boxShadow = 'none';
         }
     }
 

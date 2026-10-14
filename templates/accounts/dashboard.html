@@ -1,115 +1,249 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
-{% block title %}Dashboard | Winter Arc{% endblock %}
+{% block title %}Commander's Sanctum | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="page-container pt-8 sm:pt-10">
+<div class="page-container pt-6 sm:pt-8 space-y-8">
 
-    <!-- Dashboard header -->
-    <div class="border-b border-steel/20 pb-8 mb-8">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-5">
-            <div>
-                <span class="page-eyebrow">Today</span>
-                <h1 class="font-serif text-4xl sm:text-5xl text-bone mt-1 leading-tight">
-                    Your watch begins<br class="sm:hidden"> at dawn.
+    <!-- 1. Commander's Sanctum Header: Welcome & Identity Plaque -->
+    <section id="sanctum-header-plaque" class="relative border border-steel/30 bg-surface-elevated/95 backdrop-blur-xl p-6 sm:p-8 lg:p-10 shadow-[0_16px_40px_-10px_rgba(0,0,0,0.5)] overflow-hidden transition-all duration-300" aria-labelledby="sanctum-greeting">
+        <!-- Top crimson forge line -->
+        <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-crimson via-crimson-bright to-transparent"></div>
+
+        <!-- Atmospheric Knight Sentinel Silhouette Watermark (Desktop) -->
+        <div id="sanctum-knight-watermark" class="hidden lg:block absolute right-0 top-0 bottom-0 w-80 pointer-events-none select-none overflow-hidden opacity-25 transition-transform duration-300 ease-out" aria-hidden="true">
+            <img src="{% static 'images/clean/hero_clean.webp' %}" 
+                 alt="" 
+                 class="w-full h-full object-cover object-top mask-radial transform transition-transform duration-500 will-change-transform"
+                 loading="eager"
+                 width="400"
+                 height="500">
+            <div class="absolute inset-0 bg-gradient-to-l from-transparent via-surface-elevated/40 to-surface-elevated"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-8">
+            <!-- Left: Commander Status & Daily Watch -->
+            <div class="space-y-3 max-w-2xl">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-1 h-5 bg-crimson shadow-[0_0_8px_rgba(179,21,27,0.6)]"></span>
+                    <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-semibold">Commander's Sanctum · 90-Day Watch</span>
+                </div>
+                
+                <h1 id="sanctum-greeting" class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone tracking-tight leading-tight">
+                    Welcome, <span class="text-bone font-medium">{{ request.user.profile.display_name|default:request.user.username }}</span>.
                 </h1>
-                <div class="flex items-center gap-3 mt-2 flex-wrap">
-                    <p class="font-sans text-sm text-ice/50">
-                        {{ today|date:"l, F j, Y" }}
-                    </p>
-                    <span class="text-steel/40 text-xs hidden sm:inline">·</span>
+                
+                <p class="font-serif italic text-base sm:text-lg text-ice/80">
+                    Your watch begins at dawn.
+                </p>
+
+                <div class="flex items-center gap-3 pt-1 flex-wrap text-xs">
+                    <div class="flex items-center gap-2 font-mono text-ice/60">
+                        <svg class="w-4 h-4 text-steel/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span>{{ today|date:"l, F j, Y" }}</span>
+                    </div>
+                    
+                    <span class="text-steel/40 hidden sm:inline">·</span>
+
                     {% if today_journal_entry %}
                         <a href="{% url 'journal:detail' today_journal_entry.pk %}" class="inline-flex items-center gap-1.5 font-mono text-[11px] text-ice/70 hover:text-bone transition-colors underline underline-offset-2">
-                            <span class="w-1.5 h-1.5 bg-crimson rounded-full"></span>
+                            <span class="w-1.5 h-1.5 bg-crimson rounded-full animate-pulse"></span>
                             Today's Reflection Logged
                         </a>
                     {% else %}
-                        <a href="{% url 'journal:create' %}" class="inline-flex items-center gap-1.5 font-mono text-[11px] text-crimson-light hover:text-crimson transition-colors underline underline-offset-2">
-                            <span>+</span>
+                        <a href="{% url 'journal:create' %}" class="inline-flex items-center gap-1.5 font-mono text-[11px] text-crimson-light hover:text-crimson-bright transition-colors underline underline-offset-2">
+                            <span class="font-bold">+</span>
                             Write today's reflection (+40 XP)
                         </a>
                     {% endif %}
                 </div>
             </div>
 
-            {% if primary_arc %}
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                    <a href="{% url 'arcs:detail' primary_arc.pk %}"
-                       class="flex items-center justify-between sm:justify-start gap-3 sm:gap-4 bg-steel/8 border border-steel/25 px-4 sm:px-5 py-3 hover:border-steel/50 transition-colors sm:flex-shrink-0 group min-w-0">
-                        <div class="min-w-0 flex-1">
-                            <span class="font-mono text-[10px] uppercase tracking-widest text-ice/40 block">Primary Arc</span>
-                            <span class="font-serif text-base sm:text-lg text-bone group-hover:text-crimson-light transition-colors font-medium block truncate max-w-[140px] sm:max-w-[180px]">
-                                {{ primary_arc.name }}
-                            </span>
+            <!-- Right: Standing Plaque & Command Launcher -->
+            <div class="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-3 sm:gap-4 flex-shrink-0">
+                <!-- Rank Badge Plaque -->
+                <div class="border border-steel/30 bg-steel/10 p-3.5 sm:px-5 sm:py-3.5 flex items-center justify-between gap-4 w-full sm:w-auto">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-mono text-[10px] uppercase tracking-wider text-ice/60">Rank Standing</span>
+                            <span class="font-mono text-[9px] text-crimson-light border border-crimson/40 px-1 py-0.2 bg-crimson/10">Tier {{ rank_info.current_level }}</span>
                         </div>
-                        <div class="border-l border-steel/25 pl-3 sm:pl-4 flex-shrink-0">
-                            <span class="badge-active text-[10px]">{{ primary_arc.status }}</span>
-                        </div>
-                    </a>
-                    <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-4 py-3 text-center">
+                        <span class="font-serif text-lg sm:text-xl text-bone font-medium block mt-0.5 truncate max-w-[160px]">
+                            {{ rank_info.current_rank }}
+                        </span>
+                    </div>
+                    <div class="border-l border-steel/25 pl-4 text-right">
+                        <span class="font-mono text-xs text-crimson-light font-bold block">{{ total_xp }} XP</span>
+                        {% if rank_info.next_rank %}
+                            <span class="font-mono text-[9px] text-ice/50 block mt-0.5">{{ rank_info.xp_to_next }} XP to next tier</span>
+                        {% else %}
+                            <span class="font-mono text-[9px] text-ice/50 block mt-0.5">Maximum Rank</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Primary Action Buttons -->
+                <div class="flex items-center gap-2.5 w-full sm:w-auto">
+                    <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-3 text-center">
                         Forge an Arc
                     </a>
+                    
                     <a href="{% url 'arcs:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-3 text-center">
                         All Arcs
                     </a>
                 </div>
-            {% else %}
-                {% if active_arcs > 0 %}
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                        <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
-                            Forge an Arc
-                        </a>
-                        <a href="{% url 'arcs:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
-                            Select Primary Arc
-                        </a>
-                    </div>
-                {% else %}
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                        <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 flex-shrink-0 text-center">
-                            Forge an Arc
-                        </a>
-                        <a href="{% url 'arcs:create' %}" class="btn-secondary text-xs uppercase tracking-widest px-4 py-3 flex-shrink-0 text-center">
-                            Create your first Arc
-                        </a>
-                    </div>
-                {% endif %}
-            {% endif %}
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Metrics row -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
-        <div class="wa-card-inset">
+    <!-- 2. Primary Arc Protocol: Dominant Campaign Crucible -->
+    {% if primary_arc %}
+    <section class="wa-sanctum-slab group" aria-labelledby="primary-arc-heading">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-steel/20 pb-4">
+            <div class="flex items-center gap-2.5 flex-wrap">
+                <span class="w-2 h-2 rounded-full bg-crimson animate-pulse shadow-[0_0_8px_rgba(179,21,27,0.8)]"></span>
+                <span class="font-mono text-[11px] uppercase tracking-[0.25em] text-crimson-light font-semibold">Active War Campaign</span>
+                <span class="text-steel/40 text-xs">·</span>
+                <span class="badge-active text-[10px]">{{ primary_arc.status }}</span>
+            </div>
+            
+            <div class="flex items-center gap-2 font-mono text-[11px] text-ice/60">
+                <svg class="w-3.5 h-3.5 text-steel/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>{{ primary_arc.start_date|date:"M j, Y" }} — {{ primary_arc.end_date|date:"M j, Y" }}</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <!-- Left: Campaign Title & Objective -->
+            <div class="lg:col-span-8 space-y-3">
+                <h2 id="primary-arc-heading" class="font-serif text-3xl sm:text-4xl text-bone group-hover:text-crimson-light transition-colors leading-tight">
+                    <a href="{% url 'arcs:detail' primary_arc.pk %}">{{ primary_arc.name }}</a>
+                </h2>
+                
+                <p class="font-sans text-sm sm:text-base text-ice/70 leading-relaxed max-w-2xl">
+                    {{ primary_arc.objective }}
+                </p>
+
+                <div class="flex items-center gap-3 pt-2 flex-wrap">
+                    <a href="{% url 'arcs:detail' primary_arc.pk %}" class="btn-primary text-xs uppercase tracking-widest px-5 py-2.5 inline-flex items-center gap-2 shadow-[0_4px_16px_rgba(179,21,27,0.3)]">
+                        Continue Campaign →
+                    </a>
+                    {% if primary_arc %}
+                        <a href="{% url 'goals:create' arc_id=primary_arc.pk %}" class="btn-ghost text-xs">
+                            + Add Goal
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right: Completion Dial & Progress Bar -->
+            <div class="lg:col-span-4 border border-steel/25 bg-steel/5 p-5 space-y-3">
+                <div class="flex items-baseline justify-between">
+                    <span class="font-mono text-[10px] uppercase tracking-widest text-ice/60">Campaign Completion</span>
+                    <span class="font-serif text-4xl sm:text-5xl text-crimson-light font-medium">{{ arc_progress }}%</span>
+                </div>
+                
+                <div class="progress-bar-track h-2 bg-steel/20 border border-steel/30 rounded-none overflow-hidden">
+                    <div class="progress-bar-fill h-full bg-gradient-to-r from-crimson via-crimson to-crimson-bright shadow-[0_0_12px_rgba(179,21,27,0.6)]" style="width: {{ arc_progress }}%;"></div>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] font-mono text-ice/50 pt-1">
+                    <span>{{ goals|length }} Strategic Objective{{ goals|length|pluralize }}</span>
+                    <span>Crucible Active</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% else %}
+        <!-- Empty / Gated Arc States (Preserving Test Contract Strings) -->
+        {% if active_arcs > 0 %}
+            <div class="wa-sanctum-slab text-center space-y-3 py-10">
+                <span class="font-mono text-[10px] uppercase tracking-widest text-crimson-light font-semibold block">Primary Protocol Unset</span>
+                <h2 class="font-serif text-2xl sm:text-3xl text-bone">No Primary Arc selected.</h2>
+                <p class="text-xs sm:text-sm text-ice/60 max-w-md mx-auto leading-relaxed">
+                    Designate an active Arc as your Primary Arc to focus your strategic objectives here.
+                </p>
+                <div class="pt-2">
+                    <a href="{% url 'arcs:list' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-3 inline-flex">
+                        Select Primary Arc
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div class="wa-sanctum-slab text-center space-y-3 py-10">
+                <span class="font-mono text-[10px] uppercase tracking-widest text-crimson-light font-semibold block">Sanctum Crucible Idle</span>
+                <h2 class="font-serif text-2xl sm:text-3xl text-bone">No active Arcs found.</h2>
+                <p class="text-xs sm:text-sm text-ice/60 max-w-md mx-auto leading-relaxed">
+                    Forge your first Arc to establish strategic goals and checkpoints.
+                </p>
+                <div class="flex items-center justify-center gap-3 pt-2 flex-wrap">
+                    <a href="{% url 'arcs:presets' %}" class="btn-primary text-xs uppercase tracking-widest px-6 py-3 inline-flex">
+                        Forge an Arc
+                    </a>
+                    <a href="{% url 'arcs:create' %}" class="btn-secondary text-xs uppercase tracking-widest px-6 py-3 inline-flex">
+                        Create your first Arc
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <!-- 3. Performance Overview Metrics Row -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <!-- Metric 1: Rank -->
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <div class="flex justify-between items-start">
-                <span class="section-eyebrow">Rank</span>
-                <span class="font-mono text-[10px] text-ice/40">Tier {{ rank_info.current_level }}</span>
+                <span class="section-eyebrow">Rank Standing</span>
+                <span class="font-mono text-[10px] text-ice/60 border border-steel/20 px-1.5 py-0.5">Tier {{ rank_info.current_level }}</span>
             </div>
-            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1 truncate">{{ rank_info.current_rank }}</div>
-            <div class="font-mono text-[11px] text-crimson-light mt-0.5">{{ total_xp }} XP</div>
+            <div class="font-serif text-2xl sm:text-3xl text-bone mt-2 truncate">{{ rank_info.current_rank }}</div>
+            <div class="font-mono text-[11px] text-crimson-light mt-1 font-medium">{{ total_xp }} XP</div>
         </div>
-        <div class="wa-card-inset">
-            <span class="section-eyebrow">Arc Progress</span>
-            <div class="font-serif text-3xl sm:text-4xl text-crimson-light font-medium mt-1">{{ arc_progress }}%</div>
-            <div class="progress-bar-track mt-2">
-                <div class="progress-bar-fill" style="width: {{ arc_progress }}%;"></div>
+
+        <!-- Metric 2: Arc Progress -->
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
+            <div class="flex justify-between items-start">
+                <span class="section-eyebrow">Arc Progress</span>
+                <span class="font-mono text-[10px] text-ice/50">{{ active_arcs }} active</span>
+            </div>
+            <div class="font-serif text-2xl sm:text-3xl text-crimson-light font-medium mt-2">{{ arc_progress }}%</div>
+            <div class="progress-bar-track mt-3 h-1.5 bg-steel/20">
+                <div class="progress-bar-fill h-full bg-crimson" style="width: {{ arc_progress }}%;"></div>
             </div>
         </div>
-        <div class="wa-card-inset">
-            <span class="section-eyebrow">Tasks Done Today</span>
-            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">{{ today_completed_tasks }}</div>
-            <div class="font-mono text-[11px] text-ice/40 mt-0.5">{{ total_pending_count }} remaining</div>
-        </div>
-        <div class="wa-card-inset">
-            <span class="section-eyebrow">Habits Today</span>
-            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">
-                {{ habits_done_today }}<span class="text-ice/40 text-xl font-mono font-light"> / {{ total_habits }}</span>
+
+        <!-- Metric 3: Tasks Done Today -->
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
+            <div class="flex justify-between items-start">
+                <span class="section-eyebrow">Tasks Done Today</span>
+                <span class="font-mono text-[10px] text-ice/50">Daily Queue</span>
             </div>
-            <div class="font-mono text-[11px] text-ice/40 mt-0.5">{{ active_arcs }} active arcs</div>
+            <div class="font-serif text-2xl sm:text-3xl text-bone mt-2">{{ today_completed_tasks }}</div>
+            <div class="font-mono text-[11px] text-ice/60 mt-1">{{ total_pending_count }} remaining</div>
+        </div>
+
+        <!-- Metric 4: Habits Done Today -->
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
+            <div class="flex justify-between items-start">
+                <span class="section-eyebrow">Habits Today</span>
+                <span class="font-mono text-[10px] text-ice/50">Discipline</span>
+            </div>
+            <div class="font-serif text-2xl sm:text-3xl text-bone mt-2">
+                {{ habits_done_today }}<span class="text-ice/40 text-lg font-mono font-light"> / {{ total_habits }}</span>
+            </div>
+            <div class="font-mono text-[11px] text-ice/60 mt-1">
+                {% if top_streaks %}{{ top_streaks.0.streak }}d top streak{% else %}0d streak{% endif %}
+            </div>
         </div>
     </div>
 
-    <!-- Goals & Objectives Section -->
-    <section class="wa-card space-y-4 mb-8" aria-labelledby="goals-heading">
+    <!-- 4. Strategic Objectives: Goals & Milestones -->
+    <section class="wa-card space-y-4" aria-labelledby="goals-heading">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-steel/15 pb-4">
             <div>
                 <span class="section-eyebrow">Strategic Objectives</span>
@@ -128,7 +262,7 @@
         {% if goals %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {% for goal in goals %}
-                    <div class="p-4 bg-steel/5 border border-steel/20 flex flex-col justify-between space-y-3 hover:border-steel/40 transition-colors">
+                    <div class="p-4 bg-steel/5 border border-steel/20 flex flex-col justify-between space-y-3 hover:border-steel/40 transition-all duration-150 rounded-none hover:-translate-y-0.5 shadow-sm hover:shadow-md">
                         <div>
                             <div class="flex justify-between items-start gap-2">
                                 <span class="badge-pending text-[9px]">{{ goal.category }}</span>
@@ -181,7 +315,7 @@
         {% endif %}
     </section>
 
-    <!-- Main content grid: Tasks + Habits -->
+    <!-- 5. Main Content Grid: Tasks & Habits -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
         <!-- Tasks column (7 cols) -->
@@ -265,7 +399,7 @@
             {% if habit_data %}
                 <ul class="space-y-2" role="list">
                     {% for item in habit_data %}
-                        <li class="flex items-center justify-between p-3.5 bg-steel/5 border border-steel/15 hover:border-steel/30 transition-colors gap-3">
+                        <li class="flex items-center justify-between p-3.5 bg-steel/5 border border-steel/15 hover:border-steel/30 transition-all duration-150 gap-3 shadow-sm hover:translate-x-0.5">
                             <div class="min-w-0">
                                 <a href="{% url 'habits:detail' item.habit.pk %}"
                                    class="text-sm font-medium text-bone hover:text-crimson-light block truncate transition-colors">
@@ -330,9 +464,9 @@
 
     </div>
 
-    <!-- Recent Activity Feed -->
+    <!-- 6. Audit & Momentum: Recent Watch Activity -->
     {% if recent_activity %}
-    <section class="mt-8 wa-card space-y-4" aria-labelledby="activity-heading">
+    <section class="wa-card space-y-4" aria-labelledby="activity-heading">
         <div class="flex items-center justify-between border-b border-steel/15 pb-4">
             <div>
                 <span class="section-eyebrow">Audit &amp; Momentum</span>
@@ -344,7 +478,7 @@
             {% for act in recent_activity %}
                 <div class="py-3 flex items-start sm:items-center justify-between gap-3 min-w-0">
                     <div class="flex items-start sm:items-center gap-3 min-w-0 flex-1">
-                        <span class="w-1.5 h-1.5 bg-crimson rounded-full flex-shrink-0 mt-1.5 sm:mt-0"></span>
+                        <span class="w-1.5 h-1.5 bg-crimson rounded-full flex-shrink-0 mt-1.5 sm:mt-0 shadow-[0_0_6px_rgba(179,21,27,0.7)]"></span>
                         <div class="min-w-0 flex-1">
                             <span class="text-sm font-medium text-bone break-words">{{ act.title }}</span>
                             {% if act.arc %}
@@ -361,19 +495,46 @@
     </section>
     {% endif %}
 
-    {% if not primary_arc %}
-    <!-- Empty state: No Arc yet -->
-    <div class="mt-8 p-8 sm:p-12 border border-dashed border-steel/20 text-center space-y-4">
-        <span class="font-mono text-[10px] uppercase tracking-widest text-crimson/60 block">Your Arc</span>
-        <h2 class="font-serif text-3xl text-bone">Every season starts with a decision.</h2>
-        <p class="font-sans text-sm text-ice/60 max-w-md mx-auto leading-relaxed">
-            An Arc is a defined season with a single clear objective. Create one to give your daily work direction and meaning.
-        </p>
-        <a href="{% url 'arcs:create' %}" class="btn-primary text-xs uppercase tracking-widest px-8 py-3 inline-flex">
-            Create Arc
-        </a>
-    </div>
-    {% endif %}
-
 </div>
 {% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+    'use strict';
+    var plaque = document.getElementById('sanctum-header-plaque');
+    var knight = document.getElementById('sanctum-knight-watermark');
+    if (!plaque || !knight) return;
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+
+    var rect = plaque.getBoundingClientRect();
+    var isHovered = false;
+
+    plaque.addEventListener('mouseenter', function() {
+        isHovered = true;
+        rect = plaque.getBoundingClientRect();
+    });
+
+    plaque.addEventListener('mouseleave', function() {
+        isHovered = false;
+        knight.style.transform = 'translate3d(0, 0, 0) scale(1)';
+        plaque.style.boxShadow = '';
+    });
+
+    plaque.addEventListener('mousemove', function(e) {
+        if (!isHovered) return;
+        var relX = (e.clientX - rect.left) / rect.width - 0.5;
+        var relY = (e.clientY - rect.top) / rect.height - 0.5;
+
+        // Subtle 3D parallax on knight watermark
+        var moveX = relX * -20;
+        var moveY = relY * -12;
+        knight.style.transform = 'translate3d(' + moveX + 'px, ' + moveY + 'px, 0) scale(1.03)';
+    });
+})();
+</script>
+{% endblock %}
+

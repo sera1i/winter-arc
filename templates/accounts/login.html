@@ -1,91 +1,147 @@
 {% extends 'base/base.html' %}
-{% load widget_tweaks %}
+{% load static widget_tweaks %}
 
 {% block title %}Log in | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="min-h-[80vh] flex items-center justify-center px-4 py-20">
-    <div class="w-full max-w-md space-y-8">
+<div class="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-8 sm:py-12 lg:py-16">
+    <div class="w-full max-w-5xl">
 
-        <!-- Brand header -->
-        <div class="text-center space-y-3">
-            <div class="flex items-center justify-center gap-2.5 mb-2">
-                <span class="w-0.5 h-6 bg-crimson"></span>
-                <span class="font-serif text-2xl font-bold tracking-[0.18em] text-bone uppercase">Winter Arc</span>
-            </div>
-            <h1 class="font-serif text-3xl sm:text-4xl text-bone">Return to your Arc.</h1>
-            <p class="font-sans text-sm text-ice/60">
-                Enter your credentials to resume your watch.
-            </p>
-        </div>
+        <!-- Cinematic Two-Zone Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
-        <!-- Form card -->
-        <div class="wa-form-card">
-            <form method="post" action="{% url 'login' %}" id="login-form" class="space-y-5" novalidate>
-                {% csrf_token %}
-
-                {% if form.non_field_errors %}
-                    <div class="p-3.5 bg-crimson/10 border border-crimson/30 text-crimson-light text-sm" role="alert">
-                        {{ form.non_field_errors }}
+            <!-- Zone 1: The Gateway Lore & Knight Vigil (Desktop Feature, Compact Mobile Header) -->
+            <div class="lg:col-span-6 space-y-6 lg:space-y-8">
+                <!-- Brand Eyebrow -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-1 h-6 bg-crimson shadow-[0_0_8px_rgba(179,21,27,0.6)]"></span>
+                        <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-semibold">The Fortress Gate</span>
                     </div>
-                {% endif %}
-
-                <!-- Username -->
-                <div>
-                    <label for="{{ form.username.id_for_label }}" class="wa-label">
-                        Username
-                    </label>
-                    {{ form.username|add_class:"wa-input" }}
-                    {% if form.username.errors %}
-                        <p class="wa-field-error" role="alert">{{ form.username.errors.0 }}</p>
-                    {% endif %}
+                    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone tracking-tight leading-[1.15]">
+                        Return to your Arc.
+                    </h1>
+                    <p class="font-sans text-sm sm:text-base text-ice/70 leading-relaxed max-w-lg">
+                        The harsh winds do not pause. Enter your credentials to resume your watch and log today's protocols.
+                    </p>
                 </div>
 
-                <!-- Password -->
-                <div>
-                    <label for="{{ form.password.id_for_label }}" class="wa-label">
-                        Password
-                    </label>
-                    <div class="relative">
-                        {{ form.password|add_class:"wa-input pr-11" }}
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3.5">
-                            <button type="button"
-                                    id="toggle-password"
-                                    class="text-ice/40 hover:text-bone transition-colors focus:outline-none focus:text-bone"
-                                    aria-label="Show password"
-                                    aria-pressed="false"
-                                    tabindex="0">
-                                <!-- Eye icon (Show) -->
-                                <svg id="eye-icon-show" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                                <!-- Eye-off icon (Hide) -->
-                                <svg id="eye-icon-hide" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
-                                </svg>
-                            </button>
+                <!-- Desktop Visual Citadel Frame (Hidden on mobile to prioritize form) -->
+                <div class="hidden lg:block relative rounded-none overflow-hidden border border-steel/30 bg-ink/60 shadow-[0_16px_36px_-8px_rgba(0,0,0,0.5)] group">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="{% static 'images/clean/hero_clean.webp' %}" 
+                             alt="Armored Sentinel guarding the winter fortress" 
+                             class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                             loading="eager"
+                             width="800"
+                             height="450">
+                        <!-- Dark gradient overlay for depth and integration -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-ink/60 via-transparent to-ink/60"></div>
+                        
+                        <!-- Cold rim bevel highlight -->
+                        <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-ice/30 to-transparent"></div>
+                    </div>
+                    
+                    <div class="p-4 bg-ink/90 border-t border-steel/20 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-crimson animate-pulse"></span>
+                            <span class="font-mono text-[11px] uppercase tracking-widest text-ice/70">Crucible Active</span>
                         </div>
+                        <span class="font-mono text-[11px] text-ice/50">Day 1 to Day 90</span>
                     </div>
-                    {% if form.password.errors %}
-                        <p class="wa-field-error" role="alert">{{ form.password.errors.0 }}</p>
-                    {% endif %}
                 </div>
 
-                <!-- Links -->
-                <div class="flex items-center justify-between text-sm">
-                    <a href="{% url 'password_reset' %}" class="text-ice/60 hover:text-bone transition-colors underline underline-offset-2">
-                        Forgot password?
-                    </a>
-                    <a href="{% url 'register' %}" class="text-crimson-light hover:text-crimson-bright transition-colors">
-                        Create account
-                    </a>
+                <!-- Mobile Compact Lore Quote -->
+                <div class="block lg:hidden border-l-2 border-crimson/60 pl-3 py-1">
+                    <p class="font-serif italic text-sm text-bone/80">"One brutal season. One oath. Every day counts."</p>
                 </div>
+            </div>
 
-                <button type="submit" id="login-submit-btn" class="btn-primary w-full text-sm uppercase tracking-widest py-3.5">
-                    Log in
-                </button>
-            </form>
+            <!-- Zone 2: The Portal / Form Citadel Slab -->
+            <div class="lg:col-span-6">
+                <div class="wa-form-card relative border border-steel/40 bg-ink/90 backdrop-blur-xl p-6 sm:p-8 md:p-10 space-y-6 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)]">
+                    <!-- Subtle top metallic line -->
+                    <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-crimson via-crimson-bright to-transparent"></div>
+
+                    <div class="border-b border-steel/20 pb-4">
+                        <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-ice/60 block">Authentication Portal</span>
+                        <h2 class="font-serif text-2xl text-bone mt-1">Warrior Credentials</h2>
+                    </div>
+
+                    <form method="post" action="{% url 'login' %}" id="login-form" class="space-y-5" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="p-3.5 bg-crimson/15 border border-crimson/50 text-crimson-light text-sm font-sans flex items-start gap-2.5" role="alert">
+                                <span class="font-mono text-base font-bold text-crimson leading-none">!</span>
+                                <div class="space-y-1">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Username -->
+                        <div class="space-y-1.5">
+                            <label for="{{ form.username.id_for_label }}" class="wa-label flex items-center justify-between">
+                                <span>Username</span>
+                                <span class="font-mono text-[9px] text-ice/40 tracking-wider">REQUIRED</span>
+                            </label>
+                            {{ form.username|add_class:"wa-input" }}
+                            {% if form.username.errors %}
+                                <p class="wa-field-error" role="alert">{{ form.username.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Password -->
+                        <div class="space-y-1.5">
+                            <label for="{{ form.password.id_for_label }}" class="wa-label flex items-center justify-between">
+                                <span>Password</span>
+                                <span class="font-mono text-[9px] text-ice/40 tracking-wider">SECRET</span>
+                            </label>
+                            <div class="relative">
+                                {{ form.password|add_class:"wa-input pr-11" }}
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3.5">
+                                    <button type="button"
+                                            id="toggle-password"
+                                            class="text-ice/50 hover:text-bone transition-colors focus:outline-none focus:text-bone p-1"
+                                            aria-label="Show password"
+                                            aria-pressed="false"
+                                            tabindex="0">
+                                        <!-- Eye icon (Show) -->
+                                        <svg id="eye-icon-show" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        <!-- Eye-off icon (Hide) -->
+                                        <svg id="eye-icon-hide" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            {% if form.password.errors %}
+                                <p class="wa-field-error" role="alert">{{ form.password.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Links -->
+                        <div class="flex items-center justify-between text-xs pt-1">
+                            <a href="{% url 'password_reset' %}" class="text-ice/70 hover:text-bone transition-colors underline underline-offset-2">
+                                Forgot password?
+                            </a>
+                            <a href="{% url 'register' %}" class="text-crimson-light hover:text-crimson-bright font-mono uppercase tracking-wider transition-colors">
+                                Create account →
+                            </a>
+                        </div>
+
+                        <button type="submit" id="login-submit-btn" class="btn-primary w-full text-sm uppercase tracking-widest py-3.5 shadow-[0_4px_16px_rgba(179,21,27,0.35)]">
+                            Enter the Citadel
+                        </button>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
     </div>

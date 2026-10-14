@@ -80,21 +80,21 @@
 
     <!-- Timeline & Status Card -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10">
-        <div class="wa-card-inset">
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <span class="section-eyebrow">Status</span>
-            <div class="font-serif text-2xl text-bone mt-1">{{ arc.status }}</div>
+            <div class="font-serif text-2xl text-bone mt-2">{{ arc.status }}</div>
         </div>
-        <div class="wa-card-inset">
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <span class="section-eyebrow">Start Date</span>
-            <div class="font-serif text-xl text-bone mt-1">{{ arc.start_date|date:"F j, Y" }}</div>
+            <div class="font-serif text-xl text-bone mt-2">{{ arc.start_date|date:"F j, Y" }}</div>
         </div>
-        <div class="wa-card-inset">
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <span class="section-eyebrow">End Date</span>
-            <div class="font-serif text-xl text-bone mt-1">{{ arc.end_date|date:"F j, Y" }}</div>
+            <div class="font-serif text-xl text-bone mt-2">{{ arc.end_date|date:"F j, Y" }}</div>
         </div>
-        <div class="wa-card-inset">
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <span class="section-eyebrow">Timezone</span>
-            <div class="font-mono text-sm text-ice/80 mt-1 truncate">{{ arc.timezone }}</div>
+            <div class="font-mono text-sm text-bone mt-2 truncate">{{ arc.timezone }}</div>
         </div>
     </div>
 

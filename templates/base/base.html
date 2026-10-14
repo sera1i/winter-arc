@@ -30,18 +30,19 @@
 </head>
 <body class="bg-ink text-bone font-sans antialiased min-h-screen flex flex-col selection:bg-crimson selection:text-bone relative">
 
-    {% if user.is_authenticated and request.resolver_match.url_name != 'home' %}
-    <!-- Authenticated Environmental Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none select-none authenticated-env-bg" aria-hidden="true">
+    {% if request.resolver_match.url_name != 'home' %}
+    <!-- Master Atmospheric Environmental Background with Cinematic Depth -->
+    <div class="fixed inset-0 z-0 pointer-events-none select-none authenticated-env-bg overflow-hidden" aria-hidden="true">
         <img src="{% static 'images/useful/11.jpg' %}" 
              alt="" 
              width="1920" 
              height="1080" 
              decoding="async" 
              fetchpriority="low" 
-             class="absolute inset-0 w-full h-full object-cover object-center env-bg-img"
-             style="opacity: 0.12; mix-blend-mode: luminosity;">
-        <div class="absolute inset-0 env-bg-overlay" style="background: linear-gradient(to bottom, rgba(11,13,18,0.80) 0%, rgba(11,13,18,0.92) 40%, rgba(11,13,18,0.98) 100%);"></div>
+             class="absolute inset-0 w-full h-full object-cover object-center env-bg-img transition-opacity duration-700">
+        <div class="absolute inset-0 env-bg-overlay transition-colors duration-500"></div>
+        <div id="three-env-container" class="absolute inset-0 pointer-events-none z-[1]"></div>
+        <div class="absolute inset-0 env-bg-mist pointer-events-none z-[2]"></div>
     </div>
     {% endif %}
 
@@ -93,6 +94,8 @@
     </div>
 
     {% block extra_scripts %}{% endblock %}
+    <script src="{% static 'js/vendor/three.min.js' %}" defer></script>
+    <script src="{% static 'js/three_environment.js' %}" defer></script>
     <script src="{% static 'js/theme.js' %}" defer></script>
     <script src="{% static 'js/interactions.js' %}" defer></script>
     <script>

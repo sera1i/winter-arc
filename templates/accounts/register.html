@@ -1,59 +1,136 @@
 {% extends 'base/base.html' %}
-{% load widget_tweaks %}
+{% load static widget_tweaks %}
 
 {% block title %}Create Account | Winter Arc{% endblock %}
 
 {% block content %}
-<div class="min-h-[80vh] flex items-center justify-center px-4 py-20">
-    <div class="w-full max-w-md space-y-8">
+<div class="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-8 sm:py-12 lg:py-16">
+    <div class="w-full max-w-5xl">
 
-        <!-- Brand header -->
-        <div class="text-center space-y-3">
-            <div class="flex items-center justify-center gap-2.5 mb-2">
-                <span class="w-0.5 h-6 bg-crimson"></span>
-                <span class="font-serif text-2xl font-bold tracking-[0.18em] text-bone uppercase">Winter Arc</span>
+        <!-- Cinematic Two-Zone Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+            <!-- Zone 1: The Covenant & Oath Sentinel (Desktop Feature, Compact Mobile Header) -->
+            <div class="lg:col-span-5 space-y-6 lg:space-y-8">
+                <!-- Brand Eyebrow -->
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-1 h-6 bg-crimson shadow-[0_0_8px_rgba(179,21,27,0.6)]"></span>
+                        <span class="font-mono text-xs uppercase tracking-[0.25em] text-crimson-light font-semibold">The Covenant</span>
+                    </div>
+                    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl text-bone tracking-tight leading-[1.15]">
+                        Take the Oath.
+                    </h1>
+                    <p class="font-sans text-sm sm:text-base text-ice/70 leading-relaxed max-w-lg">
+                        Forge your discipline in the frozen crucible. Inscribe your name to begin your 90-day transformation.
+                    </p>
+                </div>
+
+                <!-- Desktop Visual Citadel Frame (Hidden on mobile to prioritize form) -->
+                <div class="hidden lg:block relative rounded-none overflow-hidden border border-steel/30 bg-ink/60 shadow-[0_16px_36px_-8px_rgba(0,0,0,0.5)] group">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="{% static 'images/clean/oath_clean.webp' %}" 
+                             alt="Armored Sentinel taking the winter oath" 
+                             class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                             loading="eager"
+                             width="800"
+                             height="450">
+                        <!-- Dark gradient overlay for depth and integration -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-ink/60 via-transparent to-ink/60"></div>
+                        
+                        <!-- Cold rim bevel highlight -->
+                        <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-ice/30 to-transparent"></div>
+                    </div>
+                    
+                    <div class="p-4 bg-ink/90 border-t border-steel/20 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-crimson animate-pulse"></span>
+                            <span class="font-mono text-[11px] uppercase tracking-widest text-ice/70">Protocol Enrollment</span>
+                        </div>
+                        <span class="font-mono text-[11px] text-ice/50">90-Day Vigil</span>
+                    </div>
+                </div>
+
+                <!-- Core Tenets / Pillar Badges (Desktop) -->
+                <div class="hidden lg:grid grid-cols-3 gap-2.5 pt-1">
+                    <div class="border border-steel/25 bg-steel/5 p-2.5 text-center">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-ice/60 block">Pillar I</span>
+                        <span class="font-serif text-xs text-bone font-medium">Physical Iron</span>
+                    </div>
+                    <div class="border border-steel/25 bg-steel/5 p-2.5 text-center">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-ice/60 block">Pillar II</span>
+                        <span class="font-serif text-xs text-bone font-medium">Mental Fortress</span>
+                    </div>
+                    <div class="border border-steel/25 bg-steel/5 p-2.5 text-center">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-ice/60 block">Pillar III</span>
+                        <span class="font-serif text-xs text-bone font-medium">Daily Vigil</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Compact Lore Quote -->
+                <div class="block lg:hidden border-l-2 border-crimson/60 pl-3 py-1">
+                    <p class="font-serif italic text-sm text-bone/80">"One season. One oath. Every day counts."</p>
+                </div>
             </div>
-            <h1 class="font-serif text-3xl sm:text-4xl text-bone">Create your account.</h1>
-            <p class="font-sans text-sm text-ice/60">
-                One season. One oath. Every day counts.
-            </p>
-        </div>
 
-        <!-- Form card -->
-        <div class="wa-form-card">
-            <form method="post" action="{% url 'register' %}" class="space-y-5" novalidate>
-                {% csrf_token %}
+            <!-- Zone 2: The Portal / Form Citadel Slab -->
+            <div class="lg:col-span-7">
+                <div class="wa-form-card relative border border-steel/40 bg-ink/90 backdrop-blur-xl p-6 sm:p-8 md:p-10 space-y-6 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)]">
+                    <!-- Subtle top metallic line -->
+                    <div class="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-crimson via-crimson-bright to-transparent"></div>
 
-                {% if form.non_field_errors %}
-                    <div class="p-3.5 bg-crimson/10 border border-crimson/30 text-crimson-light text-sm" role="alert">
-                        {{ form.non_field_errors }}
+                    <div class="border-b border-steel/20 pb-4">
+                        <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-ice/60 block">Warrior Inscription</span>
+                        <h2 class="font-serif text-2xl text-bone mt-1">Create Your Account</h2>
                     </div>
-                {% endif %}
 
-                {% for field in form %}
-                    <div>
-                        <label for="{{ field.id_for_label }}" class="wa-label">
-                            {{ field.label }}
-                        </label>
-                        {{ field|add_class:"wa-input" }}
-                        {% if field.errors %}
-                            <p class="wa-field-error" role="alert">{{ field.errors.0 }}</p>
+                    <form method="post" action="{% url 'register' %}" id="register-form" class="space-y-5" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="p-3.5 bg-crimson/15 border border-crimson/50 text-crimson-light text-sm font-sans flex items-start gap-2.5" role="alert">
+                                <span class="font-mono text-base font-bold text-crimson leading-none">!</span>
+                                <div class="space-y-1">
+                                    {{ form.non_field_errors }}
+                                </div>
+                            </div>
                         {% endif %}
-                        {% if field.help_text %}
-                            <p class="wa-help-text">{{ field.help_text }}</p>
-                        {% endif %}
-                    </div>
-                {% endfor %}
 
-                <button type="submit" class="btn-primary w-full text-sm uppercase tracking-widest py-3.5">
-                    Create Account
-                </button>
+                        {% for field in form %}
+                            <div class="space-y-1.5">
+                                <label for="{{ field.id_for_label }}" class="wa-label flex items-center justify-between">
+                                    <span>{{ field.label }}</span>
+                                    {% if field.field.required %}
+                                        <span class="font-mono text-[9px] text-ice/40 tracking-wider">REQUIRED</span>
+                                    {% else %}
+                                        <span class="font-mono text-[9px] text-ice/30 tracking-wider">OPTIONAL</span>
+                                    {% endif %}
+                                </label>
+                                {{ field|add_class:"wa-input" }}
+                                {% if field.errors %}
+                                    <p class="wa-field-error" role="alert">{{ field.errors.0 }}</p>
+                                {% endif %}
+                                {% if field.help_text %}
+                                    <div class="wa-help-text">{{ field.help_text|safe }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
 
-                <p class="text-center text-sm text-ice/50">
-                    Already have an account?
-                    <a href="{% url 'login' %}" class="text-bone hover:text-crimson-light underline underline-offset-2 transition-colors">Log in</a>
-                </p>
-            </form>
+                        <button type="submit" id="register-submit-btn" class="btn-primary w-full text-sm uppercase tracking-widest py-3.5 shadow-[0_4px_16px_rgba(179,21,27,0.35)]">
+                            Inscribe Your Name
+                        </button>
+
+                        <div class="text-center text-xs text-ice/50 pt-2 border-t border-steel/15">
+                            Already bound to the Arc?
+                            <a href="{% url 'login' %}" class="text-bone hover:text-crimson-light underline underline-offset-2 transition-colors ml-1 font-medium">
+                                Log in →
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
 
     </div>

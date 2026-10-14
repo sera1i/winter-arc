@@ -80,22 +80,22 @@
 
         <!-- Four Ranks Ladder Reference -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            <div class="p-3 border {% if rank_info.current_rank == 'Recruit' %}border-crimson bg-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
+            <div class="p-3 border transition-all duration-150 shadow-sm {% if rank_info.current_rank == 'Recruit' %}border-crimson bg-crimson/10 shadow-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
                 <span class="font-mono text-[10px] uppercase text-ice/40 block">Tier I</span>
                 <span class="font-serif text-base text-bone font-medium">Recruit</span>
                 <span class="font-mono text-[11px] text-ice/50 block mt-1">0 – 299 XP</span>
             </div>
-            <div class="p-3 border {% if rank_info.current_rank == 'Sentinel' %}border-crimson bg-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
+            <div class="p-3 border transition-all duration-150 shadow-sm {% if rank_info.current_rank == 'Sentinel' %}border-crimson bg-crimson/10 shadow-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
                 <span class="font-mono text-[10px] uppercase text-ice/40 block">Tier II</span>
                 <span class="font-serif text-base text-bone font-medium">Sentinel</span>
                 <span class="font-mono text-[11px] text-ice/50 block mt-1">300 – 899 XP</span>
             </div>
-            <div class="p-3 border {% if rank_info.current_rank == 'Ranger' %}border-crimson bg-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
+            <div class="p-3 border transition-all duration-150 shadow-sm {% if rank_info.current_rank == 'Ranger' %}border-crimson bg-crimson/10 shadow-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
                 <span class="font-mono text-[10px] uppercase text-ice/40 block">Tier III</span>
                 <span class="font-serif text-base text-bone font-medium">Ranger</span>
                 <span class="font-mono text-[11px] text-ice/50 block mt-1">900 – 1,999 XP</span>
             </div>
-            <div class="p-3 border {% if rank_info.current_rank == 'Warden' %}border-crimson bg-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
+            <div class="p-3 border transition-all duration-150 shadow-sm {% if rank_info.current_rank == 'Warden' %}border-crimson bg-crimson/10 shadow-crimson/10{% else %}border-steel/20 bg-steel/5{% endif %}">
                 <span class="font-mono text-[10px] uppercase text-ice/40 block">Tier IV</span>
                 <span class="font-serif text-base text-bone font-medium">Warden</span>
                 <span class="font-mono text-[11px] text-ice/50 block mt-1">2,000+ XP</span>
@@ -105,39 +105,39 @@
 
     <!-- Key Metrics Summary Row -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
-        <div class="wa-card-inset">
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <span class="section-eyebrow">Arc Completion</span>
-            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-2">
                 {{ arc_progress }}%
             </div>
-            <div class="font-mono text-[10px] text-ice/40 mt-1 truncate">
+            <div class="font-mono text-[10px] text-ice/60 mt-1 truncate">
                 {% if selected_arc %}{{ selected_arc.name }}{% else %}No Arc Selected{% endif %}
             </div>
         </div>
-        <div class="wa-card-inset">
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <span class="section-eyebrow">Task Success Rate</span>
-            <div class="font-serif text-3xl sm:text-4xl text-crimson-light font-medium mt-1">
+            <div class="font-serif text-3xl sm:text-4xl text-crimson-light font-medium mt-2">
                 {{ task_stats.completion_rate }}%
             </div>
-            <div class="font-mono text-[10px] text-ice/40 mt-1">
+            <div class="font-mono text-[10px] text-ice/60 mt-1">
                 {{ task_stats.completed }} done / {{ task_stats.total }} total
             </div>
         </div>
-        <div class="wa-card-inset">
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <span class="section-eyebrow">Habit Longest Streak</span>
-            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1 flex items-baseline gap-0.5">
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-2 flex items-baseline gap-0.5">
                 <span>{{ habit_stats.top_current_streak }}</span><span class="text-ice/40 text-lg font-mono">d</span>
             </div>
-            <div class="font-mono text-[10px] text-ice/40 mt-1">
+            <div class="font-mono text-[10px] text-ice/60 mt-1">
                 Historical Best: {{ habit_stats.top_best_streak }}d
             </div>
         </div>
-        <div class="wa-card-inset">
+        <div class="wa-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1 transition-all duration-200">
             <span class="section-eyebrow">30-Day Consistency</span>
-            <div class="font-serif text-3xl sm:text-4xl text-bone mt-1">
+            <div class="font-serif text-3xl sm:text-4xl text-bone mt-2">
                 {{ habit_stats.consistency_rate }}%
             </div>
-            <div class="font-mono text-[10px] text-ice/40 mt-1">
+            <div class="font-mono text-[10px] text-ice/60 mt-1">
                 {{ habit_stats.completions_30d }} habit beacon{{ habit_stats.completions_30d|pluralize }} lit
             </div>
         </div>
