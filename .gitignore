@@ -71,6 +71,7 @@ diagnostics_*/
 state/
 reference_media/
 ui_ux_redesign/screenshots/
+sharable_image/
 
 # ------------------------------------------------------------
 # Benchmark & Audit JSON dumps
