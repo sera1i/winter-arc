@@ -64,6 +64,61 @@ screenshots/
 screenshots_*/
 scratch/
 *_verified.png
+audit_screenshots/
+audit_screenshots_*/
+diagnostics/
+diagnostics_*/
+state/
+reference_media/
+ui_ux_redesign/screenshots/
+
+# ------------------------------------------------------------
+# Benchmark & Audit JSON dumps
+# ------------------------------------------------------------
+baseline_metrics.json
+landing_diagnostics.json
+mobile_*_audit_results.json
+mobile_overflow_audit.json
+optimized_metrics.json
+*_metrics.json
+*_diagnostics.json
+
+# ------------------------------------------------------------
+# SRS Text dumps & scratch notes
+# ------------------------------------------------------------
+extracted_SRS_text.txt
+srs_*.txt
+SKILL.md
+
+# ------------------------------------------------------------
+# Local QA, Audit, Verification & Test scripts
+# ------------------------------------------------------------
+audit_*.py
+verify_*.py
+measure_*.py
+capture_*.py
+diagnose_*.py
+debug_*.py
+inspect_*.py
+profile_*.py
+trace_*.py
+browser_tests.py
+check_contrast.py
+compare_metrics.py
+configure_settings.py
+db_audit.py
+download_fonts.py
+find_culprit_tasks.py
+fix_settings.py
+generate_password_templates.py
+goals_test_snippet.py
+master_visual_qa.py
+prepare_browser_fixtures.py
+restore_settings.py
+run_*_qa.py
+run_final_performance_verification.py
+take_empty_dash.py
+visual_qa_ice_and_fire.py
 
 # ------------------------------------------------------------
 # IDE
