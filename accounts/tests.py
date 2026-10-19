@@ -48,6 +48,37 @@ class AuthenticationTests(TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
+    def test_registration_with_display_name(self):
+        response = self.client.post(reverse('register'), {
+            'username': 'crusader_val',
+            'display_name': 'Knight of Valyria',
+            'email': 'val@example.com',
+            'password1': 'WinterArcPass123!',
+            'password2': 'WinterArcPass123!',
+        })
+        self.assertRedirects(response, reverse('dashboard'))
+        user = CustomUser.objects.get(username='crusader_val')
+        self.assertEqual(user.profile.display_name, 'Knight of Valyria')
+
+    def test_registration_without_display_name_leaves_it_blank(self):
+        response = self.client.post(reverse('register'), {
+            'username': 'crusader_blank',
+            'display_name': '',
+            'email': 'blank@example.com',
+            'password1': 'WinterArcPass123!',
+            'password2': 'WinterArcPass123!',
+        })
+        self.assertRedirects(response, reverse('dashboard'))
+        user = CustomUser.objects.get(username='crusader_blank')
+        self.assertEqual(user.profile.display_name, '')
+
+    def test_registration_page_renders_dropdown_option(self):
+        response = self.client.get(reverse('register'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="display-name-dropdown"')
+        self.assertContains(response, 'Set Display Name (Optional)')
+        self.assertContains(response, 'name="display_name"')
+
 
 class DashboardTests(TestCase):
     def setUp(self):

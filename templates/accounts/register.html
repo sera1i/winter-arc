@@ -98,23 +98,73 @@
                         {% endif %}
 
                         {% for field in form %}
-                            <div class="space-y-1.5">
-                                <label for="{{ field.id_for_label }}" class="wa-label flex items-center justify-between">
-                                    <span>{{ field.label }}</span>
-                                    {% if field.field.required %}
-                                        <span class="font-mono text-[9px] text-ice/40 tracking-wider">REQUIRED</span>
-                                    {% else %}
-                                        <span class="font-mono text-[9px] text-ice/30 tracking-wider">OPTIONAL</span>
+                            {% if field.name == 'display_name' %}
+                                {# Rendered specifically below username as an optional dropdown option #}
+                            {% else %}
+                                <div class="space-y-1.5">
+                                    <label for="{{ field.id_for_label }}" class="wa-label flex items-center justify-between">
+                                        <span>{{ field.label }}</span>
+                                        {% if field.field.required %}
+                                            <span class="font-mono text-[9px] text-ice/40 tracking-wider">REQUIRED</span>
+                                        {% else %}
+                                            <span class="font-mono text-[9px] text-ice/30 tracking-wider">OPTIONAL</span>
+                                        {% endif %}
+                                    </label>
+                                    {{ field|add_class:"wa-input" }}
+                                    {% if field.errors %}
+                                        <p class="wa-field-error" role="alert">{{ field.errors.0 }}</p>
                                     {% endif %}
-                                </label>
-                                {{ field|add_class:"wa-input" }}
-                                {% if field.errors %}
-                                    <p class="wa-field-error" role="alert">{{ field.errors.0 }}</p>
+                                    {% if field.help_text %}
+                                        <div class="wa-help-text">{{ field.help_text|safe }}</div>
+                                    {% endif %}
+                                </div>
+
+                                {% if field.name == 'username' %}
+                                    <!-- Optional Display Name Dropdown Option Under Username -->
+                                    <div class="pt-1 pb-1">
+                                        <details id="display-name-dropdown" class="group border border-steel/25 bg-steel/5 rounded-none p-3 transition-colors hover:border-steel/40" {% if form.display_name.value or form.display_name.errors %}open{% endif %}>
+                                            <summary class="flex items-center justify-between cursor-pointer text-xs font-mono tracking-wider text-ice/80 hover:text-bone select-none list-none outline-none focus-visible:ring-1 focus-visible:ring-crimson">
+                                                <div class="flex items-center gap-2">
+                                                    <svg class="w-3.5 h-3.5 text-crimson transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                                    </svg>
+                                                    <span class="font-medium">Set Display Name (Optional)</span>
+                                                </div>
+                                                <span class="font-mono text-[9px] text-ice/50 uppercase tracking-widest bg-steel/15 px-2 py-0.5 border border-steel/20">
+                                                    Dropdown Option
+                                                </span>
+                                            </summary>
+
+                                            <div class="pt-3 mt-3 border-t border-steel/20 space-y-2.5">
+                                                <div class="flex items-center justify-between">
+                                                    <label for="{{ form.display_name.id_for_label }}" class="font-mono text-[11px] uppercase tracking-wider text-ice/70">
+                                                        Warrior Moniker / Display Name
+                                                    </label>
+                                                    <span class="font-mono text-[9px] text-ice/40 tracking-wider">OPTIONAL</span>
+                                                </div>
+
+                                                {{ form.display_name|add_class:"wa-input text-sm" }}
+
+                                                {% if form.display_name.errors %}
+                                                    <p class="wa-field-error" role="alert">{{ form.display_name.errors.0 }}</p>
+                                                {% endif %}
+
+                                                <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-[11px]">
+                                                    <p class="font-sans text-ice/60 leading-relaxed">
+                                                        Shown on your dashboard greeting and rankings instead of username.
+                                                    </p>
+                                                    <div class="flex items-center gap-1.5">
+                                                        <span class="font-mono text-[10px] text-ice/40">Presets:</span>
+                                                        <button type="button" onclick="document.getElementById('{{ form.display_name.id_for_label }}').value = 'Knight of the Arc'" class="font-mono text-[10px] text-ice/70 hover:text-crimson-light bg-steel/15 hover:bg-steel/30 px-1.5 py-0.5 border border-steel/20 transition-colors">Knight</button>
+                                                        <button type="button" onclick="document.getElementById('{{ form.display_name.id_for_label }}').value = 'Iron Scholar'" class="font-mono text-[10px] text-ice/70 hover:text-crimson-light bg-steel/15 hover:bg-steel/30 px-1.5 py-0.5 border border-steel/20 transition-colors">Scholar</button>
+                                                        <button type="button" onclick="document.getElementById('{{ form.display_name.id_for_label }}').value = 'Monk of the Cold'" class="font-mono text-[10px] text-ice/70 hover:text-crimson-light bg-steel/15 hover:bg-steel/30 px-1.5 py-0.5 border border-steel/20 transition-colors">Monk</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </details>
+                                    </div>
                                 {% endif %}
-                                {% if field.help_text %}
-                                    <div class="wa-help-text">{{ field.help_text|safe }}</div>
-                                {% endif %}
-                            </div>
+                            {% endif %}
                         {% endfor %}
 
                         <button type="submit" id="register-submit-btn" class="btn-primary w-full text-sm uppercase tracking-widest py-3.5 shadow-[0_4px_16px_rgba(179,21,27,0.35)]">

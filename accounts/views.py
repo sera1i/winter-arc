@@ -30,7 +30,11 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            Profile.objects.get_or_create(user=user)
+            display_name = form.cleaned_data.get('display_name', '').strip()
+            profile, _ = Profile.objects.get_or_create(user=user)
+            if display_name and profile.display_name != display_name:
+                profile.display_name = display_name
+                profile.save(update_fields=['display_name'])
             login(request, user)
             messages.success(request, "Registration successful. Welcome to Winter Arc!")
             return redirect('dashboard')
